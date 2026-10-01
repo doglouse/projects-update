@@ -1216,6 +1216,7 @@ body {
 /* Material Design Icons 7.4.47 — only the 62 glyphs this page uses, as CSS masks */
 .mdi{display:inline-block;font-style:normal;line-height:inherit;}
 .mdi::before{content:"";display:inline-block;width:1em;height:1em;vertical-align:-0.14em;background-color:currentColor;-webkit-mask:var(--mdi) center/contain no-repeat;mask:var(--mdi) center/contain no-repeat;}
+.mdi-alert-outline{--mdi:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12,2L1,21H23M12,6L19.53,19H4.47M11,10V14H13V10M11,16V18H13V16'/%3E%3C/svg%3E")}
 .mdi-account-box-outline{--mdi:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M19,19H5V5H19M19,3H5A2,2 0 0,0 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5C21,3.89 20.1,3 19,3M16.5,16.25C16.5,14.75 13.5,14 12,14C10.5,14 7.5,14.75 7.5,16.25V17H16.5M12,12.25A2.25,2.25 0 0,0 14.25,10A2.25,2.25 0 0,0 12,7.75A2.25,2.25 0 0,0 9.75,10A2.25,2.25 0 0,0 12,12.25Z'/%3E%3C/svg%3E");}
 .mdi-account-edit-outline{--mdi:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M2 17V20H10V18.11H3.9V17C3.9 16.36 7.03 14.9 10 14.9C10.96 14.91 11.91 15.04 12.83 15.28L14.35 13.76C12.95 13.29 11.5 13.03 10 13C7.33 13 2 14.33 2 17M10 4C7.79 4 6 5.79 6 8S7.79 12 10 12 14 10.21 14 8 12.21 4 10 4M10 10C8.9 10 8 9.11 8 8S8.9 6 10 6 12 6.9 12 8 11.11 10 10 10M21.7 13.35L20.7 14.35L18.65 12.35L19.65 11.35C19.86 11.14 20.21 11.14 20.42 11.35L21.7 12.63C21.91 12.84 21.91 13.19 21.7 13.4M12 18.94L18.06 12.88L20.11 14.88L14.11 20.95H12V18.94'/%3E%3C/svg%3E");}
 .mdi-account-eye-outline{--mdi:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M10 12C12.21 12 14 10.21 14 8S12.21 4 10 4 6 5.79 6 8 7.79 12 10 12M10 6C11.11 6 12 6.9 12 8S11.11 10 10 10 8 9.11 8 8 8.9 6 10 6M9.27 20H2V17C2 14.33 7.33 13 10 13C11.04 13 12.5 13.21 13.86 13.61C13 13.95 12.2 14.42 11.5 15C11 14.94 10.5 14.9 10 14.9C7.03 14.9 3.9 16.36 3.9 17V18.1H9.22C9.2 18.15 9.17 18.2 9.14 18.25L8.85 19L9.14 19.75C9.18 19.83 9.23 19.91 9.27 20M17 18C17.56 18 18 18.44 18 19S17.56 20 17 20 16 19.56 16 19 16.44 18 17 18M17 15C14.27 15 11.94 16.66 11 19C11.94 21.34 14.27 23 17 23S22.06 21.34 23 19C22.06 16.66 19.73 15 17 15M17 21.5C15.62 21.5 14.5 20.38 14.5 19S15.62 16.5 17 16.5 19.5 17.62 19.5 19 18.38 21.5 17 21.5Z'/%3E%3C/svg%3E");}
@@ -1524,6 +1525,8 @@ var state = {
   presenceOpen: false,
   notify: null,
   presAlert: "",
+  editAlert: false,
+  editAlertOk: false,
   toast: "",
   faculty: BASE_FACULTY.map(function (f) { return Object.assign({}, f); }),
   facultyPanelOpen: false,
@@ -2329,7 +2332,7 @@ function render() {
         '<footer style="text-align:center;padding:22px;font-family:var(--pa-font-sans);font-size:13px;font-weight:700;color:var(--pa-ink);border-top:1px solid var(--pa-divider);background:#fff">1997-2026 PRIME Education, LLC</footer>' +
       '</div>' +
     '</div>' +
-    replaceModalHTML() + facultyPanelHTML() + supporterModalHTML() + createModalHTML() + guardModalHTML() + notifyModalHTML() + presAlertHTML() + toastHTML();
+    replaceModalHTML() + facultyPanelHTML() + supporterModalHTML() + createModalHTML() + guardModalHTML() + notifyModalHTML() + presAlertHTML() + editAlertHTML() + toastHTML();
 
   if (focusKey) {
     var el = document.querySelector('[data-focus="' + focusKey.replace(/"/g, '\\"') + '"]');
@@ -2407,7 +2410,7 @@ function pickSelect(key, val) {
 var ACTIONS = {
   "tab": function (el) { requestTab(el.getAttribute("data-tab")); },
 
-  "edit": function () { state.mode = "edit"; state.snapshot = JSON.parse(JSON.stringify({ f: state.f, leads: state.leads, checks: state.checks, supporters: state.supporters, content: state.content })); setBaseline(); render(); },
+  "edit": function () { if (!state.editAlertOk && peopleOn(state.tab).some(function (p) { return p.mode === "edit"; })) { state.editAlert = true; render(); return; } state.editAlertOk = false; state.mode = "edit"; state.snapshot = JSON.parse(JSON.stringify({ f: state.f, leads: state.leads, checks: state.checks, supporters: state.supporters, content: state.content })); setBaseline(); render(); },
   "cancel": function () {
     var s = state.snapshot;
     if (s) { state.f = s.f; state.leads = s.leads; state.checks = s.checks; state.supporters = s.supporters; state.content = s.content; }
@@ -2430,6 +2433,8 @@ var ACTIONS = {
   "presence": function () { state.presenceOpen = !state.presenceOpen; render(); },
   "presence-go": function (el) { state.presenceOpen = false; render(); requestTab(el.getAttribute("data-tab")); },
   "pres-alert-close": function () { state.presAlert = ""; render(); },
+  "edit-alert-cancel": function () { state.editAlert = false; render(); },
+  "edit-alert-ok": function (el) { state.editAlert = false; state.editAlertOk = true; ACTIONS["edit"](); },
 
   "guard-stay": function () { state.pendingTab = ""; render(); },
   "guard-discard": function () {
@@ -2638,14 +2643,14 @@ function wireDropzones() {
 var PRESENCE = [
   { name: "Maya Whitfield", initials: "MW", tab: "Details", mode: "edit", color: "var(--pa-primary)" },
   { name: "Priya Raman", initials: "PR", tab: "Details", mode: "view", color: "#4FA3E8" },
-  { name: "Tomás Reyes", initials: "TR", tab: "Faculty", mode: "edit", color: "var(--pa-primary-700)" },
+  { name: "Tomás Reyes", initials: "TR", tab: "Faculty", mode: "view", color: "var(--pa-primary-700)" },
   { name: "Kevin Boateng", initials: "KB", tab: "Activities", mode: "view", color: "var(--pa-ink-2)" }
 ];
 var N_LISTS = ["Product & Tech", "Marketing", "Design & Multimedia", "Program Management", "Research", "Scientific Affairs", "Accreditation"];
 var N_LEADS = [["Sara Atcheison", "Clinical Lead"], ["Danny Velasquez", "Creative Lead"], ["Christine Mangurio", "Operations Lead"], ["Megan McLafferty", "Strategy Lead"]];
 
 function peopleOn(t) { return PRESENCE.filter(function (p) { return p.tab === t; }); }
-function alertFor(t) { return peopleOn(t).length ? t : ""; }
+function alertFor(t) { return ""; }
 function toggleIn(arr, v) { return arr.indexOf(v) > -1 ? arr.filter(function (x) { return x !== v; }) : arr.concat(v); }
 function firstName(p) { return p.name.split(" ")[0]; }
 function joinNames(a) { return a.length > 1 ? a.slice(0, -1).join(", ") + " and " + a[a.length - 1] : a[0]; }
@@ -2772,6 +2777,26 @@ function notifyModalHTML() {
         '<div style="display:flex;gap:12px"><button class="pa-btn pa-btn--secondary-grey" data-a="notify-close"><span>CANCEL</span></button>' +
           '<button class="pa-btn pa-btn--primary" data-a="notify-save"><i class="mdi ' + (count ? "mdi-send-outline" : "mdi-content-save-outline") + '"></i><span>' + (count ? "SAVE &amp; NOTIFY" : "SAVE") + '</span></button></div>' +
       '</div>' +
+    '</div>' +
+  '</div>';
+}
+
+function editAlertHTML() {
+  if (!state.editAlert) return "";
+  var eds = peopleOn(state.tab).filter(function (p) { return p.mode === "edit"; });
+  if (!eds.length) return "";
+  var names = eds.map(firstName);
+  var msg = "Just a reminder \u2014 " + joinNames(names) + (names.length > 1 ? " are" : " is") + " already editing " + state.tab + ". If you both save, the last save wins and may overwrite their changes.";
+  return '' +
+  '<div style="position:fixed;inset:0;z-index:76;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;padding:24px;animation:scrimIn 200ms ease">' +
+    '<div role="alertdialog" aria-modal="true" aria-labelledby="edit-alert-title" style="width:100%;max-width:480px;background:#fff;border-radius:var(--pa-radius-lg);box-shadow:var(--pa-elev-modal);animation:modalIn 300ms cubic-bezier(.4,0,.2,1)">' +
+      '<div style="padding:28px 32px 0;display:flex;align-items:center;gap:14px">' +
+        '<i class="mdi mdi-alert-outline" style="font-size:26px;line-height:26px;color:var(--pa-warning)"></i>' +
+        '<h3 id="edit-alert-title" class="pa-modal-title" style="margin:0;text-transform:uppercase;letter-spacing:0">Already being edited</h3>' +
+      '</div>' +
+      '<div style="padding:18px 32px 0;display:flex;flex-direction:column;gap:6px">' + eds.map(function (p) { return personRow(p, "div"); }).join("") + '</div>' +
+      '<div style="padding:14px 32px 4px;font-family:var(--pa-font-sans);font-size:14px;line-height:22px;color:var(--pa-ink-2);text-wrap:pretty">' + esc(msg) + '</div>' +
+      '<div style="display:flex;justify-content:flex-end;gap:12px;padding:22px 24px"><button class="pa-btn pa-btn--secondary-grey" data-a="edit-alert-cancel"><span>CANCEL</span></button><button class="pa-btn pa-btn--primary" data-a="edit-alert-ok"><i class="mdi mdi-pencil-outline"></i><span>EDIT ANYWAY</span></button></div>' +
     '</div>' +
   '</div>';
 }

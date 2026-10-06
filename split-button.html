@@ -1,0 +1,2866 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PRIME Admin — Project Details</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Roboto+Flex:wght@400;500;600;700&family=Roboto:wght@400;500;700&display=swap">
+<style>
+/* ===== colors_and_type.css ===== */
+/* ============================================================
+   PrimeAdmin 3 — Colors & Type
+   Material-style admin design system.
+   v2 (Aug 2026): squared buttons, trimmed palette, caps heading
+   ladder, softened elevation. Reconciled against the Activity
+   Details redesign, the Admin 3 Pattern Library, and the
+   Newsletters build.
+   ============================================================ */
+
+
+
+
+
+:root {
+  /* ---------- Interactive blue -------------------------------
+     One accent per action class. Blue is anything that changes
+     data; aqua is reserved for links that leave the page. */
+  --pa-primary:        rgb(25, 118, 210);
+  --pa-primary-700:    rgb(17,  71, 161);  /* active tab, pressed, link hover */
+  --pa-primary-050:    rgb(238, 245, 252); /* inline sub-panels, row hover */
+  --pa-primary-12a:    rgba(25, 118, 210, 0.12); /* selected chip / tag fill */
+  --pa-primary-04a:    rgba(25, 118, 210, 0.04); /* hover film */
+
+  /* ---------- Aqua — external-link buttons only -------------- */
+  --pa-aqua-500:       rgb(  0, 173, 238);
+
+  /* ---------- Ink -------------------------------------------- */
+  --pa-ink:            rgb( 33,  33,  33); /* headings, body */
+  --pa-ink-2:          rgb( 66,  66,  66); /* icon default, rule copy */
+  --pa-ink-3:          rgb(102, 102, 102); /* field labels, helper text */
+  --pa-ink-4:          rgb(113, 113, 113); /* meta values, secondary rows */
+  --pa-ink-6:          rgb(137, 147, 158); /* placeholder, empty value */
+  --pa-ink-7:          rgb(158, 158, 158); /* disabled border, empty glyph */
+
+  /* ---------- Surfaces --------------------------------------- */
+  --pa-paper:          rgb(255, 255, 255);
+  --pa-band:           rgb(240, 240, 240); /* section band — the only
+                                              non-white content surface */
+  --pa-line:           rgb(238, 238, 238); /* hairline */
+  --pa-line-2:         rgb(224, 224, 224); /* unselected chip */
+  --pa-divider:        rgba(0, 0, 0, 0.12); /* card + modal borders */
+  --pa-rule:           rgba(0, 0, 0, 0.60); /* list-table head rule */
+  --pa-sidebar-bg:     rgb( 32,  32,  32);
+  --pa-sidebar-active: rgb( 62,  62,  62);
+  --pa-avatar-green:   rgb( 76, 175,  80); /* signed-in user, header only */
+
+  /* ---------- Field chrome -----------------------------------
+     Record fields focus to black, not blue: the underline is
+     structure, not an action. */
+  --pa-field-line:     rgba(0, 0, 0, 0.42);
+  --pa-field-focus:    rgb(0, 0, 0);
+
+  /* ---------- Semantic — status text, toasts, validation ------ */
+  --pa-success:        rgb( 46, 125,  50);
+  --pa-success-bg:     rgb(232, 245, 233);
+  --pa-warning:        rgb(233, 143,  40);
+  --pa-warning-bg:     rgb(255, 244, 229);
+  --pa-error:          rgb(211,  47,  47);
+  --pa-error-bg:       rgb(253, 237, 237);
+
+  /* ---------- Type stack ------------------------------------- */
+  --pa-font-sans:       "Roboto", system-ui, sans-serif;
+  --pa-font-display:    "Roboto Flex", "Roboto", system-ui, sans-serif;
+  --pa-font-modal:      "Inter", "Roboto", system-ui, sans-serif;
+
+  /* ---------- Radii ------------------------------------------
+     Buttons are squared. The 16px pill is reserved for chips,
+     role badges, and status pills. */
+  --pa-radius-xs:    2px;   /* table cells */
+  --pa-radius-sm:    4px;   /* cards, buttons, fields, search */
+  --pa-radius-lg:    8px;   /* modals, panels, dropzone */
+  --pa-radius-pill: 16px;   /* chips, badges */
+
+  /* ---------- Elevation -------------------------------------- */
+  --pa-elev-1: 0 1px 2px 0 rgba(0,0,0,0.05), 0 1px 1px -1px rgba(0,0,0,0.05);
+  --pa-elev-2: 0 1px 5px 0 rgba(0,0,0,0.12),
+               0 2px 2px 0 rgba(0,0,0,0.14),
+               0 3px 1px -2px rgba(0,0,0,0.20);                  /* buttons */
+  --pa-elev-card: 0 10px 13px -5px rgba(0,0,0,0.05),
+                  0 4px 5px -6px rgba(0,0,0,0.05);               /* form cards */
+  --pa-elev-raised: 0 20px 25px -5px rgba(0,0,0,0.10),
+                    0 8px 10px -6px rgba(0,0,0,0.10);            /* faculty card, toast */
+  --pa-elev-modal: 0 9px 46px 8px rgba(0,0,0,0.12),
+                   0 24px 38px 3px rgba(0,0,0,0.14),
+                   0 11px 15px -7px rgba(0,0,0,0.20);            /* modals, drawers */
+
+  /* ---------- Spacing ---------------------------------------- */
+  --pa-s-1:  4px;
+  --pa-s-2:  8px;
+  --pa-s-3: 12px;
+  --pa-s-4: 16px;
+  --pa-s-5: 20px;
+  --pa-s-6: 24px;   /* between stacked fields, between cards */
+  --pa-s-8: 32px;   /* page gutter, card padding */
+  --pa-s-10: 40px;  /* between paired columns */
+  --pa-s-15: 60px;
+}
+
+/* ============================================================
+   Heading ladder — all caps, Roboto Regular, one role per level
+   ============================================================ */
+
+/* Page title. One per page. */
+.pa-page-title {
+  font-family: var(--pa-font-sans);
+  font-weight: 400;
+  font-size: 26px;
+  line-height: 34px;
+  letter-spacing: 1.3px;
+  text-transform: uppercase;
+  color: var(--pa-primary);
+  margin: 0;
+}
+
+/* Screen heading — names the record, carries its code in parens. */
+.pa-screen-title {
+  font-family: var(--pa-font-sans);
+  font-weight: 400;
+  font-size: 22px;
+  line-height: 30px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: var(--pa-ink);
+  margin: 0;
+}
+
+/* Card section band title — sits on --pa-band. */
+.pa-band-title {
+  font-family: var(--pa-font-sans);
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 26px;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  color: var(--pa-ink);
+  margin: 0;
+}
+
+/* Rail heading — groups right-hand utility stacks. */
+.pa-rail-title {
+  font-family: var(--pa-font-sans);
+  font-weight: 400;
+  font-size: 19px;
+  line-height: 26px;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  color: var(--pa-ink);
+  margin: 0;
+}
+
+/* Modal / drawer title — Inter, the only place it appears. */
+.pa-modal-title {
+  font-family: var(--pa-font-modal);
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 26px;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--pa-ink);
+  margin: 0;
+}
+
+/* ============================================================
+   Body, meta, and control type
+   ============================================================ */
+
+.pa-body-16 { font-family: var(--pa-font-display); font-size: 16px; line-height: 24px; letter-spacing: 0.1px; color: var(--pa-ink); }
+.pa-body-14 { font-family: var(--pa-font-sans); font-size: 14px; line-height: 20px; color: var(--pa-ink); }
+.pa-body-13 { font-family: var(--pa-font-sans); font-size: 13.5px; line-height: 20px; color: var(--pa-ink); }
+.pa-body-12 { font-family: var(--pa-font-sans); font-size: 12px; line-height: 18px; color: var(--pa-ink); }
+
+/* Helper text. Belongs to the field it explains, never the group. */
+.pa-helper { font-family: var(--pa-font-sans); font-size: 12px; line-height: 18px; color: var(--pa-ink-3); }
+
+/* Meta strip under a page title: key in caps, value in medium. */
+.pa-meta { display: flex; flex-wrap: wrap; gap: 6px 30px; font-family: var(--pa-font-sans); font-size: 13px; }
+.pa-meta-key { font-size: 12px; letter-spacing: 0.04em; text-transform: uppercase; color: var(--pa-ink-3); }
+.pa-meta-val { font-weight: 500; color: var(--pa-ink); }
+.pa-meta-val--success { color: var(--pa-success); font-weight: 500; }
+.pa-meta-val--warning { color: var(--pa-warning); font-weight: 500; }
+.pa-meta-val--error   { color: var(--pa-error);   font-weight: 500; }
+
+/* Field label at rest, and once floated above the underline. */
+.pa-field-label { font-family: var(--pa-font-sans); font-size: 13px; line-height: 19px; color: var(--pa-ink-3); }
+.pa-field-label--float { font-size: 11.5px; line-height: 16px; color: var(--pa-ink-3); }
+
+/* Value inside a field. */
+.pa-input-text { font-family: var(--pa-font-display); font-size: 13.5px; line-height: 20px; color: var(--pa-ink); }
+
+.pa-button-text { font-family: var(--pa-font-sans); font-weight: 500; font-size: 12px; line-height: 100%; text-transform: uppercase; }
+.pa-button-text-sm { font-family: var(--pa-font-display); font-weight: 700; font-size: 10.8px; line-height: 16.2px; text-transform: uppercase; }
+.pa-chip-text { font-family: var(--pa-font-display); font-weight: 700; font-size: 10.5px; line-height: 16px; letter-spacing: 0.05em; text-transform: uppercase; }
+
+.pa-caption { font-family: var(--pa-font-sans); font-size: 11.5px; line-height: 16px; color: var(--pa-ink-3); }
+
+/* Section eyebrow inside rule callouts and sub-panels. */
+.pa-eyebrow {
+  font-family: var(--pa-font-sans);
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--pa-primary);
+}
+
+
+/* ===== preview/_card.css ===== */
+/* Shared styles for preview/* cards. Cards are 700px wide. */
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--pa-paper);
+  font-family: var(--pa-font-sans);
+  color: var(--pa-ink);
+  -webkit-font-smoothing: antialiased;
+}
+
+.card {
+  width: 700px;
+  box-sizing: border-box;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.card.tight  { padding: 20px; gap: 12px; }
+.card.center { align-items: center; justify-content: center; }
+
+.row    { display: flex; flex-direction: row; gap: 12px; align-items: center; }
+.col    { display: flex; flex-direction: column; gap: 8px; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.grid-5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
+.grid-6 { display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; }
+
+.swatch {
+  width: 100%;
+  height: 64px;
+  border-radius: var(--pa-radius-sm);
+  border: 1px solid var(--pa-divider);
+}
+.swatch-sm { height: 44px; }
+.swatch-lg { height: 96px; }
+
+.meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-family: var(--pa-font-sans);
+}
+.meta .name { font-size: 12px; font-weight: 500; color: var(--pa-ink); line-height: 16px; }
+.meta .val  { font-size: 11px; color: var(--pa-ink-6); font-family: ui-monospace, monospace; line-height: 14px; }
+
+.token-chip {
+  font-family: ui-monospace, "JetBrains Mono", Menlo, monospace;
+  font-size: 11px;
+  color: var(--pa-ink-3);
+  background: var(--pa-line);
+  border-radius: var(--pa-radius-xs);
+  padding: 2px 6px;
+}
+
+
+/* ===== preview/_components.css ===== */
+/* PrimeAdmin 3 — component styles for preview cards, templates, and
+   the UI kit. Tokens come from ../colors_and_type.css.
+   v2 (Aug 2026): squared buttons, 4px cards, section bands, grid +
+   list tables, app chrome, empty states. */
+
+/* ================= Buttons =====================================
+   Squared to 4px. Label always all caps. One primary per region. */
+.pa-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 32px;
+  padding: 0 16px;
+  border-radius: var(--pa-radius-sm);
+  border: none;
+  font-family: var(--pa-font-sans);
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 100%;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  cursor: pointer;
+  user-select: none;
+  position: relative;
+  isolation: isolate;
+  transition: background 150ms cubic-bezier(.4,0,.2,1), box-shadow 150ms cubic-bezier(.4,0,.2,1);
+}
+.pa-btn::after { content: ""; position: absolute; inset: 0; border-radius: inherit; background: transparent; pointer-events: none; z-index: 1; }
+.pa-btn > * { position: relative; z-index: 2; }
+.pa-btn--sm { height: 24px; padding: 0 12px; font-size: 10.8px; }
+.pa-btn--lg { height: 40px; padding: 0 20px; }
+.pa-btn--block { width: 100%; }
+/* Escape hatch: row-level add/remove buttons inside picker drawers. */
+.pa-btn--pill { border-radius: var(--pa-radius-pill); }
+
+.pa-btn--primary { background: var(--pa-primary); color: #fff; box-shadow: var(--pa-elev-2); }
+.pa-btn--primary:hover::after  { background: rgba(255,255,255,0.08); }
+.pa-btn--primary:active::after { background: rgba(0,0,0,0.24); }
+
+.pa-btn--secondary { background: #fff; color: var(--pa-primary); border: 1px solid var(--pa-primary); }
+.pa-btn--secondary:hover::after  { background: var(--pa-primary-04a); }
+.pa-btn--secondary:active::after { background: rgba(25,118,210,0.24); }
+
+.pa-btn--secondary-grey { background: #fff; color: var(--pa-ink-2); border: 1px solid var(--pa-ink-7); }
+.pa-btn--secondary-grey:hover::after  { background: rgba(33,33,33,0.04); }
+.pa-btn--secondary-grey:active::after { background: rgba(33,33,33,0.24); }
+
+.pa-btn--tertiary { background: transparent; color: var(--pa-primary); }
+.pa-btn--tertiary:hover::after  { background: var(--pa-primary-04a); }
+.pa-btn--tertiary:active::after { background: rgba(25,118,210,0.24); }
+
+.pa-btn--tertiary-grey { background: transparent; color: var(--pa-ink-2); }
+.pa-btn--tertiary-grey:hover::after  { background: rgba(33,33,33,0.04); }
+.pa-btn--tertiary-grey:active::after { background: rgba(33,33,33,0.24); }
+
+/* Destructive: outline for in-page removals, solid only in a confirm dialog. */
+.pa-btn--danger-outline { background: #fff; color: var(--pa-error); border: 1px solid var(--pa-error); }
+.pa-btn--danger-outline:hover::after { background: rgba(211,47,47,0.06); }
+.pa-btn--danger { background: var(--pa-error); color: #fff; box-shadow: var(--pa-elev-2); }
+.pa-btn--danger:hover::after { background: rgba(255,255,255,0.08); }
+
+.pa-btn[disabled] { opacity: 0.3; pointer-events: none; box-shadow: none; }
+a.pa-btn, a.pa-btn:hover { text-decoration: none; }
+a.pa-btn--primary, a.pa-btn--primary:hover, a.pa-btn--danger, a.pa-btn--danger:hover { color: #fff; }
+a.pa-btn--secondary-grey, a.pa-btn--secondary-grey:hover { color: var(--pa-ink-2); }
+
+/* Rail link button — aqua, full width, left aligned, open-in-new.
+   Only for destinations outside the current page. */
+.pa-btn-rail {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  background: var(--pa-aqua-500);
+  color: #fff;
+  border: none;
+  border-radius: var(--pa-radius-sm);
+  padding: 11px 14px;
+  font-family: var(--pa-font-sans);
+  font-weight: 500;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  text-align: left;
+  cursor: pointer;
+  box-shadow: var(--pa-elev-2);
+}
+.pa-btn-rail:hover { filter: brightness(1.06); }
+.pa-btn-rail i { font-size: 16px; }
+
+/* Icon button — 36px circular target, 6% ink film on hover. Always titled. */
+.pa-icon-btn {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--pa-ink-2);
+  transition: background 150ms cubic-bezier(.4,0,.2,1);
+}
+.pa-icon-btn i { font-size: 19px; }
+.pa-icon-btn:hover { background: rgba(33,33,33,0.06); }
+.pa-icon-btn--sm { width: 32px; height: 32px; }
+.pa-icon-btn--primary { color: var(--pa-primary); }
+.pa-icon-btn--primary:hover { background: var(--pa-primary-04a); }
+.pa-icon-btn--danger { color: var(--pa-error); }
+.pa-icon-btn--danger:hover { background: rgba(211,47,47,0.08); }
+
+/* ================= Chips, badges, pills ======================== */
+.pa-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 28px;
+  padding: 0 12px;
+  border-radius: var(--pa-radius-pill);
+  font-family: var(--pa-font-display);
+  font-weight: 700;
+  font-size: 10.8px;
+  line-height: 16.2px;
+  text-transform: uppercase;
+  background: var(--pa-line-2);
+  color: var(--pa-ink);
+  border: none;
+  cursor: pointer;
+  user-select: none;
+  position: relative;
+  isolation: isolate;
+}
+.pa-chip::after { content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; }
+.pa-chip > * { position: relative; z-index: 2; }
+.pa-chip--selected { background: var(--pa-primary-12a); color: var(--pa-primary); }
+.pa-chip:hover.pa-chip--selected::after { background: var(--pa-primary-04a); }
+.pa-chip:hover:not(.pa-chip--selected)::after { background: rgba(33,33,33,0.04); }
+.pa-chip[disabled] { opacity: 0.3; pointer-events: none; }
+
+/* Role badge — solid blue pill, not interactive. */
+.pa-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 14px;
+  border-radius: var(--pa-radius-pill);
+  background: var(--pa-primary);
+  color: #fff;
+  font-family: var(--pa-font-display);
+  font-weight: 700;
+  font-size: 10.5px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+/* Count / tag pill — 12% tint. */
+.pa-badge--tint { background: var(--pa-primary-12a); color: var(--pa-primary); padding: 4px 11px; font-size: 10px; }
+.pa-badge--success { background: var(--pa-success); }
+
+/* Document status pill — outline, icon leads. */
+.doc-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  height: 22px;
+  padding: 0 10px;
+  border-radius: var(--pa-radius-pill);
+  border: 1px solid var(--pa-line-2);
+  font-family: var(--pa-font-sans);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--pa-ink-3);
+  background: #fff;
+}
+.doc-pill--ok   { border-color: rgba(46,125,50,0.5);  color: var(--pa-success); background: var(--pa-success-bg); }
+.doc-pill--warn { border-color: rgba(233,143,40,0.5); color: var(--pa-warning); background: var(--pa-warning-bg); }
+.doc-pill--err  { border-color: rgba(211,47,47,0.5);  color: var(--pa-error);   background: var(--pa-error-bg); }
+
+/* Status dot + label — status is coloured text, never a filled badge. */
+.pa-status { display: inline-flex; align-items: center; gap: 7px; font-family: var(--pa-font-sans); font-size: 12.5px; }
+.pa-status::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: currentColor; flex: 0 0 auto; }
+.pa-status--on  { color: var(--pa-success); }
+.pa-status--off { color: var(--pa-ink-4); }
+
+/* Avatars — initials on primary-050. Green is the signed-in user only. */
+.pa-avatar {
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: var(--pa-primary-050);
+  color: var(--pa-primary);
+  font-family: var(--pa-font-display);
+  font-weight: 600;
+  font-size: 12px;
+  flex: 0 0 auto;
+}
+.pa-avatar--overflow { background: var(--pa-line-2); color: var(--pa-ink-3); font-family: var(--pa-font-sans); font-size: 11px; }
+.pa-avatar--lg { width: 78px; height: 78px; font-size: 24px; }
+.avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--pa-avatar-green); color: #fff; display: inline-flex; align-items: center; justify-content: center; font-family: var(--pa-font-sans); font-weight: 500; font-size: 12px; flex: 0 0 auto; }
+
+/* ================= Fields ======================================
+   Floating label: on the baseline when empty, rising 24px and
+   scaling to 11.5px once focused or filled. Focus is black —
+   the underline is structure, not an action. `.vf` in
+   _vuetify-inputs.css is the interactive Vuetify-accurate build;
+   `.pa-field` is the static documentation form of the same thing. */
+.pa-field { position: relative; padding-top: 18px; width: 100%; font-family: var(--pa-font-sans); }
+.pa-field__label {
+  position: absolute;
+  left: 0; top: 18px;
+  padding: 6px 0;
+  margin: 0;
+  font-size: 13px;
+  line-height: 19px;
+  color: var(--pa-ink-3);
+  pointer-events: none;
+  transform-origin: left top;
+  transition: transform 150ms cubic-bezier(.4,0,.2,1), color 150ms cubic-bezier(.4,0,.2,1);
+}
+.pa-field:where(:focus-within) > .pa-field__label,
+.pa-field:where(:has(.pa-field__input:not(:placeholder-shown))) > .pa-field__label,
+.pa-field:where(:has(> div:not(.pa-field__hint))) > .pa-field__label,
+.pa-field--filled > .pa-field__label { transform: translateY(-24px) scale(0.885); }
+.pa-field:focus-within > .pa-field__label { color: var(--pa-field-focus); }
+.pa-field__input {
+  width: 100%;
+  box-sizing: border-box;
+  border: none;
+  border-bottom: 1px solid var(--pa-field-line);
+  padding: 6px 0;
+  font-family: var(--pa-font-display);
+  font-size: 13.5px;
+  line-height: 20px;
+  color: var(--pa-ink);
+  background: transparent;
+  outline: none;
+  transition: border-color 150ms cubic-bezier(.4,0,.2,1);
+}
+.pa-field__input::placeholder { color: transparent; }
+.pa-field__input:focus { border-bottom: 2px solid var(--pa-field-focus); padding-bottom: 5px; caret-color: var(--pa-field-focus); }
+/* Boxed search and filter inputs may show a real placeholder. */
+.pa-field--hasplaceholder .pa-field__input::placeholder { color: var(--pa-ink-6); }
+.pa-field--error .pa-field__input { border-bottom-color: var(--pa-error); }
+.pa-field--error > .pa-field__label, .pa-field--error:focus-within > .pa-field__label { color: var(--pa-error); }
+.pa-field--error .pa-field__hint { color: var(--pa-error); }
+/* Read-only keeps the underline but switches it to dashed. */
+.pa-field--disabled .pa-field__input { border-bottom-style: dashed; color: var(--pa-ink-7); }
+.pa-field__hint { font-size: 12px; line-height: 18px; color: var(--pa-ink-3); padding-top: 6px; }
+/* Trailing affordance row (select chevron, date, time, chips). */
+.pa-field__control { display: flex; align-items: center; gap: 8px; border-bottom: 1px solid var(--pa-field-line); padding: 6px 0; }
+.pa-field__control i { font-size: 19px; color: var(--pa-ink-2); }
+.pa-field__value { flex: 1; font-family: var(--pa-font-display); font-size: 13.5px; color: var(--pa-ink); }
+.pa-field__value--empty { color: var(--pa-ink-6); }
+
+/* Boxed search — search and table filters only. */
+.search { display: inline-flex; align-items: center; gap: 8px; height: 36px; padding: 0 12px; background: #fff; border: 1px solid var(--pa-divider); border-radius: var(--pa-radius-sm); width: 280px; box-sizing: border-box; }
+.search input { border: none; outline: none; background: transparent; font-family: var(--pa-font-display); font-size: 13px; flex: 1; min-width: 0; color: var(--pa-ink); }
+.search input::placeholder { color: var(--pa-ink-6); }
+
+/* ================= Surfaces ==================================== */
+.pa-card { background: #fff; border: 1px solid var(--pa-divider); border-radius: var(--pa-radius-sm); box-shadow: var(--pa-elev-1); }
+.pa-card--form { box-shadow: var(--pa-elev-card); }
+.pa-card--raised { box-shadow: var(--pa-elev-raised); }
+
+/* Section band — divides one card into labelled groups.
+   Related groups become bands inside a card, never new cards. */
+.pa-band {
+  background: var(--pa-band);
+  padding: 13px 32px;
+  font-family: var(--pa-font-sans);
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 26px;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  color: var(--pa-ink);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.pa-band--sm { padding: 12px 16px; font-size: 16px; }
+.pa-card__body { padding: 26px 32px 28px; display: flex; flex-direction: column; gap: 24px; }
+
+/* Inline sub-panel — primary-050, opens directly under its trigger. */
+.pa-subpanel { background: var(--pa-primary-050); border-top: 1px solid var(--pa-line); padding: 16px; }
+
+/* Rule callout — the documentation voice, also used for inline guidance. */
+.pa-rules { background: var(--pa-primary-050); border-radius: var(--pa-radius-sm); padding: 16px 18px; }
+.pa-rules ul { margin: 8px 0 0; padding-left: 18px; font-family: var(--pa-font-sans); font-size: 12.5px; line-height: 19px; color: var(--pa-ink-2); }
+
+/* Dropzone — the only dashed border in the product. */
+.pa-dropzone { border: 2px dashed var(--pa-primary); border-radius: var(--pa-radius-lg); padding: 34px 20px; text-align: center; background: #fff; font-family: var(--pa-font-sans); font-size: 13.5px; }
+.pa-dropzone__hint { font-size: 12.5px; color: var(--pa-ink-3); margin-top: 5px; }
+.pa-file-row { display: flex; align-items: center; gap: 12px; border: 1px solid var(--pa-primary); border-radius: var(--pa-radius-sm); padding: 10px 14px; font-family: var(--pa-font-sans); }
+
+/* Empty / not-migrated state. */
+.pa-empty { border: 1px solid var(--pa-line); border-radius: var(--pa-radius-sm); display: flex; flex-direction: column; align-items: center; padding: 40px 24px; text-align: center; font-family: var(--pa-font-sans); }
+.pa-empty i { font-size: 48px; color: var(--pa-ink-7); }
+.pa-empty__title { font-size: 18px; margin-top: 14px; color: var(--pa-ink); }
+.pa-empty__body { font-size: 13.5px; line-height: 20px; color: var(--pa-ink-3); margin-top: 6px; max-width: 360px; }
+
+/* ================= Tables ======================================
+   Grid table for a bounded set inside a record — never paginated.
+   List table for open-ended index screens. */
+.pa-table { border: 1px solid var(--pa-divider); border-radius: var(--pa-radius-sm); overflow: hidden; font-family: var(--pa-font-sans); }
+.pa-table__head, .pa-table__row { display: grid; align-items: center; }
+.pa-table__head { background: var(--pa-band); font-size: 12px; font-weight: 500; color: var(--pa-ink); }
+.pa-table__head > * { padding: 11px 16px; border-right: 1px solid var(--pa-divider); }
+.pa-table__head > *:last-child { border-right: none; }
+.pa-table__row { border-top: 1px solid var(--pa-line); font-size: 13px; }
+.pa-table__row > * { padding: 12px 16px; border-right: 1px solid var(--pa-line); }
+.pa-table__row > *:last-child { border-right: none; }
+.pa-table__row:hover { background: var(--pa-primary-04a); }
+
+.pa-ltable { width: 100%; border-collapse: collapse; font-family: var(--pa-font-sans); }
+.pa-ltable th { padding: 14px; text-align: left; font-size: 14px; font-weight: 400; color: var(--pa-ink); white-space: nowrap; border-top: 1px solid var(--pa-rule); border-bottom: 1px solid var(--pa-rule); }
+.pa-ltable th.sortable { cursor: pointer; user-select: none; }
+.pa-ltable td { padding: 14px; font-size: 13.5px; color: var(--pa-ink); border-bottom: 1px solid var(--pa-line); vertical-align: top; }
+.pa-ltable tbody tr:hover { background: rgba(33,33,33,0.02); }
+.pa-ltable .num { color: var(--pa-ink-2); }
+.pa-ltable .desc { font-size: 12.5px; line-height: 18px; color: var(--pa-ink-2); text-wrap: pretty; }
+.pa-ltable .acts { text-align: right; white-space: nowrap; }
+
+/* Table controls — repeat above and below a list table. */
+.pa-tablebar { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; padding: 6px 0 10px; font-family: var(--pa-font-sans); font-size: 13px; color: var(--pa-ink-2); }
+.pa-tablebar--footer { padding: 12px 0 0; border-top: 1px solid var(--pa-rule); }
+.pa-tablebar select { height: 34px; border: 1px solid var(--pa-line); border-radius: var(--pa-radius-sm); background: #fff; font-family: var(--pa-font-sans); font-size: 13px; color: var(--pa-ink); padding: 0 8px; }
+.pa-pager { display: flex; align-items: center; gap: 4px; margin-left: auto; }
+.pa-pager button { min-width: 30px; height: 30px; padding: 0 6px; border: none; border-radius: var(--pa-radius-sm); background: transparent; font-family: var(--pa-font-sans); font-size: 13px; color: var(--pa-ink-2); cursor: pointer; }
+.pa-pager button:hover { background: rgba(33,33,33,0.06); }
+.pa-pager button[aria-current="page"] { background: var(--pa-primary-12a); color: var(--pa-primary); font-weight: 500; }
+.pa-pager button[disabled] { opacity: 0.3; pointer-events: none; }
+
+/* ================= Toast ======================================= */
+.pa-toast {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-radius: var(--pa-radius-sm);
+  font-family: var(--pa-font-sans);
+  font-size: 14px;
+  color: var(--pa-ink);
+  background: #fff;
+  border-left: 4px solid var(--pa-primary);
+  box-shadow: var(--pa-elev-raised);
+}
+.pa-toast--success { border-left-color: var(--pa-success); }
+.pa-toast--warning { border-left-color: var(--pa-warning); }
+.pa-toast--error   { border-left-color: var(--pa-error); }
+.pa-toast__icon { font-size: 20px; display: inline-flex; }
+.pa-toast--success .pa-toast__icon { color: var(--pa-success); }
+.pa-toast--warning .pa-toast__icon { color: var(--pa-warning); }
+.pa-toast--error   .pa-toast__icon { color: var(--pa-error); }
+.pa-toast--info    .pa-toast__icon { color: var(--pa-primary); }
+
+/* ================= App chrome ================================== */
+.topbar { height: 56px; background: #fff; border-bottom: 1px solid var(--pa-divider); display: flex; align-items: center; padding: 0 24px; gap: 16px; }
+.topbar__btn { width: 36px; height: 36px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; color: var(--pa-ink-2); cursor: pointer; border: none; background: transparent; }
+.topbar__btn:hover { background: rgba(0,0,0,0.04); }
+
+.sb { width: 230px; flex-shrink: 0; background: var(--pa-sidebar-bg); color: #fff; font-family: var(--pa-font-sans); display: flex; flex-direction: column; }
+.sb__head { padding: 18px 14px; display: flex; align-items: center; justify-content: space-between; }
+.sb__brand { font-weight: 500; font-size: 19px; letter-spacing: 1px; color: #fff; }
+.sb__brand span { color: var(--pa-aqua-500); }
+.sb__collapse { color: rgba(255,255,255,0.6); cursor: pointer; }
+.sb__section { padding: 4px 0; }
+.sb__item { display: flex; align-items: center; gap: 14px; padding: 12px 18px; font-size: 14px; color: rgba(255,255,255,0.9); cursor: pointer; user-select: none; }
+.sb__item i { font-size: 20px; }
+.sb__item__chev { margin-left: auto; font-size: 18px; opacity: 0.6; }
+.sb__item--active { background: var(--pa-sidebar-active); }
+.sb__item:hover:not(.sb__item--active) { background: rgba(255,255,255,0.06); }
+.sb__sub { padding: 2px 0 8px; }
+.sb__sub-item { display: flex; padding: 8px 18px 8px 54px; font-size: 13px; color: rgba(255,255,255,0.72); cursor: pointer; }
+.sb__sub-item--active { background: var(--pa-sidebar-active); color: #fff; }
+.sb__sub-item:hover:not(.sb__sub-item--active) { color: #fff; }
+
+/* Tab bar — full-width primary blue, equal-width tabs, no underline. */
+.pa-tabs { display: flex; align-items: stretch; height: 48px; background: var(--pa-primary); color: #fff; }
+.pa-tabs--sm { height: 44px; }
+.pa-tabs__btn {
+  flex: 1;
+  height: 100%;
+  padding: 0 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--pa-font-sans);
+  font-weight: 500;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #fff;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+.pa-tabs__btn--active { background: var(--pa-primary-700); }
+.pa-tabs__btn:hover:not(.pa-tabs__btn--active) { background: rgba(255,255,255,0.06); }
+
+/* Breadcrumb — sits below the tab bar, never above. */
+.pa-crumb { font-family: var(--pa-font-sans); font-size: 13px; line-height: 18px; color: var(--pa-ink-3); }
+.pa-crumb a { color: var(--pa-primary); }
+
+/* Modal scrim */
+.scrim { position: fixed; inset: 0; z-index: 50; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; padding: 24px; }
+
+
+/* ===== preview/_vuetify-inputs.css ===== */
+/* ============================================================
+   Shared Vuetify-style input base — underlined variant.
+   Used by fields-*.html cards (text field, textarea, combobox,
+   radio, checkbox). The active accent is #000 per brand spec.
+   ============================================================ */
+
+.vf {
+  position: relative;
+  padding-top: 18px;
+  font-family: var(--pa-font-sans);
+  color: var(--pa-ink);
+}
+
+.vf__input,
+.vf__textarea {
+  width: 100%;
+  box-sizing: border-box;
+  border: 0;
+  background: transparent;
+  padding: 4px 0 6px;
+  font: inherit;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--pa-ink);
+  outline: none;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.42);
+  transition: border-color 200ms cubic-bezier(.4, 0, .2, 1);
+}
+.vf__textarea {
+  resize: vertical;
+  min-height: 80px;
+  font-family: inherit;
+}
+.vf__input::placeholder,
+.vf__textarea::placeholder { color: rgba(0, 0, 0, 0.38); }
+.vf__input:placeholder-shown:not(:focus)::placeholder,
+.vf__textarea:placeholder-shown:not(:focus)::placeholder { color: transparent; }
+
+.vf__label {
+  position: absolute;
+  left: 0;
+  top: 18px;
+  font-size: 14px;
+  line-height: 20px;
+  color: rgba(0, 0, 0, 0.6);
+  pointer-events: none;
+  transform-origin: top left;
+  transition: transform 200ms cubic-bezier(.4, 0, .2, 1),
+              color 200ms cubic-bezier(.4, 0, .2, 1);
+}
+.vf__input:focus ~ .vf__label,
+.vf__input:not(:placeholder-shown) ~ .vf__label,
+.vf__textarea:focus ~ .vf__label,
+.vf__textarea:not(:placeholder-shown) ~ .vf__label {
+  transform: translateY(-18px) scale(0.857);
+}
+.vf__input:focus,
+.vf__textarea:focus,
+.vf--focused .vf__input,
+.vf--focused .vf__textarea {
+  border-bottom: 2px solid #000;
+  padding-bottom: 5px;
+  caret-color: #000;
+}
+.vf__input:focus ~ .vf__label,
+.vf__textarea:focus ~ .vf__label,
+.vf--focused .vf__label {
+  transform: translateY(-18px) scale(0.857);
+  color: #000;
+}
+
+.vf__messages {
+  min-height: 14px;
+  padding: 4px 0 0;
+  font-size: 12px;
+  line-height: 12px;
+  color: rgba(0, 0, 0, 0.6);
+}
+.vf__counter { float: right; font-size: 12px; color: rgba(0, 0, 0, 0.6); padding-top: 4px; }
+
+/* Error */
+.vf--error .vf__input,
+.vf--error .vf__textarea,
+.vf--error .vf__input:focus,
+.vf--error .vf__textarea:focus { border-bottom-color: var(--pa-error); }
+.vf--error .vf__label,
+.vf--error .vf__input:focus ~ .vf__label,
+.vf--error .vf__textarea:focus ~ .vf__label { color: var(--pa-error); }
+.vf--error .vf__messages { color: var(--pa-error); }
+
+/* Disabled */
+.vf--disabled .vf__input,
+.vf--disabled .vf__textarea {
+  color: rgba(0, 0, 0, 0.38);
+  border-bottom-style: dotted;
+  border-bottom-color: rgba(0, 0, 0, 0.38);
+  pointer-events: none;
+}
+.vf--disabled .vf__label { color: rgba(0, 0, 0, 0.38); }
+
+/* Trailing icon (eye, dropdown chevron, etc.)
+   Sits at the input baseline, clear of the underline. */
+.vf__input--with-icon,
+.vf__textarea--with-icon { padding-right: 28px; }
+.vf__icon {
+  position: absolute;
+  right: 0;
+  top: 22px;
+  width: 20px;
+  height: 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  color: rgba(0, 0, 0, 0.6);
+  cursor: pointer;
+  background: none;
+  border: 0;
+  padding: 0;
+}
+.vf__icon:hover { color: #000; }
+
+/* ============================================================
+   Selection controls — radio + checkbox
+   ============================================================ */
+
+.vsel {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 0;
+  font-family: var(--pa-font-sans);
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--pa-ink);
+  cursor: pointer;
+  user-select: none;
+}
+.vsel input { position: absolute; opacity: 0; pointer-events: none; }
+.vsel__box {
+  position: relative;
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(0, 0, 0, 0.6);
+  transition: color 150ms cubic-bezier(.4, 0, .2, 1);
+}
+.vsel__box i { font-size: 20px; }
+.vsel:hover .vsel__box { color: #000; }
+.vsel input:checked + .vsel__box { color: #000; }
+.vsel input:disabled ~ .vsel__box,
+.vsel--disabled .vsel__box { color: rgba(0, 0, 0, 0.26) !important; }
+.vsel--disabled,
+.vsel input:disabled ~ .vsel__label { color: rgba(0, 0, 0, 0.38); pointer-events: none; }
+
+/* Radio / checkbox groups */
+.vgroup { display: flex; gap: 4px 24px; flex-wrap: wrap; }
+.vgroup--inline { flex-direction: row; align-items: center; }
+.vgroup--stacked { flex-direction: column; gap: 2px; }
+
+.vgroup__legend {
+  font-size: 12px;
+  color: rgba(0, 0, 0, 0.6);
+  margin-bottom: 4px;
+}
+
+/* ============================================================
+   Switch / Toggle — Vuetify v-switch default variant
+   Thin track with a larger thumb that protrudes above/below.
+   Off: grey track + white thumb.
+   On:  light-green tinted track + full success-green thumb.
+   ============================================================ */
+.vsw {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 6px 0;
+  font-family: var(--pa-font-sans);
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--pa-ink);
+  cursor: pointer;
+  user-select: none;
+  position: relative;
+}
+.vsw input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+  inset: 0;
+}
+.vsw__track {
+  position: relative;
+  width: 36px;
+  height: 14px;
+  background: rgba(0, 0, 0, 0.38);
+  border-radius: 7px;
+  flex-shrink: 0;
+  transition: background 200ms cubic-bezier(.4, 0, .2, 1);
+}
+.vsw__thumb {
+  position: absolute;
+  top: -3px;          /* protrudes above the track */
+  left: -1px;         /* protrudes slightly past the track at rest */
+  width: 20px;
+  height: 20px;
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: 0 2px 1px -1px rgba(0,0,0,0.2),
+              0 1px 1px 0 rgba(0,0,0,0.14),
+              0 1px 3px 0 rgba(0,0,0,0.12);
+  transition: transform 200ms cubic-bezier(.4, 0, .2, 1),
+              background 200ms cubic-bezier(.4, 0, .2, 1);
+}
+.vsw input:checked + .vsw__track { background: rgba(46, 125, 50, 0.5); }
+.vsw input:checked + .vsw__track .vsw__thumb {
+  transform: translateX(18px);
+  background: var(--pa-success);
+}
+.vsw:hover .vsw__track { background: rgba(0, 0, 0, 0.5); }
+.vsw:hover input:checked + .vsw__track { background: rgba(46, 125, 50, 0.6); }
+
+.vsw input:disabled + .vsw__track,
+.vsw--disabled .vsw__track { background: rgba(0, 0, 0, 0.18) !important; }
+.vsw input:disabled:checked + .vsw__track,
+.vsw--disabled input:checked + .vsw__track { background: rgba(46, 125, 50, 0.28) !important; }
+.vsw input:disabled:checked + .vsw__track .vsw__thumb,
+.vsw--disabled input:checked + .vsw__track .vsw__thumb { background: rgba(46, 125, 50, 0.6) !important; }
+.vsw input:disabled ~ .vsw__label,
+.vsw--disabled { color: rgba(0, 0, 0, 0.38); pointer-events: none; }
+
+
+/* ===== ui_kits/admin/app.css ===== */
+/* PrimeAdmin 3 Admin Console — UI kit sandbox styles */
+
+html, body, #root { height: 100%; margin: 0; }
+body {
+  background: var(--pa-paper);
+  font-family: var(--pa-font-sans);
+  color: var(--pa-ink);
+  -webkit-font-smoothing: antialiased;
+}
+* { box-sizing: border-box; }
+
+/* ---------- App shell ---------- */
+.app { display: flex; min-height: 100vh; }
+.app__main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.topbar {
+  height: 56px;
+  background: #fff;
+  border-bottom: 1px solid var(--pa-divider);
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+  gap: 16px;
+}
+.topbar .search { width: auto; }
+.topbar .search input { flex: 1; }
+.topbar__btn {
+  width: 36px; height: 36px; border-radius: 50%;
+  display: inline-flex; align-items: center; justify-content: center;
+  color: var(--pa-ink-2); cursor: pointer; border: none; background: transparent;
+}
+.topbar__btn:hover { background: rgba(0,0,0,0.04); }
+.avatar {
+  width: 32px; height: 32px; border-radius: 50%;
+  background: var(--pa-avatar-green);
+  color: #fff;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-weight: 500; font-size: 12px;
+}
+
+/* ---------- Tabs (inset to match column) ---------- */
+.app__main .pa-tabs { margin: 0 16px; }
+
+/* ---------- Page band ---------- */
+.page-band {
+  background: #fff;
+  padding: 18px 16px 12px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+.page-band__left { flex: 1; }
+.page-band__crumb {
+  font-family: var(--pa-font-sans);
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  color: var(--pa-ink-3);
+  text-transform: uppercase;
+}
+.page-band__title {
+  font-family: var(--pa-font-sans);
+  font-size: 26px;
+  letter-spacing: 1.3px;
+  color: var(--pa-primary);
+  font-weight: 400;
+  margin: 0;
+  text-transform: uppercase;
+}
+.page-band__row {
+  display: flex; align-items: center; gap: 16px;
+  margin-top: 14px;
+}
+
+/* ---------- Search ---------- */
+.search {
+  display: inline-flex; align-items: center; gap: 8px;
+  height: 36px; padding: 0 12px;
+  background: #fff;
+  border: 1px solid var(--pa-divider);
+  border-radius: 4px;
+  width: 280px;
+}
+.search input {
+  border: none; outline: none; background: transparent;
+  font-family: var(--pa-font-display); font-size: 13px;
+  flex: 1; color: var(--pa-ink);
+}
+
+/* ---------- Content ---------- */
+.content { padding: 24px 16px; background: #fff; flex: 1; }
+
+.section-h2 {
+  font-family: var(--pa-font-sans);
+  font-size: 20px;
+  font-weight: 500;
+  color: var(--pa-primary-500);
+  margin: 0 0 12px;
+}
+
+/* ---------- Faculty grid ---------- */
+.faculty-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+
+.f-card {
+  background: #fff;
+  border: 1px solid var(--pa-divider);
+  border-radius: 8px;
+  box-shadow: var(--pa-elev-card);
+  padding: 16px;
+  display: flex;
+  gap: 16px;
+}
+.f-card__photo {
+  width: 78px; height: 78px; border-radius: 50%;
+  flex-shrink: 0; background-size: cover; background-position: center;
+}
+.f-card__name { font-size: 14px; font-weight: 500; color: var(--pa-ink); }
+.f-card__title { font-size: 11px; color: var(--pa-ink-3); line-height: 16px; margin-top: 4px; }
+.f-card__chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.f-card__docs {
+  display: flex; gap: 6px; margin-top: 12px;
+  border-top: 1px solid var(--pa-line);
+  padding-top: 10px;
+}
+.doc-pill {
+  display: inline-flex; align-items: center; gap: 4px;
+  height: 22px; padding: 0 8px; border-radius: 11px;
+  font-size: 10px; font-weight: 500;
+  background: var(--pa-line); color: var(--pa-ink-3);
+  white-space: nowrap;
+}
+.doc-pill--ok { background: var(--pa-success-bg); color: var(--pa-success); }
+.doc-pill--warn { background: var(--pa-warning-bg); color: var(--pa-warning); }
+.doc-pill--err { background: var(--pa-error-bg); color: var(--pa-error); }
+
+/* ---------- Filter row ---------- */
+.filter-row {
+  display: flex; gap: 8px; align-items: center;
+  margin-bottom: 16px; flex-wrap: wrap;
+}
+
+/* ---------- Sidebar nav (full) ---------- */
+.sb {
+  width: 230px;
+  background: var(--pa-sidebar-bg);
+  color: #fff;
+  font-family: var(--pa-font-sans);
+  flex-shrink: 0;
+  display: flex; flex-direction: column;
+}
+.sb__head { padding: 18px 14px; display: flex; align-items: center; justify-content: space-between; }
+.sb__logo { height: 22px; display: block; }
+.sb__collapse { color: rgba(255,255,255,0.6); cursor: pointer; }
+.sb__section { padding: 4px 0; }
+.sb__item {
+  display: flex; align-items: center; gap: 14px;
+  padding: 12px 18px;
+  font-size: 14px;
+  color: #fff;
+  cursor: pointer;
+  user-select: none;
+}
+.sb__item i { font-size: 20px; }
+.sb__item__chev { margin-left: auto; font-size: 18px; opacity: 0.6; }
+.sb__item--active { background: var(--pa-sidebar-active); }
+.sb__item:hover:not(.sb__item--active) { background: rgba(255,255,255,0.06); }
+.sb__sub { padding: 2px 0 8px; }
+.sb__sub-item { display: flex; padding: 8px 18px 8px 54px; font-size: 13px; color: rgba(255,255,255,0.72); cursor: pointer; }
+.sb__sub-item--active { background: var(--pa-sidebar-active); color: #fff; }
+.sb__sub-item:hover:not(.sb__sub-item--active) { color: #fff; }
+.sb__foot {
+  margin-top: auto;
+  padding: 14px 18px;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  display: flex; align-items: center; gap: 10px;
+  font-size: 12px; color: rgba(255,255,255,0.6);
+}
+
+/* ---------- Detail screen ---------- */
+.detail-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 16px; align-items: start; }
+.panel {
+  background: #fff;
+  border: 1px solid var(--pa-divider);
+  border-radius: 8px;
+  padding: 20px 24px;
+}
+.kv { display: grid; grid-template-columns: 140px 1fr; row-gap: 10px; column-gap: 12px; }
+.kv__k { font-size: 12px; color: var(--pa-ink-3); letter-spacing: 0.04em; text-transform: uppercase; padding-top: 2px; }
+.kv__v { font-size: 13px; color: var(--pa-ink); }
+
+/* ---------- Inbox / table ---------- */
+.t-table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 8px; overflow: hidden; border: 1px solid var(--pa-divider); }
+.t-table th, .t-table td { padding: 12px 16px; text-align: left; font-size: 13px; }
+.t-table thead { background: var(--pa-primary-600); color: #fff; }
+.t-table th { font-weight: 500; font-size: 12px; letter-spacing: 0.05em; text-transform: uppercase; }
+.t-table tbody tr { border-top: 1px solid var(--pa-line); }
+.t-table tbody tr:hover { background: var(--pa-primary-04a); }
+.t-table .status { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; }
+.t-table .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+
+/* ---------- Empty state ---------- */
+.empty {
+  text-align: center; padding: 48px 24px;
+  color: var(--pa-ink-3);
+}
+.empty i { font-size: 48px; color: var(--pa-ink-7); }
+.empty__title { font-size: 16px; color: var(--pa-ink); margin-top: 12px; }
+
+/* ---------- Notifications board ---------- */
+.board { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; border-top: 1px solid var(--pa-divider); padding-top: 16px; }
+.board__col { border-right: 1px solid var(--pa-divider); padding-right: 16px; min-height: 240px; }
+.board__col:last-child { border-right: none; }
+.board__head { font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--pa-ink-6); padding: 0 0 12px; text-align: center; font-weight: 500; }
+
+.rmd { border: 1px solid var(--pa-divider); border-radius: 4px; background: #fff; margin-bottom: 12px; overflow: hidden; }
+.rmd__band { color: #fff; font-size: 12px; font-weight: 700; letter-spacing: 0.05em; padding: 8px 14px; }
+.rmd__body { padding: 12px 14px; }
+.rmd__when { font-size: 11px; color: var(--pa-ink-3); margin-bottom: 6px; }
+.rmd__text { font-size: 13px; color: var(--pa-ink); line-height: 18px; }
+.rmd__foot { display: flex; align-items: center; gap: 4px; margin-top: 10px; padding-top: 8px; border-top: 1px solid var(--pa-line); }
+
+/* ===== Page ===== */
+*{box-sizing:border-box;}
+  html,body{margin:0;background:#fff;}
+  body{font-family:var(--pa-font-sans);color:var(--pa-ink);-webkit-font-smoothing:antialiased;}
+  a{color:var(--pa-primary);text-decoration:none;}
+  a:hover{color:var(--pa-primary-700);text-decoration:underline;}
+  input,textarea,button{font-family:inherit;}
+
+  .vf__input:disabled,.vf__textarea:disabled{color:var(--pa-ink);border-bottom-style:dashed;border-bottom-color:rgba(0,0,0,0.22);pointer-events:none;opacity:1;}
+  .vf__input:disabled ~ .vf__label,.vf__textarea:disabled ~ .vf__label{color:var(--pa-ink-3);}
+  .vf__textarea{min-height:56px;}
+
+  .pub-rt p{margin:0 0 10px;}
+  .pub-rt p:last-child{margin-bottom:0;}
+  .pub-rt ul,.pub-rt ol{margin:0 0 10px;padding-left:22px;}
+  .pub-rt li{margin:0 0 6px;}
+
+  a.pa-btn-rail,a.pa-btn-rail:hover,a.pa-btn-rail:visited{color:#fff;text-decoration:none;}
+
+  .cmb-opt{display:block;width:100%;text-align:left;border:none;background:transparent;cursor:pointer;padding:9px 16px;font-family:var(--pa-font-sans);font-size:13.5px;color:var(--pa-ink);}
+  .cmb-opt:hover{background:var(--pa-primary-04a);}
+  .cmb-x{border:none;background:transparent;cursor:pointer;padding:0;display:inline-flex;align-items:center;color:var(--pa-ink-3);}
+  .cmb-x:hover{color:var(--pa-ink);}
+
+  @keyframes toastIn{from{opacity:0;transform:translateX(24px);}to{opacity:1;transform:translateX(0);}}
+  @keyframes scrimIn{from{opacity:0;}to{opacity:1;}}
+  @keyframes modalIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+  @keyframes drawerIn{from{transform:translateX(48px);opacity:0;}to{transform:none;opacity:1;}}
+  @media (max-width:1180px){.pd-grid{grid-template-columns:minmax(0,1fr) !important;}}
+
+  .fac-iconbtn{border:none;background:transparent;cursor:pointer;width:36px;height:36px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;transition:background 150ms;}
+  .fac-iconbtn:hover{background:rgba(33,33,33,0.06);}
+  .fac-role{display:inline-flex;align-items:center;padding:6px 14px;border-radius:var(--pa-radius-pill);background:var(--pa-primary);color:#fff;font-family:var(--pa-font-display);font-weight:700;font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;}
+  .fac-status{display:inline-flex;align-items:center;padding:4px 12px;border-radius:var(--pa-radius-pill);font-family:var(--pa-font-display);font-weight:700;font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;color:#fff;}
+  .fac-tool{display:flex;align-items:center;gap:10px;width:100%;border:1px solid var(--pa-divider);background:#fff;border-radius:var(--pa-radius-sm);padding:11px 14px;cursor:pointer;font-family:var(--pa-font-sans);font-size:12.5px;font-weight:500;letter-spacing:.04em;text-transform:uppercase;color:var(--pa-ink);text-align:left;transition:background 150ms,border-color 150ms;}
+  .fac-tool:hover{background:var(--pa-primary-050);border-color:rgba(25,118,210,0.35);}
+
+  .rt-tool{width:28px;height:28px;border:none;background:transparent;border-radius:4px;cursor:pointer;color:var(--pa-ink-2);display:inline-flex;align-items:center;justify-content:center;transition:background 150ms;}
+  .rt-tool:hover{background:rgba(33,33,33,0.06);}
+
+  .fx-act{border:none;background:transparent;cursor:pointer;padding:4px;border-radius:4px;line-height:0;}
+  .fx-act:hover{background:rgba(33,33,33,0.06);}
+  .fx-opt{padding:9px 13px;font-family:var(--pa-font-sans);font-size:13px;color:var(--pa-ink);cursor:pointer;}
+  .fx-opt:hover{background:rgba(33,33,33,0.04);}
+  .fx-opt--on{color:var(--pa-primary);background:rgba(25,118,210,0.08);}
+
+  .afp-panel{animation:drawerIn 260ms cubic-bezier(.4,0,.2,1);}
+  .afp-iconbtn{border:none;background:transparent;cursor:pointer;color:var(--pa-ink);width:34px;height:34px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;transition:background 150ms;}
+  .afp-iconbtn:hover{background:rgba(33,33,33,0.06);}
+  .afp-search{position:relative;}
+  .afp-search > input{width:100%;height:40px;border:1px solid var(--pa-divider);border-radius:var(--pa-radius-sm);padding:0 38px 0 14px;font-family:var(--pa-font-display);font-size:13.5px;color:var(--pa-ink);background:#fff;outline:none;box-shadow:var(--pa-elev-search);transition:border-color 150ms;}
+  .afp-search > input:focus{border-color:var(--pa-ink-4);}
+  .afp-search > i{position:absolute;right:12px;top:10px;font-size:20px;color:var(--pa-ink-4);pointer-events:none;}
+  .afp-row{display:grid;grid-template-columns:130px minmax(220px,1.2fr) minmax(220px,1.3fr) minmax(200px,1.2fr);gap:20px;padding:18px 24px;border-top:1px solid #EEEEEE;align-items:start;transition:background 150ms;}
+  .afp-row:hover{background:rgba(25,118,210,0.035);}
+  .afp-page{border:none;background:transparent;cursor:pointer;min-width:30px;height:30px;border-radius:var(--pa-radius-sm);font-family:var(--pa-font-sans);font-size:13px;color:var(--pa-ink-2);transition:background 150ms;}
+  .afp-page:hover{background:rgba(33,33,33,0.06);}
+  .afp-page--on{background:#EEEEEE;color:var(--pa-ink);font-weight:500;}
+
+  .act-link{text-decoration:none;}
+  .act-link:hover{text-decoration:underline;}
+  .act-link--title{color:var(--pa-ink);}
+  .act-link--title:hover{color:var(--pa-primary);}
+  .act-link--child{color:var(--pa-ink-3);}
+  .act-link--child:hover{color:var(--pa-primary);}
+.pres-btn{display:inline-flex;align-items:center;gap:10px;height:36px;padding:0 8px 0 5px;border-radius:18px;cursor:pointer;background:transparent;border:none;outline:none;transition:background 150ms cubic-bezier(.4,0,.2,1);}
+.pres-btn:hover,.pres-btn--open{background:var(--pa-primary-04a);}
+.menu-row:hover{background:var(--pa-primary-04a) !important;}
+.vsel[role="checkbox"]:focus-visible{outline:2px solid var(--pa-primary);outline-offset:2px;border-radius:2px;}
+
+/* Material Design Icons 7.4.47 — only the 62 glyphs this page uses, as CSS masks */
+.mdi{display:inline-block;font-style:normal;line-height:inherit;}
+.mdi::before{content:"";display:inline-block;width:1em;height:1em;vertical-align:-0.14em;background-color:currentColor;-webkit-mask:var(--mdi) center/contain no-repeat;mask:var(--mdi) center/contain no-repeat;}
+.mdi-alert-outline{--mdi:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12,2L1,21H23M12,6L19.53,19H4.47M11,10V14H13V10M11,16V18H13V16'/%3E%3C/svg%3E")}
+.mdi-account-box-outline{--mdi:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M19,19H5V5H19M19,3H5A2,2 0 0,0 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5C21,3.89 20.1,3 19,3M16.5,16.25C16.5,14.75 13.5,14 12,14C10.5,14 7.5,14.75 7.5,16.25V17H16.5M12,12.25A2.25,2.25 0 0,0 14.25,10A2.25,2.25 0 0,0 12,7.75A2.25,2.25 0 0,0 9.75,10A2.25,2.25 0 0,0 12,12.25Z'/%3E%3C/svg%3E");}
+.mdi-account-edit-outline{--mdi:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M2 17V20H10V18.11H3.9V17C3.9 16.36 7.03 14.9 10 14.9C10.96 14.91 11.91 15.04 12.83 15.28L14.35 13.76C12.95 13.29 11.5 13.03 10 13C7.33 13 2 14.33 2 17M10 4C7.79 4 6 5.79 6 8S7.79 12 10 12 14 10.21 14 8 12.21 4 10 4M10 10C8.9 10 8 9.11 8 8S8.9 6 10 6 12 6.9 12 8 11.11 10 10 10M21.7 13.35L20.7 14.35L18.65 12.35L19.65 11.35C19.86 11.14 20.21 11.14 20.42 11.35L21.7 12.63C21.91 12.84 21.91 13.19 21.7 13.4M12 18.94L18.06 12.88L20.11 14.88L14.11 20.95H12V18.94'/%3E%3C/svg%3E");}
+.mdi-account-eye-outline{--mdi:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M10 12C12.21 12 14 10.21 14 8S12.21 4 10 4 6 5.79 6 8 7.79 12 10 12M10 6C11.11 6 12 6.9 12 8S11.11 10 10 10 8 9.11 8 8 8.9 6 10 6M9.27 20H2V17C2 14.33 7.33 13 10 13C11.04 13 12.5 13.21 13.86 13.61C13 13.95 12.2 14.42 11.5 15C11 14.94 10.5 14.9 10 14.9C7.03 14.9 3.9 16.36 3.9 17V18.1H9.22C9.2 18.15 9.17 18.2 9.14 18.25L8.85 19L9.14 19.75C9.18 19.83 9.23 19.91 9.27 20M17 18C17.56 18 18 18.44 18 19S17.56 20 17 20 16 19.56 16 19 16.44 18 17 18M17 15C14.27 15 11.94 16.66 11 19C11.94 21.34 14.27 23 17 23S22.06 21.34 23 19C22.06 16.66 19.73 15 17 15M17 21.5C15.62 21.5 14.5 20.38 14.5 19S15.62 16.5 17 16.5 19.5 17.62 19.5 19 18.38 21.5 17 21.5Z'/%3E%3C/svg%3E");}
+.mdi-account-multiple-outline{--mdi:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M13.07 10.41A5 5 0 0 0 13.07 4.59A3.39 3.39 0 0 1 15 4A3.5 3.5 0 0 1 15 11A3.39 3.39 0 0 1 13.07 10.41M5.5 7.5A3.5 3.5 0 1 1 9 11A3.5 3.5 0 0 1 5.5 7.5M7.5 7.5A1.5 1.5 0 1 0 9 6A1.5 1.5 0 0 0 7.5 7.5M16 17V19H2V17S2 13 9 13 16 17 16 17M14 17C13.86 16.22 12.67 15 9 15S4.07 16.31 4 17M15.95 13A5.32 5.32 0 0 1 18 17V19H22V17S22 13.37 15.94 13Z'/%3E%3C/svg%3E");}
+.mdi-account-multiple-plus-outline{--mdi:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M13 11A3 3 0 1 0 10 8A3 3 0 0 0 13 11M13 7A1 1 0 1 1 12 8A1 1 0 0 1 13 7M17.11 10.86A5 5 0 0 0 17.11 5.14A2.91 2.91 0 0 1 18 5A3 3 0 0 1 18 11A2.91 2.91 0 0 1 17.11 10.86M13 13C7 13 7 17 7 17V19H19V17S19 13 13 13M9 17C9 16.71 9.32 15 13 15C16.5 15 16.94 16.56 17 17M24 17V19H21V17A5.6 5.6 0 0 0 19.2 13.06C24 13.55 24 17 24 17M8 12H5V15H3V12H0V10H3V7H5V10H8Z'/%3E%3C/svg%3E");}
+.mdi-account-search-outline{--mdi:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M10,13C9.65,13.59 9.36,14.24 9.19,14.93C6.5,15.16 3.9,16.42 3.9,17V18.1H9.2C9.37,18.78 9.65,19.42 10,20H2V17C2,14.34 7.33,13 10,13M10,4A4,4 0 0,1 14,8C14,8.91 13.69,9.75 13.18,10.43C12.32,10.75 11.55,11.26 10.91,11.9L10,12A4,4 0 0,1 6,8A4,4 0 0,1 10,4M10,5.9A2.1,2.1 0 0,0 7.9,8A2.1,2.1 0 0,0 10,10.1A2.1,2.1 0 0,0 12.1,8A2.1,2.1 0 0,0 10,5.9M15.5,12C18,12 20,14 20,16.5C20,17.38 19.75,18.21 19.31,18.9L22.39,22L21,23.39L17.88,20.32C17.19,20.75 16.37,21 15.5,21C13,21 11,19 11,16.5C11,14 13,12 15.5,12M15.5,14A2.5,2.5 0 0,0 13,16.5A2.5,2.5 0 0,0 15.5,19A2.5,2.5 0 0,0 18,16.5A2.5,2.5 0 0,0 15.5,14Z'/%3E%3C/svg%3E");}
+.mdi-autorenew{--mdi:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12,6V9L16,5L12,1V4A8,8 0 0,0 4,12C4,13.57 4.46,15.03 5.24,16.26L6.7,14.8C6.25,13.97 6,13 6,12A6,6 0 0,1 12,6M18.76,7.74L17.3,9.2C17.74,10.04 18,11 18,12A6,6 0 0,1 12,18V15L8,19L12,23V20A8,8 0 0,0 20,12C20,10.43 19.54,8.97 18.76,7.74Z'/%3E%3C/svg%3E");}
+.mdi-bell-outline{--mdi:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M10 21H14C14 22.1 13.1 23 12 23S10 22.1 10 21M21 19V20H3V19L5 17V11C5 7.9 7 5.2 10 4.3V4C10 2.9 10.9 2 12 2S14 2.9 14 4V4.3C17 5.2 19 7.9 19 11V17L21 19M17 11C17 8.2 14.8 6 12 6S7 8.2 7 11V18H17V11Z'/%3E%3C/svg%3E");}
+.mdi-chart-box-outline{--mdi:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M9 17H7V10H9V17M13 17H11V7H13V17M17 17H15V13H17V17M19 19H5V5H19V19.1M19 3H5C3.9 3 3 3.9 3 5V19C3 20.1 3.9 21 5 21H19C20.1 21 21 20.1 21 19V5C21 3.9 20.1 3 19 3Z'/%3E%3C/svg%3E");}
+.mdi-chart-line{--mdi:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M16,11.78L20.24,4.45L21.97,5.45L16.74,14.5L10.23,10.75L5.46,19H22V21H2V3H4V17.54L9.5,8L16,11.78Z'/%3E%3C/svg%3E");}
+.mdi-check{--mdi:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z'/%3E%3C/svg%3E");}
+.mdi-check-circle-outline{--mdi:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2C6.5 2 2 6.5 2 12S6.5 22 12 22 22 17.5 22 12 17.5 2 12 2M12 20C7.59 20 4 16.41 4 12S7.59 4 12 4 20 7.59 20 12 16.41 20 12 20M16.59 7.58L10 14.17L7.41 11.59L6 13L10 17L18 9L16.59 7.58Z'/%3E%3C/svg%3E");}
+.mdi-checkbox-blank-outline{--mdi:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M19,3H5C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5C21,3.89 20.1,3 19,3M19,5V19H5V5H19Z'/%3E%3C/svg%3E");}
+.mdi-checkbox-marked{--mdi:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M10,17L5,12L6.41,10.58L10,14.17L17.59,6.58L19,8M19,3H5C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5C21,3.89 20.1,3 19,3Z'/%3E%3C/svg%3E");}
+.mdi-chevron-down{--mdi:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z'/%3E%3C/svg%3E");}
+.mdi-chevron-left{--mdi:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M15.41,16.58L10.83,12L15.41,7.41L14,6L8,12L14,18L15.41,16.58Z'/%3E%3C/svg%3E");}
+.mdi-chevron-right{--mdi:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z'/%3E%3C/svg%3E");}
+.mdi-chevron-up{--mdi:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M7.41,15.41L12,10.83L16.59,15.41L18,14L12,8L6,14L7.41,15.41Z'/%3E%3C/svg%3E");}
+.mdi-clipboard-check-outline{--mdi:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M19,3H14.82C14.4,1.84 13.3,1 12,1C10.7,1 9.6,1.84 9.18,3H5A2,2 0 0,0 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5A2,2 0 0,0 19,3M12,3A1,1 0 0,1 13,4A1,1 0 0,1 12,5A1,1 0 0,1 11,4A1,1 0 0,1 12,3M7,7H17V5H19V19H5V5H7V7M7.5,13.5L9,12L11,14L15.5,9.5L17,11L11,17L7.5,13.5Z'/%3E%3C/svg%3E");}
+.mdi-close{--mdi:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z'/%3E%3C/svg%3E");}
+.mdi-close-circle{--mdi:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12,2C17.53,2 22,6.47 22,12C22,17.53 17.53,22 12,22C6.47,22 2,17.53 2,12C2,6.47 6.47,2 12,2M15.59,7L12,10.59L8.41,7L7,8.41L10.59,12L7,15.59L8.41,17L12,13.41L15.59,17L17,15.59L13.41,12L17,8.41L15.59,7Z'/%3E%3C/svg%3E");}
+.mdi-content-copy{--mdi:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M19,21H8V7H19M19,5H8A2,2 0 0,0 6,7V21A2,2 0 0,0 8,23H19A2,2 0 0,0 21,21V7A2,2 0 0,0 19,5M16,1H4A2,2 0 0,0 2,3V17H4V3H16V1Z'/%3E%3C/svg%3E");}
+.mdi-content-save-outline{--mdi:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M17 3H5C3.89 3 3 3.9 3 5V19C3 20.1 3.89 21 5 21H19C20.1 21 21 20.1 21 19V7L17 3M19 19H5V5H16.17L19 7.83V19M12 12C10.34 12 9 13.34 9 15S10.34 18 12 18 15 16.66 15 15 13.66 12 12 12M6 6H15V10H6V6Z'/%3E%3C/svg%3E");}
+.mdi-delete{--mdi:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z'/%3E%3C/svg%3E");}
+.mdi-delete-outline{--mdi:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19M8,9H16V19H8V9M15.5,4L14.5,3H9.5L8.5,4H5V6H19V4H15.5Z'/%3E%3C/svg%3E");}
+.mdi-email-arrow-right-outline{--mdi:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M13 19C13 18.66 13.04 18.33 13.09 18H4V8L12 13L20 8V13.09C20.72 13.21 21.39 13.46 22 13.81V6C22 4.9 21.1 4 20 4H4C2.9 4 2 4.9 2 6V18C2 19.1 2.9 20 4 20H13.09C13.04 19.67 13 19.34 13 19M20 6L12 11L4 6H20M20 22V20H16V18H20V16L23 19L20 22Z'/%3E%3C/svg%3E");}
+.mdi-email-check-outline{--mdi:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M13 19C13 18.66 13.04 18.33 13.09 18H4V8L12 13L20 8V13.09C20.72 13.21 21.39 13.46 22 13.81V6C22 4.9 21.1 4 20 4H4C2.9 4 2 4.9 2 6V18C2 19.1 2.9 20 4 20H13.09C13.04 19.67 13 19.34 13 19M20 6L12 11L4 6H20M17.75 22.16L15 19.16L16.16 18L17.75 19.59L21.34 16L22.5 17.41L17.75 22.16'/%3E%3C/svg%3E");}
+.mdi-eye-outline{--mdi:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12,9A3,3 0 0,1 15,12A3,3 0 0,1 12,15A3,3 0 0,1 9,12A3,3 0 0,1 12,9M12,4.5C17,4.5 21.27,7.61 23,12C21.27,16.39 17,19.5 12,19.5C7,19.5 2.73,16.39 1,12C2.73,7.61 7,4.5 12,4.5M3.18,12C4.83,15.36 8.24,17.5 12,17.5C15.76,17.5 19.17,15.36 20.82,12C19.17,8.64 15.76,6.5 12,6.5C8.24,6.5 4.83,8.64 3.18,12Z'/%3E%3C/svg%3E");}
+.mdi-file-document-outline{--mdi:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6,2A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2H6M6,4H13V9H18V20H6V4M8,12V14H16V12H8M8,16V18H13V16H8Z'/%3E%3C/svg%3E");}
+.mdi-file-image-outline{--mdi:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M14,2L20,8V20A2,2 0 0,1 18,22H6A2,2 0 0,1 4,20V4A2,2 0 0,1 6,2H14M18,20V9H13V4H6V20H18M17,13V19H7L12,14L14,16M10,10.5A1.5,1.5 0 0,1 8.5,12A1.5,1.5 0 0,1 7,10.5A1.5,1.5 0 0,1 8.5,9A1.5,1.5 0 0,1 10,10.5Z'/%3E%3C/svg%3E");}
+.mdi-file-outline{--mdi:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z'/%3E%3C/svg%3E");}
+.mdi-file-pdf-box{--mdi:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M19 3H5C3.9 3 3 3.9 3 5V19C3 20.1 3.9 21 5 21H19C20.1 21 21 20.1 21 19V5C21 3.9 20.1 3 19 3M9.5 11.5C9.5 12.3 8.8 13 8 13H7V15H5.5V9H8C8.8 9 9.5 9.7 9.5 10.5V11.5M14.5 13.5C14.5 14.3 13.8 15 13 15H10.5V9H13C13.8 9 14.5 9.7 14.5 10.5V13.5M18.5 10.5H17V11.5H18.5V13H17V15H15.5V9H18.5V10.5M12 10.5H13V13.5H12V10.5M7 10.5H8V11.5H7V10.5Z'/%3E%3C/svg%3E");}
+.mdi-file-powerpoint-outline{--mdi:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M14 2H6C4.89 2 4 2.9 4 4V20C4 21.11 4.89 22 6 22H18C19.11 22 20 21.11 20 20V8L14 2M18 20H6V4H13V9H18V20M15.2 10.8C14.7 10.3 14.1 10 12.8 10H9V19H10.6V15.7H12.8C14.1 15.7 14.6 15.5 15.2 15C15.8 14.5 16 13.8 16 12.9C16 12 15.8 11.4 15.2 10.8M13.9 14C13.6 14.3 13.3 14.5 12.7 14.5H10.6V11.3H12.6C13.2 11.3 13.6 11.5 13.9 11.8C14.2 12.1 14.3 12.4 14.3 12.9S14.2 13.7 13.9 14Z'/%3E%3C/svg%3E");}
+.mdi-file-video-outline{--mdi:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M14,2L20,8V20A2,2 0 0,1 18,22H6A2,2 0 0,1 4,20V4A2,2 0 0,1 6,2H14M18,20V9H13V4H6V20H18M16,18L13.5,16.3V18H8V13H13.5V14.7L16,13V18Z'/%3E%3C/svg%3E");}
+.mdi-file-word-outline{--mdi:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M14 2H6C4.89 2 4 2.9 4 4V20C4 21.11 4.89 22 6 22H18C19.11 22 20 21.11 20 20V8L14 2M18 20H6V4H13V9H18V20M17.35 10L15.25 19H13.85L12.05 12.21L10.25 19H8.85L6.65 10H8.15L9.55 16.81L11.35 10H12.65L14.45 16.81L15.85 10H17.35Z'/%3E%3C/svg%3E");}
+.mdi-format-bold{--mdi:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M13.5,15.5H10V12.5H13.5A1.5,1.5 0 0,1 15,14A1.5,1.5 0 0,1 13.5,15.5M10,6.5H13A1.5,1.5 0 0,1 14.5,8A1.5,1.5 0 0,1 13,9.5H10M15.6,10.79C16.57,10.11 17.25,9 17.25,8C17.25,5.74 15.5,4 13.25,4H7V18H14.04C16.14,18 17.75,16.3 17.75,14.21C17.75,12.69 16.89,11.39 15.6,10.79Z'/%3E%3C/svg%3E");}
+.mdi-format-indent-decrease{--mdi:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M11,13H21V11H11M11,9H21V7H11M3,3V5H21V3M3,21H21V19H3M3,12L7,16V8M11,17H21V15H11V17Z'/%3E%3C/svg%3E");}
+.mdi-format-indent-increase{--mdi:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M11,13H21V11H11M11,9H21V7H11M3,3V5H21V3M11,17H21V15H11M3,8V16L7,12M3,21H21V19H3V21Z'/%3E%3C/svg%3E");}
+.mdi-format-italic{--mdi:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M10,4V7H12.21L8.79,15H6V18H14V15H11.79L15.21,7H18V4H10Z'/%3E%3C/svg%3E");}
+.mdi-format-list-bulleted{--mdi:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M7,5H21V7H7V5M7,13V11H21V13H7M4,4.5A1.5,1.5 0 0,1 5.5,6A1.5,1.5 0 0,1 4,7.5A1.5,1.5 0 0,1 2.5,6A1.5,1.5 0 0,1 4,4.5M4,10.5A1.5,1.5 0 0,1 5.5,12A1.5,1.5 0 0,1 4,13.5A1.5,1.5 0 0,1 2.5,12A1.5,1.5 0 0,1 4,10.5M7,19V17H21V19H7M4,16.5A1.5,1.5 0 0,1 5.5,18A1.5,1.5 0 0,1 4,19.5A1.5,1.5 0 0,1 2.5,18A1.5,1.5 0 0,1 4,16.5Z'/%3E%3C/svg%3E");}
+.mdi-format-list-numbered{--mdi:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M7,13V11H21V13H7M7,19V17H21V19H7M7,7V5H21V7H7M3,8V5H2V4H4V8H3M2,17V16H5V20H2V19H4V18.5H3V17.5H4V17H2M4.25,10A0.75,0.75 0 0,1 5,10.75C5,10.95 4.92,11.14 4.79,11.27L3.12,13H5V14H2V13.08L4,11H2V10H4.25Z'/%3E%3C/svg%3E");}
+.mdi-format-quote-close{--mdi:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M14,17H17L19,13V7H13V13H16M6,17H9L11,13V7H5V13H8L6,17Z'/%3E%3C/svg%3E");}
+.mdi-format-strikethrough-variant{--mdi:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M7.2 9.8C6 7.5 7.7 4.8 10.1 4.3C13.2 3.3 17.7 4.7 17.6 8.5H14.6C14.6 8.2 14.5 7.9 14.5 7.7C14.3 7.1 13.9 6.8 13.3 6.6C12.5 6.3 11.2 6.4 10.5 6.9C9 8.2 10.4 9.5 12 10H7.4C7.3 9.9 7.3 9.8 7.2 9.8M21 13V11H3V13H12.6C12.8 13.1 13 13.1 13.2 13.2C13.8 13.5 14.3 13.7 14.5 14.3C14.6 14.7 14.7 15.2 14.5 15.6C14.3 16.1 13.9 16.3 13.4 16.5C11.6 17 9.4 16.3 9.5 14.1H6.5C6.4 16.7 8.6 18.5 11 18.8C14.8 19.6 19.3 17.2 17.3 12.9L21 13Z'/%3E%3C/svg%3E");}
+.mdi-format-underline{--mdi:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M5,21H19V19H5V21M12,17A6,6 0 0,0 18,11V3H15.5V11A3.5,3.5 0 0,1 12,14.5A3.5,3.5 0 0,1 8.5,11V3H6V11A6,6 0 0,0 12,17Z'/%3E%3C/svg%3E");}
+.mdi-hammer-wrench{--mdi:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M13.78 15.3L19.78 21.3L21.89 19.14L15.89 13.14L13.78 15.3M17.5 10.1C17.11 10.1 16.69 10.05 16.36 9.91L4.97 21.25L2.86 19.14L10.27 11.74L8.5 9.96L7.78 10.66L6.33 9.25V12.11L5.63 12.81L2.11 9.25L2.81 8.55H5.62L4.22 7.14L7.78 3.58C8.95 2.41 10.83 2.41 12 3.58L9.89 5.74L11.3 7.14L10.59 7.85L12.38 9.63L14.2 7.75C14.06 7.42 14 7 14 6.63C14 4.66 15.56 3.11 17.5 3.11C18.09 3.11 18.61 3.25 19.08 3.53L16.41 6.2L17.91 7.7L20.58 5.03C20.86 5.5 21 6 21 6.63C21 8.55 19.45 10.1 17.5 10.1Z'/%3E%3C/svg%3E");}
+.mdi-image-outline{--mdi:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M19,19H5V5H19M19,3H5A2,2 0 0,0 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5A2,2 0 0,0 19,3M13.96,12.29L11.21,15.83L9.25,13.47L6.5,17H17.5L13.96,12.29Z'/%3E%3C/svg%3E");}
+.mdi-information-outline{--mdi:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M11,9H13V7H11M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M11,17H13V11H11V17Z'/%3E%3C/svg%3E");}
+.mdi-link-variant{--mdi:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M10.59,13.41C11,13.8 11,14.44 10.59,14.83C10.2,15.22 9.56,15.22 9.17,14.83C7.22,12.88 7.22,9.71 9.17,7.76V7.76L12.71,4.22C14.66,2.27 17.83,2.27 19.78,4.22C21.73,6.17 21.73,9.34 19.78,11.29L18.29,12.78C18.3,11.96 18.17,11.14 17.89,10.36L18.36,9.88C19.54,8.71 19.54,6.81 18.36,5.64C17.19,4.46 15.29,4.46 14.12,5.64L10.59,9.17C9.41,10.34 9.41,12.24 10.59,13.41M13.41,9.17C13.8,8.78 14.44,8.78 14.83,9.17C16.78,11.12 16.78,14.29 14.83,16.24V16.24L11.29,19.78C9.34,21.73 6.17,21.73 4.22,19.78C2.27,17.83 2.27,14.66 4.22,12.71L5.71,11.22C5.7,12.04 5.83,12.86 6.11,13.65L5.64,14.12C4.46,15.29 4.46,17.19 5.64,18.36C6.81,19.54 8.71,19.54 9.88,18.36L13.41,14.83C14.59,13.66 14.59,11.76 13.41,10.59C13,10.2 13,9.56 13.41,9.17Z'/%3E%3C/svg%3E");}
+.mdi-magnify{--mdi:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z'/%3E%3C/svg%3E");}
+.mdi-menu-down{--mdi:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M7,10L12,15L17,10H7Z'/%3E%3C/svg%3E");}
+.mdi-menu-up{--mdi:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M7,15L12,10L17,15H7Z'/%3E%3C/svg%3E");}
+.mdi-minus{--mdi:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M19,13H5V11H19V13Z'/%3E%3C/svg%3E");}
+.mdi-open-in-new{--mdi:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M14,3V5H17.59L7.76,14.83L9.17,16.24L19,6.41V10H21V3M19,19H5V5H12V3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V12H19V19Z'/%3E%3C/svg%3E");}
+.mdi-pencil-circle-outline{--mdi:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M7,14.94L13.06,8.88L15.12,10.94L9.06,17H7V14.94M12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20M16.7,9.35L15.7,10.35L13.65,8.3L14.65,7.3C14.86,7.08 15.21,7.08 15.42,7.3L16.7,8.58C16.92,8.79 16.92,9.14 16.7,9.35M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2'/%3E%3C/svg%3E");}
+.mdi-pencil-outline{--mdi:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M14.06,9L15,9.94L5.92,19H5V18.08L14.06,9M17.66,3C17.41,3 17.15,3.1 16.96,3.29L15.13,5.12L18.88,8.87L20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18.17,3.09 17.92,3 17.66,3M14.06,6.19L3,17.25V21H6.75L17.81,9.94L14.06,6.19Z'/%3E%3C/svg%3E");}
+.mdi-plus{--mdi:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z'/%3E%3C/svg%3E");}
+.mdi-poll{--mdi:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M3,22V8H7V22H3M10,22V2H14V22H10M17,22V14H21V22H17Z'/%3E%3C/svg%3E");}
+.mdi-redo{--mdi:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M18.4,10.6C16.55,9 14.15,8 11.5,8C6.85,8 2.92,11.03 1.54,15.22L3.9,16C4.95,12.81 7.95,10.5 11.5,10.5C13.45,10.5 15.23,11.22 16.62,12.38L13,16H22V7L18.4,10.6Z'/%3E%3C/svg%3E");}
+.mdi-send-outline{--mdi:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M4 6.03L11.5 9.25L4 8.25L4 6.03M11.5 14.75L4 17.97V15.75L11.5 14.75M2 3L2 10L17 12L2 14L2 21L23 12L2 3Z'/%3E%3C/svg%3E");}
+.mdi-tools{--mdi:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M21.71 20.29L20.29 21.71A1 1 0 0 1 18.88 21.71L7 9.85A3.81 3.81 0 0 1 6 10A4 4 0 0 1 2.22 4.7L4.76 7.24L5.29 6.71L6.71 5.29L7.24 4.76L4.7 2.22A4 4 0 0 1 10 6A3.81 3.81 0 0 1 9.85 7L21.71 18.88A1 1 0 0 1 21.71 20.29M2.29 18.88A1 1 0 0 0 2.29 20.29L3.71 21.71A1 1 0 0 0 5.12 21.71L10.59 16.25L7.76 13.42M20 2L16 4V6L13.83 8.17L15.83 10.17L18 8H20L22 4Z'/%3E%3C/svg%3E");}
+.mdi-tray-arrow-up{--mdi:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M2 12H4V17H20V12H22V17C22 18.11 21.11 19 20 19H4C2.9 19 2 18.11 2 17V12M12 2L6.46 7.46L7.88 8.88L11 5.75V15H13V5.75L16.13 8.88L17.55 7.45L12 2Z'/%3E%3C/svg%3E");}
+.mdi-undo{--mdi:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12.5,8C9.85,8 7.45,9 5.6,10.6L2,7V16H11L7.38,12.38C8.77,11.22 10.54,10.5 12.5,10.5C16.04,10.5 19.05,12.81 20.1,16L22.47,15.22C21.08,11.03 17.15,8 12.5,8Z'/%3E%3C/svg%3E");}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<input type="file" id="filePicker" multiple hidden>
+<input type="file" id="replacePicker" hidden>
+<script>
+/* PRIME Admin — Project Details
+   Plain JS. No build step, no framework. State object + full re-render + event delegation. */
+
+/* ============================ Data ============================ */
+
+var PROJECT_ID = "24268";
+
+var TABS = ["Overview","Details","Planning","Faculty","Files","Activities","Workflow"];
+var PEOPLE = ["Kynlon Phillips","Stephanie Yang","Emily Zyborowicz","Matthew Philips","Dana Whitfield","Priya Raman","Marcus Okonkwo","Lauren Diaz"];
+var SUPPORTER_NAMES = ["Novartis","Pfizer","AstraZeneca","Genentech","Sanofi","Regeneron"];
+
+var LEAD_FIELDS = [
+  ["clinicalLead","Clinical Lead"],
+  ["creativeLead","Creative Lead"],
+  ["researchLead","Research Lead"],
+  ["clinicalSupervisor","Clinical Supervisor"],
+  ["operationsLead","Operations Lead"],
+  ["strategyLead","Strategy Lead"]
+];
+
+var BASE_F = {
+  projectTitle: "Clinical Expert Exchange: Leveraging Novel Pathways to Optimize Complement Inhibitor Therapy in Paroxysmal Nocturnal Hemoglobinuria",
+  shortTitle: "PNH Webinar Series",
+  launchDate: ""
+};
+
+var BASE_LEADS = {
+  clinicalLead: "Kynlon Phillips",
+  researchLead: "",
+  operationsLead: "Stephanie Yang",
+  strategyLead: "Emily Zyborowicz",
+  creativeLead: "Matthew Philips",
+  clinicalSupervisor: ""
+};
+
+var BASE_SUPPORTERS = [{ name: "Novartis", grant: "Novartis Pharmaceuticals Corporation (Grant ID# NGC53637)" }];
+
+var RT_TOOLS = [
+  ["mdi-undo","undo","","Undo"],
+  ["mdi-redo","redo","","Redo"],
+  ["mdi-format-quote-close","formatBlock","blockquote","Quote"],
+  ["mdi-link-variant","__link","","Link"],
+  ["mdi-format-underline","underline","","Underline"],
+  ["mdi-format-strikethrough-variant","strikeThrough","","Strikethrough"],
+  ["mdi-format-italic","italic","","Italic"],
+  ["mdi-format-bold","bold","","Bold"],
+  ["mdi-format-list-bulleted","insertUnorderedList","","Bulleted list"],
+  ["mdi-format-list-numbered","insertOrderedList","","Numbered list"],
+  ["mdi-minus","insertHorizontalRule","","Divider"],
+  ["mdi-format-indent-increase","indent","","Increase indent"],
+  ["mdi-format-indent-decrease","outdent","","Decrease indent"]
+];
+
+var PLANNING_SECTIONS = [
+  ["PROJECT OVERVIEW", [
+    ["commercialSupport","Commercial Support"],
+    ["intendedAudience","Intended Audience"],
+    ["componentsOverview","Components / Activity Overview"]
+  ]],
+  ["EDUCATIONAL DESIGN", [
+    ["learningObjectives","Learning Objectives"],
+    ["agenda","Agenda"]
+  ]],
+  ["ACCREDITATION NARRATIVE", [
+    ["gaps","This CE activity is based on the following professional practice gap(s)"],
+    ["needs","This CE activity addresses the following educational need(s) identified as the cause of the above gap(s)"],
+    ["designedToChange","In terms of learners' skills/strategy or performance of the healthcare team or patient outcomes, this CE activity is designed to change the following"],
+    ["scope","This CE activity matches the healthcare team's current or potential scope of professional activities in the following way(s)"],
+    ["format","This CE activity's educational format is appropriate for the setting, objectives, and desired results as explained below"]
+  ]]
+];
+
+var BASE_CONTENT = {
+  commercialSupport: "<p>This activity is supported by an educational grant from Novartis Pharmaceuticals Corporation.</p>",
+  intendedAudience: "<p>Hematologists along with their clinical teams, including NPs/PAs, pharmacists, nurses, and case managers caring for patients with PNH.</p>",
+  componentsOverview: "<p><u>2-Part Multi-Accredited Live National Webinar Series (Two (2) 1.0-hour Webinars)</u></p><p>Each of the live webinars will be led by 2 hematology specialists with demonstrated expertise in PNH and facilitated by a clinical moderator. At pivotal points in the webinars, the faculty will introduce insightful polling and discussion questions. The audience will be able to submit questions, which will be triaged by the clinical moderator to the faculty experts for their responses.</p><p>As part of the first webinar, PRIME will design a 1.5-minute 2D animation video highlighting the novel mechanism of action of complement inhibitors in the coagulation pathway and their clinical implications for real-world care.</p><p><u>Downloadable Point-of-Care Resource: PNH Precision Care Guide</u></p><p>PRIME will develop a downloadable PNH Precision Care Guide highlighting concise key points for quick reference on vaccinations, treatment adherence, breakthrough hemolysis, and clinical decision-making. The succinct PDF resource will be introduced in the live webinars and available alongside the enduring webcasts.</p><p><u>Two (2) 1.0-hour Multi-Accredited On-Demand Enduring Webcasts</u></p><p>PRIME will record the live webinars to produce two (2) 1.0-hour multi-accredited, on-demand, enduring webcasts including polling questions from the initial live webinars. The webcasts will be widely disseminated in online and mobile formats through the PRIME Network, MedPage Today (MPT), ASCO Reading Room, American Society of Hematology (ASH) and PatientPoint.</p>",
+  learningObjectives: "<ul><li>Compare and contrast current and emerging treatments for paroxysmal nocturnal hemoglobinuria (PNH) based on efficacy, safety, and route of administration</li><li>Explain how new pathways and unique mechanisms of action can address unmet needs in patients with PNH</li><li>Describe the recommended approaches to treatment selection in patients with PNH based on lines of therapy</li><li>Select appropriate treatments for patients with PNH across lines of therapy, based on guidelines and expert recommendations</li><li>Apply best practices to ensure PNH patient adherence to complement inhibitor therapy</li><li>Follow vaccination requirements to minimize risk of infectious complications in patients with PNH on complement inhibitor therapy</li><li>Enact expert recommendations on management practices to minimize or prevent breakthrough hemolysis and its complications</li></ul>",
+  agenda: "<p><u>Webinar 1 (1.0-hour): Changing Paradigms in Paroxysmal Nocturnal Hemoglobinuria (PNH): Understanding New Pathways, Clinical Evidence, and Practice Guidelines</u></p><p>I. New pathways and unique mechanisms</p><p>o 2D Animation</p><p>II. Comparing current and emerging treatments for PNH: efficacy, safety, and route of administration</p><p>III. Guideline-recommended approaches to treatment selection in PNH</p><p>IV. Treatment decision-making: evaluating a therapeutic switch strategy</p><p>V. Audience Q&amp;A</p><p><u>Webinar 2 (1.0-hour): Optimizing PNH Care: Strategies to Enhance Treatment Adherence and Ongoing Patient Management</u></p><p>I. Best practices to ensure PNH patient adherence to complement inhibitor therapy</p><p>o Patient Case Focus: Adherence &amp; Missed Doses</p><p>II. Minimizing risk of infectious complications in patients with PNH on complement inhibitor therapy</p><p>o Patient Case Focus: Urgent Therapy Start Before Vaccine Completion</p><p>III. Proactive approaches for recognition and management of breakthrough hemolysis</p><p>o Patient Case Focus: Breakthrough Bleeding</p><p>IV. Introduction of the PNH Precision Care Guide</p><p>V. Audience Q&amp;A</p>",
+  gaps: "<ul><li>Hematology providers lack a clear understanding of the roles and limitations of terminal complement inhibitors in paroxysmal nocturnal hemoglobinuria (PNH), leading to suboptimal management of breakthrough intravascular hemolysis (IVH) and C3-mediated extravascular hemolysis (EVH)</li><li>Clinicians struggle to identify appropriate treatments for patients with PNH, particularly when considering treatments with novel pathways and mechanisms of action</li><li>Many providers are unaware of their mechanisms of action, safety profiles, latest efficacy data, and how they differ from traditional anti-C5 therapies</li><li>Few healthcare providers feel confidence in differentiating among available and emerging proximal complement inhibitors based on mechanisms of action, safety, efficacy, and route of administration</li><li>Care teams lack clear strategies for managing patients who experience ongoing or breakthrough hemolysis, and for aligning therapy choices with patient preferences for treatment convenience and administration</li><li>Hematology providers report limited confidence in developing and adjusting comprehensive care plans for patients with PNH, particularly those with complex disease manifestations or inadequate response to initial therapy</li></ul>",
+  needs: "<p>Hematologists and their clinical teams are essential to the evaluation, treatment, and ongoing management of patients with PNH and therefore, should be well-educated on the diverse treatment options, the unique roles of terminal versus proximal complement inhibitors, and the nuances of shared decision-making that leverages patient preferences to inform the selection of treatments to achieve effective control of hemolysis and reduce the risk of serious complications such as thrombosis. While the development of proximal complement inhibitors represents a significant advance in the field, critical gaps remain in provider awareness, knowledge, and competence regarding these therapies. Many providers are unfamiliar with how these inhibitors function and the clinical implications of their use, which may prevent patients from receiving optimal treatment focused on enhancing adherence and mitigating risks of treatment including infection. Moreover, many HCPs lack foundational knowledge of the disease itself, which may impact their ability to appropriately manage patients who exhibit signs and symptoms of BTH and EVH. Thus, there is a pressing need for targeted education on the new pathways and novel mechanisms of action represented by proximal complement inhibitors, clinical evidence supporting the use of these therapies, and the integration of the latest evidence into personalized management of PNH.</p>",
+  designedToChange: "<p>This activity is designed to change learners' knowledge and competence in (1) new pathways and unique MOAs to address unmet needs in PNH, (2) clinical evidence on available complement inhibitor therapies, and (3) current guidelines for treatment selection and ongoing management. Furthermore, the program will guide HCPs in optimizing PNH treatment through (4) addressing adherence to ensure treatment benefit and quality of life, (5) recognizing and managing breakthrough hemolysis, and (6) applying vaccination requirements and infection risk mitigation strategies, altogether enhancing the clinical decision-making ability of HCPs to provide initial and ongoing care for patients with this rare blood disorder.</p>",
+  scope: "<p>Interprofessional HCPs are involved in diagnostic, treatment, and management strategies that directly impact patients with PNH.</p>",
+  format: "<p><u>Webinars</u></p><p>Live virtual activities allow clinicians to access timely and immediate educational content from multiple device options (desktop, tablet, mobile) from the clinic or other work setting.</p><p><u>Enduring Recordings</u></p><p>The online, enduring format for this initiative allows for busy clinicians to access educational content at one's convenience, from multiple device options (desktop, tablet, mobile) and permit self-paced, independent learning.</p>"
+};
+
+var COMP_GROUPS = [
+  { title: "Institute of Medicine Competencies", items: [
+    ["iom_pcc","Provide patient-centered care"],["iom_interdisc","Work in interdisciplinary teams"],
+    ["iom_ebp","Employ evidence-based practice"],["iom_qi","Apply quality improvement"],["iom_info","Utilize informatics"]
+  ] },
+  { title: "Core Competencies for Interprofessional Collaborative Practice", items: [
+    ["ipc_values","Values/Ethics for interprofessional practice"],["ipc_roles","Roles/Responsibilities"],
+    ["ipc_comm","Interprofessional communication"],["ipc_teams","Teams and Teamwork"]
+  ] },
+  { title: "ACGME/ABMS Competencies", items: [
+    ["acg_care","Patient care and procedural skills"],["acg_knowledge","Medical knowledge"],
+    ["acg_pbl","Practice-based learning and improvement"],["acg_interpersonal","Interpersonal and communication skills"],
+    ["acg_prof","Professionalism"],["acg_systems","Systems-based practice"]
+  ] }
+];
+
+var DESIGNED_TO = [
+  ["dt_changeComp","Change Competence (Skills & Strategy)","all"],
+  ["dt_changePerf","Change Performance","qi"],
+  ["dt_changeOutcomes","Change Patient Outcomes","qi"],
+  ["dt_measureComp","Measure Competence (Skills & Strategy)","all"],
+  ["dt_measurePerf","Measure Performance","qi"],
+  ["dt_measureOutcomes","Measure Patient Outcomes","qi"]
+];
+
+var BASE_CHECKS = {
+  iom_pcc: true, iom_interdisc: true, iom_ebp: true,
+  ipc_comm: true, ipc_teams: true,
+  acg_care: true, acg_knowledge: true, acg_interpersonal: true,
+  dt_changeComp: true, dt_measureComp: true
+};
+
+var FACULTY_DOCS = [
+  { key: "ach", label: "ACH Verification" },
+  { key: "dd", label: "Direct Deposit" },
+  { key: "disc", label: "Disclosures" },
+  { key: "mc", label: "Master Contract" },
+  { key: "pdoc", label: "Planning Doc" },
+  { key: "pref", label: "Preferences" },
+  { key: "sow", label: "Statement of Work (SoW)" },
+  { key: "w8", label: "W-8BEN" },
+  { key: "w9", label: "W-9" },
+  { key: "w9w8", label: "W9/W8BEN" }
+];
+
+function docSet(received) {
+  return FACULTY_DOCS.map(function (d) {
+    return received[d.key]
+      ? { label: d.label, status: "Received", received: received[d.key] }
+      : { label: d.label, status: "Pending", received: "" };
+  });
+}
+
+var BASE_FACULTY = [
+  { id: "weitz", name: "Ilene C Weitz, MD",
+    affiliation: "Professor of Medicine\nKeck School of Medicine\nUniversity of Southern California\nLos Angeles, CA",
+    roles: ["Internal Speaker (DR)", "Speaker"], financial: "(Received)",
+    docs: docSet({ disc: "Mar 4, 2026 at 9:12 AM", mc: "Mar 6, 2026 at 2:41 PM", dd: "Mar 6, 2026 at 2:44 PM", w9: "Mar 6, 2026 at 2:46 PM", w9w8: "Mar 6, 2026 at 2:46 PM", pref: "Mar 11, 2026 at 8:05 AM" }) },
+  { id: "dingli", name: "David Dingli, MD, PhD",
+    affiliation: "Professor of Medicine and Hematology\nMayo Clinic\nRochester, Minnesota",
+    roles: ["Speaker"], financial: "(Pending)",
+    docs: docSet({ disc: "Mar 5, 2026 at 4:20 PM", mc: "Mar 9, 2026 at 11:03 AM", w9: "Mar 9, 2026 at 11:07 AM", w9w8: "Mar 9, 2026 at 11:07 AM" }) },
+  { id: "burgoyne", name: "Douglas S Burgoyne, PharmD, FAMCP",
+    affiliation: "Adjunct Professor\nDepartment of Pharmacotherapy\nUniversity of Utah College of Pharmacy\nSalt Lake City, UT",
+    roles: ["Moderator"], financial: "(Received)",
+    docs: docSet({ ach: "Feb 27, 2026 at 3:15 PM", dd: "Feb 27, 2026 at 3:16 PM", disc: "Mar 2, 2026 at 10:48 AM", mc: "Mar 3, 2026 at 1:22 PM", sow: "Mar 12, 2026 at 9:30 AM", w9: "Feb 27, 2026 at 3:18 PM", w9w8: "Feb 27, 2026 at 3:18 PM" }) },
+  { id: "boyette", name: "Brad Boyette, MBA, MPA, PA-C",
+    affiliation: "Past Community Faculty\nEastern Virginia Medical School",
+    roles: ["Planner"], financial: "(Pending)",
+    docs: docSet({ disc: "Mar 10, 2026 at 7:52 AM", pdoc: "Mar 14, 2026 at 4:11 PM" }) },
+  { id: "knestrick", name: "Joyce M Knestrick, PhD, CRNP, FAANP",
+    affiliation: "Professor\nGeorge Washington University School of Nursing\nFamily Nurse Practitioner\nWheeling Health Right\nWheeling, WV",
+    roles: ["Planner"], financial: "(Pending)",
+    docs: docSet({ disc: "Mar 8, 2026 at 6:36 PM", pdoc: "Mar 13, 2026 at 2:05 PM", pref: "Mar 13, 2026 at 2:09 PM" }) }
+];
+
+var FAC_PALETTE = ["#1976D2", "#4CAF50", "#00ADEE", "#E98F28", "#8E24AA"];
+
+var FACULTY_SUBMISSIONS = [
+  { label: "Financial Disclosures", icon: "mdi mdi-file-document-outline" },
+  { label: "Planning Document Responses", icon: "mdi mdi-clipboard-check-outline" },
+  { label: "Email Consent To Use", icon: "mdi mdi-email-check-outline" }
+];
+
+var ACTIVITIES = [
+  { code: "24WB2610", title: "Optimizing PNH Care: Strategies to Enhance Treatment Adherence and Ongoing Patient Management", release: "August 28, 2026", artBg: "#8FA3B8",
+    children: ["24WB2611", "24WB2612", "24WB2613"] },
+  { code: "24WC268", title: "Optimizing PNH Care: Strategies to Enhance Treatment Adherence and Ongoing Patient Management", release: "August 26, 2026", artBg: "#8FA3B8" },
+  { code: "24WB269", title: "Changing Paradigms in Paroxysmal Nocturnal Hemoglobinuria: Understanding New Pathways, Clinical Evidence, and Practice Guidelines", release: "August 14, 2026", artBg: "#6B1E23" },
+  { code: "24WC267", title: "Changing Paradigms in Paroxysmal Nocturnal Hemoglobinuria: Understanding New Pathways, Clinical Evidence, and Practice Guidelines", release: "July 30, 2026", artBg: "#6B1E23" }
+];
+
+var FILE_CATEGORIES = ["Accreditation","Agreements/Contracts","Artwork/Graphics","Blasts/Invitations","Faculty documents","Finance","Grant documents","Marketing materials","Outcomes","Planning documents","Program materials","Proposals","Reporting","Supporter correspondence"];
+var FILE_STATUSES = ["Private Draft","Final","For CME Review"];
+
+var BASE_FILES = [
+  { id: "pf1", name: "24268_PNH_Webinar_Series_Full_Proposal.pdf", size: 1348122, date: "04/18/2026, 10:12 AM", uploader: "Douglas Benjamin", display: "24268_PNH_Webinar_Series_Full_Proposal", categories: ["Proposals"], status: "Final", archived: false },
+  { id: "pf2", name: "Novartis_NGC53637_Executed_Grant_Agreement.pdf", size: 742301, date: "04/22/2026, 03:47 PM", uploader: "Stephanie Yang", display: "Novartis_NGC53637_Executed_Grant_Agreement", categories: ["Agreements/Contracts","Grant documents"], status: "Final", archived: false },
+  { id: "pf3", name: "24268_Project_Planning_Document_v3.docx", size: 58204, date: "05/06/2026, 09:02 AM", uploader: "Kynlon Phillips", display: "24268_Project_Planning_Document_v3", categories: ["Planning documents"], status: "For CME Review", archived: false },
+  { id: "pf4", name: "PNH_Precision_Care_Guide_Draft.pptx", size: 5122880, date: "05/14/2026, 01:30 PM", uploader: "Matthew Philips", display: "PNH_Precision_Care_Guide_Draft", categories: ["Program materials"], status: "Private Draft", archived: false },
+  { id: "pf5", name: "24268_old_supporter_deck_v1.pdf", size: 214016, date: "03/09/2026, 11:18 AM", uploader: "Douglas Benjamin", display: "24268_old_supporter_deck_v1", categories: ["Supporter correspondence"], status: "Private Draft", archived: true }
+];
+
+var DIRECTORY = [
+  { id: "boyette", name: "Brad Boyette, MBA, MPA, PA-C", email: "bradboyette@gmail.com",
+    affiliation: "Past Community Faculty Eastern Virginia Medical School\nPast Assistant Professor Eastern Virginia Medical School",
+    notes: "In addition to serving as a reviewer, interested in serving as a faculty for projects related to general surgery topics, ECG, procedures and imaging (including U/S), and urgent/emergency department care. (AMP - 10/31/23)" },
+  { id: "creamy", name: "Creamy Animation", email: "larry@creamyanimation.com", affiliation: "", notes: "" },
+  { id: "dingli", name: "David Dingli, MD, PhD", email: "david.dingli@gmail.com",
+    affiliation: "Professor of Medicine and Hematology\nMayo Clinic\nRochester, Minnesota", notes: "" },
+  { id: "burgoyne", name: "Douglas S Burgoyne, PharmD, FAMCP", email: "burgoyned@gmail.com",
+    affiliation: "Adjunct Professor\nDepartment of Pharmacotherapy\nUniversity of Utah College of Pharmacy\nSalt Lake City, UT", notes: "" },
+  { id: "weitz", name: "Ilene C Weitz, MD", email: "iweitz@med.usc.edu",
+    affiliation: "Professor of Medicine Keck School of Medicine University of Southern California Los Angeles, CA", notes: "" },
+  { id: "knestrick", name: "Joyce M Knestrick, PhD, CRNP, FAANP", email: "drjoycek@hotmail.com",
+    affiliation: "Professor\nGeorge Washington University School of Nursing\nFamily Nurse Practitioner\nWheeling Health Right\nWheeling, WV", notes: "" },
+  { id: "sands", name: "Judith R Sands, RN, MSL, BSN, CCM, CPHQ, CPHRM, ARM", email: "judith.sands@gmail.com",
+    affiliation: "Clinical Consultant and Author\nRaleigh, NC", notes: "" },
+  { id: "nair", name: "Priya Nair, PharmD, BCPS", email: "p.nair@primeadmin.org",
+    affiliation: "Clinical Pharmacy Specialist\nCleveland Clinic\nCleveland, OH", notes: "" },
+  { id: "okafor", name: "David Okafor, MD, FCCP", email: "d.okafor@primeadmin.org",
+    affiliation: "Pulmonologist\nEmory University School of Medicine\nAtlanta, GA", notes: "" },
+  { id: "cordova", name: "Terry Cordova, MD", email: "t.cordova@primeadmin.org",
+    affiliation: "Associate Professor of Medicine\nUT Southwestern Medical Center\nDallas, TX", notes: "" },
+  { id: "ross", name: "A. Silvia Ross, MD, FACR", email: "silvia.ross@awirgroup.org",
+    affiliation: "Managing Partner\nTriangle Arthritis & Rheumatology Associates\nRaleigh, NC",
+    notes: "Leadership, Association of Women in Rheumatology (AWIR)" },
+  { id: "goodman", name: "Aaron M Goodman, MD", email: "a1goodman@ucsd.edu",
+    affiliation: "Hematologist-Oncologist\nDivision of Blood and Marrow Transplantation\nUC San Diego School of Medicine\nLa Jolla, CA",
+    notes: "Hematology/oncology, AML, ALL, multiple myeloma" }
+];
+
+var AFP_PER_PAGE = 6;
+
+/* ============================ State ============================ */
+
+var state = {
+  tab: "Planning",
+  mode: "read",
+  f: Object.assign({}, BASE_F),
+  leads: Object.assign({}, BASE_LEADS),
+  checks: Object.assign({}, BASE_CHECKS),
+  supporters: BASE_SUPPORTERS.map(function (s) { return Object.assign({}, s); }),
+  content: Object.assign({}, BASE_CONTENT),
+  snapshot: null,
+  openCombo: "",
+  modal: null,
+  createOpen: false,
+  pendingTab: "",
+  saveMenuOpen: false,
+  guardMenuOpen: false,
+  presenceOpen: false,
+  notify: null,
+  presAlert: "",
+  editAlert: false,
+  editAlertOk: false,
+  toast: "",
+  faculty: BASE_FACULTY.map(function (f) { return Object.assign({}, f); }),
+  facultyPanelOpen: false,
+  afpQuery: "",
+  afpPage: 1,
+  files: BASE_FILES.map(function (f) { return Object.assign({}, f); }),
+  fileQ: "", fileCat: "", fileStatus: "", showArchived: false,
+  pending: [], dragOver: false,
+  replaceFor: null, replaceWith: null,
+  openSelect: null
+};
+
+var baseline = null;
+var toastTimer = null;
+
+/* ============================ Helpers ============================ */
+
+function esc(s) {
+  return String(s == null ? "" : s)
+    .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+}
+
+function fmtSize(b) {
+  if (b == null) return "";
+  if (b >= 1048576) return (b / 1048576).toFixed(1) + " MB";
+  if (b >= 1024) return (b / 1024).toFixed(1) + " KB";
+  return b + " B";
+}
+
+function fileIcon(name) {
+  var e = String(name).split(".").pop().toLowerCase();
+  if (e === "pdf") return "mdi-file-pdf-box";
+  if (e === "doc" || e === "docx") return "mdi-file-word-outline";
+  if (e === "ppt" || e === "pptx") return "mdi-file-powerpoint-outline";
+  if (["png","jpg","jpeg","gif","svg"].indexOf(e) > -1) return "mdi-file-image-outline";
+  if (["mp4","mov","avi","webm"].indexOf(e) > -1) return "mdi-file-video-outline";
+  return "mdi-file-outline";
+}
+
+function initials(n) {
+  var parts = (n || "").replace(/,.*$/, "").split(" ").filter(Boolean);
+  if (!parts.length) return "?";
+  return (parts[0][0] + (parts[1] ? parts[1][0] : "")).toUpperCase();
+}
+
+function flash(msg) {
+  clearTimeout(toastTimer);
+  state.toast = msg;
+  render();
+  toastTimer = setTimeout(function () { state.toast = ""; render(); }, 4000);
+}
+
+function isEditing() { return state.mode === "edit"; }
+
+function tabAllowsEdit() { return ["Activities", "Faculty", "Files"].indexOf(state.tab) === -1; }
+
+function setBaseline() {
+  baseline = JSON.stringify([state.f, state.leads, state.checks, state.supporters, state.content]);
+}
+
+function isDirty() {
+  if (state.mode !== "edit" || !baseline) return false;
+  return JSON.stringify([state.f, state.leads, state.checks, state.supporters, state.content]) !== baseline;
+}
+
+function requestTab(t) {
+  if (t === state.tab) return;
+  if (isDirty()) { state.pendingTab = t; state.openCombo = ""; render(); return; }
+  state.tab = t; state.openCombo = ""; state.mode = "read"; state.presAlert = alertFor(t); render();
+}
+
+/* ============================ Chrome ============================ */
+
+function sidebarHTML() {
+  var items = [
+    ["mdi-chart-line", "Marketing"], ["mdi-poll", "Outcomes"],
+    ["mdi-chart-box-outline", "Reporting"], ["mdi-tools", "Tools"],
+    ["mdi-account-multiple-outline", "User Manager"]
+  ];
+  return '' +
+  '<nav class="sb" style="min-height:100vh">' +
+    '<div class="sb__head">' +
+      '<div style="font-family:var(--pa-font-sans);font-weight:500;font-size:20px;letter-spacing:1px;color:#fff">PRIME <span style="color:var(--pa-aqua-500)">ADMIN</span></div>' +
+      '<i class="mdi mdi-chevron-left sb__collapse"></i>' +
+    '</div>' +
+    '<div class="sb__section">' +
+      '<div class="sb__item sb__item--active"><i class="mdi mdi-account-box-outline"></i><span>Program Management</span><i class="mdi sb__item__chev mdi-chevron-up"></i></div>' +
+      '<div class="sb__sub">' +
+        '<div class="sb__sub-item sb__sub-item--active">Projects</div>' +
+        '<div class="sb__sub-item">Activities</div>' +
+      '</div>' +
+    '</div>' +
+    items.map(function (it) {
+      return '<div class="sb__section"><div class="sb__item"><i class="mdi ' + it[0] + '"></i><span>' + it[1] + '</span><i class="mdi sb__item__chev mdi-chevron-down"></i></div></div>';
+    }).join("") +
+  '</nav>';
+}
+
+function topbarHTML() {
+  return '' +
+  '<header class="topbar">' +
+    '<div class="search" style="flex:1;max-width:660px;height:40px">' +
+      '<input placeholder="Search for [Project]">' +
+      '<i class="mdi mdi-magnify" style="color:var(--pa-ink-6);font-size:18px"></i>' +
+    '</div>' +
+    '<button class="pa-btn pa-btn--primary" data-a="create-open"><i class="mdi mdi-plus"></i><span>CREATE</span></button>' +
+    '<div style="flex:1"></div>' +
+    '<button class="topbar__btn" title="Notifications"><i class="mdi mdi-bell-outline" style="font-size:22px;color:var(--pa-ink-3)"></i></button>' +
+    '<div class="avatar" title="Douglas Benjamin">DB</div>' +
+  '</header>';
+}
+
+function pageHeaderHTML() {
+  var btns = "";
+  if (state.tab === "Faculty") btns += '<button class="pa-btn pa-btn--primary" data-a="fac-panel-open"><span>EDIT FACULTY</span></button>';
+  if (state.tab === "Files" && state.pending.length) {
+    btns += '<button class="pa-btn pa-btn--primary" data-a="upload"><i class="mdi mdi-tray-arrow-up"></i><span>' +
+      (state.pending.length === 1 ? "UPLOAD FILE" : "UPLOAD FILES") + '</span></button>';
+  }
+  if (state.tab === "Activities") btns += '<button class="pa-btn pa-btn--primary" data-a="add-activity"><i class="mdi mdi-plus"></i><span>ADD ACTIVITY</span></button>';
+  if (tabAllowsEdit()) {
+    btns += isEditing()
+      ? '<button class="pa-btn pa-btn--secondary-grey" data-a="cancel"><span>CANCEL</span></button>' +
+        saveMenuHTML("save-menu", state.saveMenuOpen, "save-quick")
+      : '<button class="pa-btn pa-btn--secondary" data-a="edit"><i class="mdi mdi-pencil-outline"></i><span>EDIT</span></button>';
+  }
+  return '' +
+  '<div style="padding:18px 32px 14px;background:#fff">' +
+    '<div style="display:flex;justify-content:space-between;align-items:center;gap:16px">' +
+      '<h1 class="pa-page-title">PROJECTS</h1>' +
+      '<div style="display:flex;align-items:center;gap:10px;flex-shrink:0">' + presenceHTML() + btns + '</div>' +
+    '</div>' +
+  '</div>';
+}
+
+function tabsHTML() {
+  return '<div class="pa-tabs">' + TABS.map(function (t) {
+    return '<button class="pa-tabs__btn' + (t === state.tab ? " pa-tabs__btn--active" : "") + '" data-a="tab" data-tab="' + esc(t) + '"' + (peopleOn(t).length ? ' title="' + esc(peopleOn(t).map(function (p) { return p.name + (p.mode === "edit" ? " (editing)" : " (viewing)"); }).join(", ")) + '"' : '') + ' style="display:inline-flex;align-items:center;justify-content:center;gap:8px"><span>' + esc(t.toUpperCase()) + '</span>' +
+      (peopleOn(t).length ? '<span style="display:inline-flex;align-items:center;justify-content:center;min-width:16px;height:16px;padding:0 4px;border-radius:8px;background:#fff;color:var(--pa-primary-700);font-family:var(--pa-font-display);font-size:11px;font-weight:600;line-height:1">' + peopleOn(t).length + '</span>' : '') + '</button>';
+  }).join("") + '</div>';
+}
+
+/* ============================ Details tab ============================ */
+
+function comboHTML(key, label, value, options) {
+  var edit = isEditing();
+  var open = edit && state.openCombo === key;
+  var chev = open ? "mdi-menu-up" : "mdi-menu-down";
+  var underline = !edit ? "1px dashed rgba(0,0,0,0.22)" : (open ? "2px solid #000" : "1px solid rgba(0,0,0,0.42)");
+  var inner = "";
+  if (edit && value) {
+    inner = '<span style="display:inline-flex;align-items:center;gap:6px;background:var(--pa-line-2);color:var(--pa-ink-2);border-radius:var(--pa-radius-pill);padding:4px 8px 4px 12px;font-family:var(--pa-font-display);font-size:12px;line-height:16px">' +
+      '<span>' + esc(value) + '</span>' +
+      '<button class="cmb-x" title="Remove" data-a="lead-clear" data-key="' + esc(key) + '"><i class="mdi mdi-close-circle" style="font-size:15px"></i></button></span>';
+  } else if (!edit) {
+    inner = '<span style="font-family:var(--pa-font-display);font-size:13.5px;color:var(--pa-ink)">' + esc(value || "Not assigned") + '</span>';
+  } else {
+    inner = '<span style="font-family:var(--pa-font-sans);font-size:14px;line-height:20px;color:rgba(0,0,0,0.6)">' + esc(label) + '</span>';
+  }
+  return '' +
+  '<div style="position:relative;min-width:0">' +
+    ((value || !edit) ? '<div style="font-family:var(--pa-font-sans);font-size:11.5px;line-height:16px;color:var(--pa-ink-3)">' + esc(label) + '</div>' : '') +
+    '<div ' + (edit ? 'data-a="lead-toggle" data-key="' + esc(key) + '" ' : '') +
+      'style="display:flex;align-items:center;gap:8px;min-height:34px;padding:3px 0;border-bottom:' + underline + ';cursor:' + (edit ? "pointer" : "default") + '">' +
+      inner + '<span style="flex:1"></span>' +
+      (edit ? '<i class="mdi ' + chev + '" style="font-size:20px;color:var(--pa-ink-3)"></i>' : '') +
+    '</div>' +
+    (open ? '<div style="position:absolute;z-index:30;top:100%;left:0;right:0;margin-top:2px;background:#fff;border-radius:var(--pa-radius-sm);box-shadow:var(--pa-elev-modal);max-height:232px;overflow:auto;padding:4px 0">' +
+      options.map(function (p) {
+        return '<button class="cmb-opt" data-a="lead-pick" data-key="' + esc(key) + '" data-name="' + esc(p) + '">' + esc(p) + '</button>';
+      }).join("") + '</div>' : '') +
+  '</div>';
+}
+
+function detailsHTML() {
+  var edit = isEditing();
+  var supCols = edit ? "1fr 2fr 96px" : "1fr 2fr";
+  var grantIds = state.supporters.map(function (x) { return x.grant; }).filter(Boolean).join("\n");
+
+  var rows = state.supporters.map(function (s, i) {
+    return '<div class="pa-table__row" style="grid-template-columns:' + supCols + '">' +
+      '<div>' + esc(s.name) + '</div><div>' + esc(s.grant) + '</div>' +
+      (edit ? '<div style="display:flex;justify-content:center;gap:4px;padding:2px 8px">' +
+        '<button class="pa-icon-btn pa-icon-btn--sm pa-icon-btn--danger" title="Remove supporter" data-a="sup-remove" data-i="' + i + '"><i class="mdi mdi-delete-outline"></i></button>' +
+        '<button class="pa-icon-btn pa-icon-btn--sm pa-icon-btn--primary" title="Edit supporter" data-a="sup-edit" data-i="' + i + '"><i class="mdi mdi-pencil-outline"></i></button>' +
+      '</div>' : '') +
+    '</div>';
+  }).join("");
+
+  return '' +
+  '<div class="pd-grid" style="display:grid;grid-template-columns:minmax(0,3fr) minmax(240px,1fr);gap:32px;align-items:start;width:100%">' +
+    '<div style="min-width:0">' +
+      titleRow('PROJECT DETAILS (' + esc(PROJECT_ID) + ')', "18px") +
+
+      '<div class="pa-card pa-card--form" style="padding:0;overflow:hidden;margin-bottom:24px">' +
+        '<div class="pa-card__body">' +
+          '<div class="vf">' +
+            '<textarea class="vf__textarea" placeholder=" " rows="2" data-field="projectTitle" data-focus="projectTitle"' + (edit ? "" : " disabled") + '>' + esc(state.f.projectTitle) + '</textarea>' +
+            '<span class="vf__label">Project Title</span>' +
+          '</div>' +
+          '<div class="vf">' +
+            '<input class="vf__input" placeholder=" " value="' + esc(state.f.shortTitle) + '" data-field="shortTitle" data-focus="shortTitle"' + (edit ? "" : " disabled") + '>' +
+            '<span class="vf__label">Short Title</span>' +
+          '</div>' +
+        '</div>' +
+
+        '<div class="pa-band"><span>SUPPORTERS</span></div>' +
+        '<div style="padding:22px 32px 26px;display:flex;flex-direction:column;gap:18px">' +
+          '<div class="pa-table">' +
+            '<div class="pa-table__head" style="grid-template-columns:' + supCols + '">' +
+              '<div>Name</div><div>Grant #</div>' + (edit ? '<div></div>' : '') +
+            '</div>' + rows +
+          '</div>' +
+          (edit ? '<div style="display:flex;justify-content:flex-end"><button class="pa-btn pa-btn--secondary" data-a="sup-add"><span>ADD SUPPORTER</span></button></div>' : '') +
+          '<div class="vf">' +
+            '<textarea class="vf__textarea" placeholder=" " rows="2" disabled>' + esc(grantIds) + '</textarea>' +
+            '<span class="vf__label">Grant ID/number(s)</span>' +
+            '<div class="vf__messages">Populated from the grant numbers in the supporters table.</div>' +
+          '</div>' +
+        '</div>' +
+
+        '<div class="pa-band"><span>IMPORTANT DATES</span></div>' +
+        '<div style="padding:22px 32px 28px">' +
+          '<div class="vf" style="max-width:280px">' +
+            '<input class="vf__input" type="date" placeholder=" " value="' + esc(state.f.launchDate) + '" data-field="launchDate" data-focus="launchDate"' + (edit ? "" : " disabled") + '>' +
+            '<span class="vf__label">Launch Date</span>' +
+          '</div>' +
+        '</div>' +
+      '</div>' +
+
+      '<div class="pa-card pa-card--form" style="padding:0;overflow:hidden;margin-bottom:24px">' +
+        '<div class="pa-band"><span>PROJECT LEADS</span></div>' +
+        '<div style="padding:24px 32px 30px;display:grid;grid-template-columns:1fr 1fr;gap:26px 40px;align-items:start">' +
+          LEAD_FIELDS.map(function (pair) { return comboHTML(pair[0], pair[1], state.leads[pair[0]], PEOPLE); }).join("") +
+        '</div>' +
+      '</div>' +
+    '</div>' +
+
+    '<aside style="min-width:0;display:flex;flex-direction:column">' +
+      '<h3 class="pa-rail-title" style="margin:0 0 18px;line-height:30px">USEFUL LINKS</h3>' +
+      '<div style="display:flex;flex-direction:column;gap:10px">' +
+        '<a class="pa-btn-rail" href="#" target="_blank"><i class="mdi mdi-open-in-new"></i><span>PROJECT SURVEY</span></a>' +
+      '</div>' +
+    '</aside>' +
+  '</div>';
+}
+
+/* ============================ Planning tab ============================ */
+
+function rtEditorHTML(key) {
+  if (!isEditing()) {
+    return '<div class="pub-rt" style="padding:4px 2px 12px;font-family:var(--pa-font-display);font-size:14px;line-height:22px;color:var(--pa-ink);border-bottom:1px solid var(--pa-line)">' +
+      (state.content[key] || "<span style='color:var(--pa-ink-6)'>&mdash;</span>") + '</div>';
+  }
+  var toolbar = '<div style="display:flex;flex-wrap:wrap;align-items:center;gap:2px;border-bottom:1px solid var(--pa-line);padding-bottom:6px;margin-bottom:4px">' +
+    RT_TOOLS.map(function (d) {
+      return '<button type="button" class="rt-tool" title="' + esc(d[3]) + '" data-rt-cmd="' + esc(d[1]) + '" data-rt-arg="' + esc(d[2]) + '" data-rt-key="' + esc(key) + '"><i class="mdi ' + d[0] + '" style="font-size:18px"></i></button>';
+    }).join("") + '</div>';
+  return '<div>' + toolbar +
+    '<div class="pub-rt" contenteditable="true" data-rt="' + esc(key) + '" style="min-height:60px;padding:8px 2px;font-family:var(--pa-font-display);font-size:14px;line-height:22px;color:var(--pa-ink);outline:none;border-bottom:1px solid var(--pa-line)">' +
+    (state.content[key] || "") + '</div></div>';
+}
+
+function checkRowHTML(id, label, tone) {
+  var on = !!state.checks[id];
+  var read = !isEditing();
+  var base = tone === "all" ? "var(--pa-success)" : (tone === "qi" ? "var(--pa-error)" : "var(--pa-ink)");
+  var boxColor = on ? (tone ? base : "var(--pa-primary)") : "var(--pa-ink-4)";
+  return '<div ' + (read ? '' : 'data-a="chk" data-key="' + esc(id) + '" ') +
+    'style="display:flex;align-items:flex-start;gap:8px;padding:4px 0;cursor:' + (read ? "default" : "pointer") + ';opacity:' + (read ? "0.85" : "1") + '">' +
+    '<i class="mdi ' + (on ? "mdi-checkbox-marked" : "mdi-checkbox-blank-outline") + '" style="font-size:19px;line-height:19px;color:' + boxColor + ';flex-shrink:0"></i>' +
+    '<span style="font-family:var(--pa-font-sans);font-size:13.5px;line-height:19px;color:' + (tone ? base : "var(--pa-ink)") + '">' + esc(label) + '</span></div>';
+}
+
+function planningHTML() {
+  var cards = PLANNING_SECTIONS.map(function (sec, i) {
+    var pad = i === 2 ? "24px 32px 30px" : "24px 32px 28px";
+    return '<div class="pa-band"><span>' + esc(sec[0]) + '</span></div>' +
+      '<div style="padding:' + pad + ';display:flex;flex-direction:column;gap:30px">' +
+      sec[1].map(function (fld) {
+        return '<div><div class="pa-helper" style="margin-bottom:6px">' + esc(fld[1]) + '</div>' + rtEditorHTML(fld[0]) + '</div>';
+      }).join("") + '</div>';
+  }).join("");
+
+  return '' +
+  '<div class="pd-grid" style="display:grid;grid-template-columns:minmax(0,3fr) minmax(280px,1fr);gap:32px;align-items:start;width:100%">' +
+    '<div style="min-width:0">' +
+      titleRow('PROJECT PLANNING (' + esc(PROJECT_ID) + ')', "18px") +
+      '<div class="pa-card pa-card--form" style="padding:0;overflow:hidden;margin-bottom:24px">' + cards + '</div>' +
+    '</div>' +
+
+    '<aside style="min-width:0;display:flex;flex-direction:column;gap:28px">' +
+      '<div>' +
+        '<h3 class="pa-rail-title" style="margin:0 0 4px;line-height:26px">COMPETENCIES ADDRESSED</h3>' +
+        '<div class="pa-helper" style="margin:0 0 18px">Select every competency this project addresses.</div>' +
+        '<div style="display:flex;flex-direction:column;gap:22px">' +
+          COMP_GROUPS.map(function (g) {
+            return '<div><div style="font-family:var(--pa-font-sans);font-size:12px;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;color:var(--pa-ink-2);margin-bottom:8px;line-height:17px">' + esc(g.title) + '</div>' +
+              '<div style="display:flex;flex-direction:column;gap:2px">' +
+              g.items.map(function (it) { return checkRowHTML(it[0], it[1], null); }).join("") + '</div></div>';
+          }).join("") +
+        '</div>' +
+      '</div>' +
+
+      '<div style="border-top:1px solid var(--pa-divider);padding-top:24px">' +
+        '<h3 class="pa-rail-title" style="margin:0 0 14px;line-height:26px">PROJECT IS DESIGNED TO</h3>' +
+        '<div style="display:flex;flex-direction:column;gap:2px">' +
+          DESIGNED_TO.map(function (it) { return checkRowHTML(it[0], it[1], it[2]); }).join("") +
+        '</div>' +
+        '<div style="display:flex;flex-direction:column;gap:6px;margin-top:16px">' +
+          '<div style="display:flex;align-items:center;gap:8px"><span style="width:9px;height:9px;border-radius:50%;background:var(--pa-success);flex-shrink:0"></span><span class="pa-helper" style="color:var(--pa-success)">Applies to ALL activities</span></div>' +
+          '<div style="display:flex;align-items:center;gap:8px"><span style="width:9px;height:9px;border-radius:50%;background:var(--pa-error);flex-shrink:0"></span><span class="pa-helper" style="color:var(--pa-error)">QI Level I &amp; II projects only</span></div>' +
+        '</div>' +
+      '</div>' +
+    '</aside>' +
+  '</div>';
+}
+
+/* ============================ Faculty tab ============================ */
+
+function facultyHTML() {
+  var docCols = "minmax(180px,1fr) 130px 90px 90px minmax(150px,1fr) 110px";
+  var headCell = "padding:13px 16px;font-family:var(--pa-font-sans);font-size:13px;font-weight:500;letter-spacing:.04em;text-transform:uppercase;color:var(--pa-ink-2)";
+
+  var cards = state.faculty.map(function (f, i) {
+    var docs = (f.docs || docSet({})).map(function (d) {
+      var got = d.status === "Received";
+      return '<div style="display:grid;grid-template-columns:' + docCols + ';min-width:790px;border-bottom:1px solid #EEEEEE;align-items:center">' +
+        '<div style="padding:4px 16px;font-family:var(--pa-font-display);font-size:13.5px;color:var(--pa-ink)">' + esc(d.label) + '</div>' +
+        '<div style="padding:4px 16px"><span class="fac-status" style="background:' + (got ? "var(--pa-success)" : "var(--pa-warning)") + '">' + esc(d.status) + '</span></div>' +
+        '<div style="padding:4px 16px;text-align:center"><button class="fac-iconbtn" title="Copy form URL" data-a="doc-form" data-doc="' + esc(d.label) + '"><i class="mdi mdi-content-copy" style="font-size:19px;color:var(--pa-primary)"></i></button></div>' +
+        '<div style="padding:4px 16px;text-align:center"><button class="fac-iconbtn" title="Open PDF" data-a="doc-pdf" data-doc="' + esc(d.label) + '"><i class="mdi mdi-file-pdf-box" style="font-size:21px;color:var(--pa-error)"></i></button></div>' +
+        '<div style="padding:4px 16px;font-family:var(--pa-font-display);font-size:12.5px;color:var(--pa-ink-3)">' + esc(d.received || "—") + '</div>' +
+        '<div style="padding:4px 16px;text-align:right"><button data-a="doc-reset" data-id="' + esc(f.id) + '" data-doc="' + esc(d.label) + '" style="border:none;background:transparent;font-family:var(--pa-font-sans);font-size:12.5px;letter-spacing:.03em;text-transform:uppercase;color:' + (got ? "var(--pa-primary)" : "var(--pa-ink-6)") + ';cursor:' + (got ? "pointer" : "default") + ';padding:4px 2px">Reset</button></div>' +
+      '</div>';
+    }).join("");
+
+    var pending = (f.financial || "").indexOf("Pending") !== -1;
+
+    return '' +
+    '<div class="pa-card" style="padding:0;overflow:hidden;box-shadow:var(--pa-elev-card)">' +
+      '<div style="display:grid;grid-template-columns:300px minmax(0,1fr)">' +
+        '<div style="border-right:1px solid #EEEEEE;display:flex;flex-direction:column">' +
+          '<div style="padding:13px 20px;font-family:var(--pa-font-sans);font-size:13px;font-weight:500;letter-spacing:.04em;text-transform:uppercase;color:var(--pa-ink-2);border-bottom:1px solid #EEEEEE;text-align:center">Faculty</div>' +
+          '<div style="padding:22px 20px 18px;display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center;flex:1">' +
+            '<div style="display:flex;align-items:center;gap:14px;width:100%;text-align:left">' +
+              '<div style="flex:none;width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-family:var(--pa-font-display);font-weight:600;font-size:16px;background:' + FAC_PALETTE[i % FAC_PALETTE.length] + '">' + esc(initials(f.name)) + '</div>' +
+              '<div style="font-family:var(--pa-font-display);font-weight:600;font-size:14px;line-height:19px;color:var(--pa-ink);min-width:0">' + esc(f.name) + '</div>' +
+            '</div>' +
+            '<div style="font-family:var(--pa-font-display);font-size:12.5px;line-height:18px;color:var(--pa-ink-3);white-space:pre-line;text-align:left;width:100%">' + esc(f.affiliation) + '</div>' +
+            '<div style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center">' +
+              (f.roles || []).map(function (r) { return '<span class="fac-role">' + esc(r) + '</span>'; }).join("") +
+            '</div>' +
+            '<div style="font-family:var(--pa-font-display);font-size:12.5px;color:var(--pa-ink-2)">Financial Info <span style="color:' + (pending ? "var(--pa-error)" : "var(--pa-success)") + ';font-weight:600">' + esc(f.financial || "(Pending)") + '</span></div>' +
+          '</div>' +
+          '<div style="border-top:1px solid #EEEEEE;padding:10px 20px;display:flex;justify-content:center;gap:18px">' +
+            '<button class="fac-iconbtn" title="Assign roles" data-a="fac-roles"><i class="mdi mdi-pencil-circle-outline" style="font-size:22px;color:var(--pa-primary)"></i></button>' +
+            '<button class="fac-iconbtn" title="Send forms by email" data-a="fac-email"><i class="mdi mdi-email-arrow-right-outline" style="font-size:22px;color:var(--pa-primary)"></i></button>' +
+            '<button class="fac-iconbtn" title="Remove from project" data-a="fac-remove" data-id="' + esc(f.id) + '"><i class="mdi mdi-delete-outline" style="font-size:22px;color:var(--pa-error)"></i></button>' +
+          '</div>' +
+        '</div>' +
+
+        '<div style="min-width:0;overflow-x:auto">' +
+          '<div style="display:grid;grid-template-columns:' + docCols + ';min-width:790px;border-bottom:1px solid #EEEEEE">' +
+            '<div style="' + headCell + '">Document</div>' +
+            '<div style="' + headCell + '">Status</div>' +
+            '<div style="' + headCell + ';text-align:center">Form URL</div>' +
+            '<div style="' + headCell + ';text-align:center">File</div>' +
+            '<div style="' + headCell + '">Date Received</div>' +
+            '<div style="' + headCell + ';text-align:right">Action</div>' +
+          '</div>' + docs +
+        '</div>' +
+      '</div>' +
+    '</div>';
+  }).join("");
+
+  var empty = '' +
+  '<div class="pa-card" style="padding:56px 24px;text-align:center;box-shadow:var(--pa-elev-card)">' +
+    '<i class="mdi mdi-account-multiple-plus-outline" style="font-size:40px;color:var(--pa-ink-6)"></i>' +
+    '<div style="font-family:var(--pa-font-display);font-size:14px;color:var(--pa-ink-3);margin-top:10px">No faculty on this project yet.</div>' +
+    '<div style="margin-top:16px"><button class="pa-btn pa-btn--primary" data-a="fac-panel-open"><i class="mdi mdi-plus"></i><span>EDIT FACULTY</span></button></div>' +
+  '</div>';
+
+  return '' +
+  '<div style="width:100%">' +
+    titleRow('PROJECT FACULTY (' + esc(PROJECT_ID) + ')', "12px") +
+    '<div style="font-family:var(--pa-font-display);font-size:13.5px;line-height:21px;color:var(--pa-ink-2);margin-bottom:22px;max-width:760px;text-wrap:pretty">' +
+      'Use the <strong style="font-weight:600">Edit Faculty</strong> button to add or remove faculty from this project.<br>' +
+      'Use the icons below each faculty card to assign roles, send forms by email, and remove faculty from this project.' +
+    '</div>' +
+    '<div class="pd-grid" style="display:grid;grid-template-columns:minmax(0,3fr) minmax(300px,1fr);gap:28px;align-items:start">' +
+      '<div style="min-width:0;display:flex;flex-direction:column;gap:24px">' +
+        '<h3 style="font-family:var(--pa-font-sans);font-size:18px;font-weight:400;letter-spacing:0.3px;color:var(--pa-ink);margin:0 0 -6px">FACULTY DOCUMENTS</h3>' +
+        (state.faculty.length ? cards : empty) +
+      '</div>' +
+      '<div style="min-width:0">' +
+        '<div class="pa-card" style="padding:0;overflow:hidden;box-shadow:var(--pa-elev-1)">' +
+          '<div style="background:#f0f0f0;padding:12px 16px;font-family:var(--pa-font-sans);font-size:16px;color:var(--pa-ink)">FACULTY SUBMISSIONS</div>' +
+          '<div style="padding:16px;display:flex;flex-direction:column;gap:10px">' +
+            FACULTY_SUBMISSIONS.map(function (u) {
+              return '<button class="fac-tool" data-a="fac-sub" data-label="' + esc(u.label) + '">' +
+                '<i class="' + u.icon + '" style="font-size:19px;color:var(--pa-primary)"></i>' +
+                '<span style="flex:1">' + esc(u.label) + '</span>' +
+                '<i class="mdi mdi-chevron-right" style="font-size:20px;color:var(--pa-ink-4)"></i></button>';
+            }).join("") +
+          '</div>' +
+        '</div>' +
+      '</div>' +
+    '</div>' +
+  '</div>';
+}
+
+/* ============================ Activities tab ============================ */
+
+function activitiesHTML() {
+  var cols = "150px 170px minmax(0,1fr) 190px";
+  var headCell = "font-family:var(--pa-font-sans);font-size:13px;font-weight:500;letter-spacing:.04em;text-transform:uppercase;color:var(--pa-ink-2)";
+
+  var rows = ACTIVITIES.map(function (a) {
+    var kids = (a.children || []).length
+      ? '<div style="display:flex;flex-wrap:wrap;gap:14px;margin-top:8px">' +
+        a.children.map(function (c) {
+          return '<a href="#" class="act-link act-link--child" data-a="act-open" data-code="' + esc(c) + '" style="font-family:var(--pa-font-display);font-size:13px">' + esc(c) + '</a>';
+        }).join("") + '</div>'
+      : '';
+    return '<div style="display:grid;grid-template-columns:' + cols + ';min-width:900px;border-bottom:1px solid #EEEEEE;align-items:center">' +
+      '<div style="padding:18px 24px"><a href="#" class="act-link" data-a="act-open" data-code="' + esc(a.code) + '" style="font-family:var(--pa-font-display);font-weight:600;font-size:13.5px;color:var(--pa-primary)">' + esc(a.code) + '</a></div>' +
+      '<div style="padding:14px 12px"><div style="width:130px;height:74px;border-radius:2px;background:' + a.artBg + ';display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.85)"><i class="mdi mdi-image-outline" style="font-size:24px"></i></div></div>' +
+      '<div style="padding:18px 12px;min-width:0">' +
+        '<a href="#" class="act-link act-link--title" data-a="act-open" data-code="' + esc(a.code) + '" style="font-family:var(--pa-font-display);font-weight:600;font-size:13.5px;line-height:20px;text-wrap:pretty">' + esc(a.title) + '</a>' + kids +
+      '</div>' +
+      '<div style="padding:18px 24px;font-family:var(--pa-font-display);font-size:13.5px;color:var(--pa-ink-2);text-align:right">' + esc(a.release) + '</div>' +
+    '</div>';
+  }).join("");
+
+  return '' +
+  '<div style="width:100%">' +
+    titleRow('PROJECT ACTIVITIES (' + esc(PROJECT_ID) + ')', "18px") +
+    '<div class="pa-card pa-card--form" style="padding:0;overflow:hidden">' +
+      '<div style="overflow-x:auto">' +
+        '<div style="display:grid;grid-template-columns:' + cols + ';min-width:900px;border-bottom:1px solid var(--pa-divider);align-items:center">' +
+          '<div style="padding:16px 24px;' + headCell + '">Code</div>' +
+          '<div style="padding:16px 12px;' + headCell + '">Artwork</div>' +
+          '<div style="padding:16px 12px;' + headCell + '">Activity Title / Events</div>' +
+          '<div style="padding:16px 24px;' + headCell + ';text-align:right">Release Date</div>' +
+        '</div>' + rows +
+      '</div>' +
+    '</div>' +
+  '</div>';
+}
+
+/* ============================ Files tab ============================ */
+
+function selectBoxHTML(key, label, options, selected, opts) {
+  opts = opts || {};
+  var open = state.openSelect === key;
+  var chips = opts.multi ? (selected || []) : [];
+  var body;
+  if (opts.multi) {
+    body = chips.length
+      ? chips.map(function (c) {
+          return '<span style="display:inline-flex;align-items:center;gap:4px;background:rgba(25,118,210,0.12);color:var(--pa-primary);border-radius:var(--pa-radius-pill);padding:2px 7px 2px 11px;font-family:var(--pa-font-sans);font-size:11.5px;font-weight:500;max-width:100%">' +
+            '<span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + esc(c) + '</span>' +
+            '<i class="mdi mdi-close" data-a="sel-pick" data-key="' + esc(key) + '" data-val="' + esc(c) + '" style="font-size:13px;cursor:pointer"></i></span>';
+        }).join("")
+      : '<span style="font-family:var(--pa-font-sans);font-size:13px;color:var(--pa-ink-6)">' + esc(label) + '</span>';
+  } else {
+    body = '<span style="font-family:var(--pa-font-sans);font-size:13px;color:' + (selected ? "var(--pa-ink)" : "var(--pa-ink-6)") + ';overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + esc(selected || label) + '</span>';
+  }
+
+  var list = "";
+  if (open) {
+    var all = (opts.clearable ? [opts.clearLabel || "Unassigned"] : []).concat(options);
+    list = '<div style="position:absolute;z-index:400;top:calc(100% + 2px);left:0;width:100%;max-height:260px;overflow-y:auto;background:#fff;border-radius:4px;box-shadow:var(--pa-elev-modal)">' +
+      all.map(function (o) {
+        var on = opts.multi ? chips.indexOf(o) > -1 : selected === o;
+        return '<div class="fx-opt' + (on ? " fx-opt--on" : "") + '" data-a="sel-pick" data-key="' + esc(key) + '" data-val="' + esc(o) + '">' + esc(o) + '</div>';
+      }).join("") + '</div>';
+  }
+
+  return '<div style="position:relative;width:100%">' +
+    '<div data-a="sel-toggle" data-key="' + esc(key) + '" style="display:flex;align-items:center;gap:6px;min-height:38px;padding:5px 30px 5px 12px;border:1px solid ' + (open ? "var(--pa-primary)" : "var(--pa-ink-7)") + ';border-radius:4px;background:#fff;cursor:pointer;flex-wrap:wrap;position:relative">' +
+      body +
+      '<i class="mdi ' + (opts.search ? "mdi-magnify" : "mdi-menu-down") + '" style="position:absolute;right:8px;top:50%;transform:translateY(-50%);font-size:' + (opts.search ? 18 : 22) + 'px;color:var(--pa-ink-3)"></i>' +
+    '</div>' + list + '</div>';
+}
+
+function visibleFiles() {
+  var q = (state.fileQ || "").toLowerCase();
+  return state.files
+    .filter(function (f) { return state.showArchived || !f.archived; })
+    .filter(function (f) { return !q || f.name.toLowerCase().indexOf(q) > -1 || (f.display || "").toLowerCase().indexOf(q) > -1; })
+    .filter(function (f) { return !state.fileCat || f.categories.indexOf(state.fileCat) > -1; })
+    .filter(function (f) { return !state.fileStatus || f.status === state.fileStatus; });
+}
+
+function filesHTML() {
+  var cols = "1.6fr 1.1fr 1.3fr 1fr 0.9fr 160px";
+  var headCell = "padding:14px 16px;font-family:var(--pa-font-sans);font-weight:500;font-size:12.5px;color:var(--pa-ink-2)";
+
+  var dropzone = '' +
+  '<div id="dropzone" style="border:2px dashed var(--pa-primary);border-radius:4px;background:' + (state.dragOver ? "var(--pa-primary-050)" : "#fff") + ';padding:58px 24px;text-align:center;transition:background 150ms cubic-bezier(.4,0,.2,1)">' +
+    '<div style="font-family:var(--pa-font-sans);font-size:14px;color:var(--pa-ink)">Drag &amp; drop files here, or <a href="#" data-a="browse" style="color:var(--pa-primary);font-weight:500">browse</a></div>' +
+    '<div style="font-family:var(--pa-font-sans);font-size:14px;color:var(--pa-ink-2);margin-top:4px">PDF, DOCX, PPTX, PNG, MP4 - up to 500MB each</div>' +
+  '</div>';
+
+  var queue = state.pending.length
+    ? '<div style="display:flex;flex-direction:column;gap:12px;margin-top:20px">' +
+      state.pending.map(function (p) {
+        return '<div style="display:flex;align-items:center;gap:12px;border:1px solid var(--pa-primary);border-radius:4px;padding:12px 16px">' +
+          '<i class="mdi ' + fileIcon(p.name) + '" style="font-size:24px;color:var(--pa-ink-2)"></i>' +
+          '<div style="flex:1;min-width:0">' +
+            '<div style="font-family:var(--pa-font-sans);font-size:13.5px;color:var(--pa-ink);word-break:break-all">' + esc(p.name) + '</div>' +
+            '<div style="font-family:var(--pa-font-sans);font-size:12px;color:var(--pa-ink-4);margin-top:3px">' + esc(fmtSize(p.size)) + '</div>' +
+          '</div>' +
+          '<button title="Remove" data-a="pending-remove" data-key="' + esc(p.key) + '" style="border:none;background:transparent;cursor:pointer;padding:4px;line-height:0"><i class="mdi mdi-close" style="font-size:24px;color:var(--pa-ink)"></i></button>' +
+        '</div>';
+      }).join("") + '</div>'
+    : '';
+
+  var searchRow = '' +
+  '<div style="display:flex;align-items:center;gap:16px;margin:26px 0 18px">' +
+    '<div style="position:relative;flex:1">' +
+      '<input value="' + esc(state.fileQ) + '" placeholder="Search by name" data-input="fileQ" data-focus="fileQ" style="width:100%;padding:11px 34px 11px 12px;border:1px solid var(--pa-ink-7);border-radius:4px;font-family:var(--pa-font-sans);font-size:13px;color:var(--pa-ink);outline:none">' +
+      '<i class="mdi mdi-magnify" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:18px;color:var(--pa-ink-3)"></i>' +
+    '</div>' +
+    '<div style="flex:1">' + selectBoxHTML("fcat", "All categories", FILE_CATEGORIES, state.fileCat, { clearable: true, clearLabel: "All categories", search: true }) + '</div>' +
+    '<div style="flex:1">' + selectBoxHTML("fst", "All statuses", FILE_STATUSES, state.fileStatus, { clearable: true, clearLabel: "All statuses", search: true }) + '</div>' +
+    '<label data-a="archived" style="display:flex;align-items:center;gap:8px;cursor:pointer;font-family:var(--pa-font-sans);font-size:14px;color:var(--pa-ink);flex-shrink:0">' +
+      '<i class="mdi ' + (state.showArchived ? "mdi-checkbox-marked" : "mdi-checkbox-blank-outline") + '" style="font-size:20px;color:' + (state.showArchived ? "var(--pa-primary)" : "var(--pa-ink-4)") + '"></i>Show archived</label>' +
+  '</div>';
+
+  var rows = visibleFiles().map(function (f) {
+    var actions = [
+      ["mdi-open-in-new", "Open file", "var(--pa-primary)", "f-open"],
+      ["mdi-content-copy", "Copy URL", "var(--pa-primary)", "f-copy"],
+      ["mdi-autorenew", "Replace file", "var(--pa-primary)", "f-replace"],
+      ["mdi-delete", "Delete file", "var(--pa-error)", "f-delete"]
+    ].map(function (a) {
+      return '<button class="fx-act" title="' + a[1] + '" data-a="' + a[3] + '" data-id="' + esc(f.id) + '"><i class="mdi ' + a[0] + '" style="font-size:20px;color:' + a[2] + '"></i></button>';
+    }).join("");
+
+    var cell = "padding:16px;border-right:1px solid #EEEEEE;align-self:stretch;display:flex;align-items:center;min-width:0";
+
+    return '<div style="display:grid;grid-template-columns:' + cols + ';min-width:1060px;border-bottom:1px solid #EEEEEE;align-items:center">' +
+      '<div style="' + cell + '">' +
+        '<div style="display:flex;gap:10px">' +
+          '<i class="mdi ' + fileIcon(f.name) + '" style="font-size:24px;color:var(--pa-ink-2);flex-shrink:0"></i>' +
+          '<div style="min-width:0">' +
+            '<div style="font-family:var(--pa-font-sans);font-size:13px;color:var(--pa-ink);line-height:18px;word-break:break-word">' + esc(f.name) + '</div>' +
+            '<div style="font-family:var(--pa-font-sans);font-size:11.5px;color:var(--pa-ink-4);margin-top:4px">' + esc(fmtSize(f.size) + " • " + f.date) + '</div>' +
+          '</div>' +
+        '</div>' +
+      '</div>' +
+      '<div style="' + cell + '"><input value="' + esc(f.display) + '" data-display="' + esc(f.id) + '" data-focus="display:' + esc(f.id) + '" style="width:100%;padding:9px 11px;border:1px solid var(--pa-ink-7);border-radius:4px;font-family:var(--pa-font-sans);font-size:13px;color:var(--pa-ink);outline:none"></div>' +
+      '<div style="' + cell + '">' + selectBoxHTML("cat:" + f.id, "Unassigned", FILE_CATEGORIES, f.categories, { multi: true }) + '</div>' +
+      '<div style="' + cell + '">' + selectBoxHTML("st:" + f.id, "Unassigned", FILE_STATUSES, f.status, { clearable: true }) + '</div>' +
+      '<div style="' + cell + ';font-family:var(--pa-font-sans);font-size:13px;color:var(--pa-ink)">' + esc(f.uploader) + '</div>' +
+      '<div style="padding:16px;align-self:stretch;display:flex;align-items:center"><div style="display:flex;gap:6px">' + actions + '</div></div>' +
+    '</div>';
+  }).join("");
+
+  return '' +
+  '<div style="width:100%">' +
+    titleRow('PROJECT FILES (' + esc(PROJECT_ID) + ')', "8px") +
+    '<div style="font-family:var(--pa-font-sans);font-size:14px;color:var(--pa-ink-2);margin-bottom:22px">Upload, organize, and share project files</div>' +
+    dropzone + queue + searchRow +
+    '<div style="font-family:var(--pa-font-sans);font-size:13px;color:var(--pa-ink-3);margin-bottom:8px">Project Files</div>' +
+    '<div style="border:1px solid #EEEEEE;border-radius:2px;overflow-x:auto">' +
+      '<div style="display:grid;grid-template-columns:' + cols + ';min-width:1060px;background:#fff;border-bottom:1px solid #EEEEEE">' +
+        '<div style="' + headCell + ';border-right:1px solid #EEEEEE">File</div>' +
+        '<div style="' + headCell + ';border-right:1px solid #EEEEEE">Display name</div>' +
+        '<div style="' + headCell + ';border-right:1px solid #EEEEEE">Category</div>' +
+        '<div style="' + headCell + ';border-right:1px solid #EEEEEE">Status</div>' +
+        '<div style="' + headCell + ';border-right:1px solid #EEEEEE">Uploader</div>' +
+        '<div style="' + headCell + '">Actions</div>' +
+      '</div>' + rows +
+      (rows ? '' : '<div style="padding:34px 16px;text-align:center;font-family:var(--pa-font-sans);font-size:13.5px;color:var(--pa-ink-4)">No data available</div>') +
+    '</div>' +
+  '</div>';
+}
+
+/* ============================ Overlays ============================ */
+
+function facultyPanelHTML() {
+  if (!state.facultyPanelOpen) return "";
+  var q = state.afpQuery.trim().toLowerCase();
+  var all = DIRECTORY.filter(function (p) {
+    return !q || p.name.toLowerCase().indexOf(q) > -1 || p.email.toLowerCase().indexOf(q) > -1 || p.affiliation.toLowerCase().indexOf(q) > -1;
+  });
+  var pageCount = Math.max(1, Math.ceil(all.length / AFP_PER_PAGE));
+  var page = Math.min(state.afpPage, pageCount);
+  var slice = all.slice((page - 1) * AFP_PER_PAGE, page * AFP_PER_PAGE);
+  var onIds = state.faculty.map(function (f) { return f.id; });
+
+  var cols = "130px minmax(220px,1.2fr) minmax(220px,1.3fr) minmax(200px,1.2fr)";
+  var headCell = "font-size:12.5px;font-weight:500;letter-spacing:.04em;text-transform:uppercase;color:var(--pa-ink-2)";
+
+  var rows = slice.map(function (p) {
+    var on = onIds.indexOf(p.id) !== -1;
+    return '<div class="afp-row">' +
+      '<div>' + (on
+        ? '<button class="pa-btn pa-btn--danger-outline" style="width:104px" data-a="afp-remove" data-id="' + esc(p.id) + '">REMOVE</button>'
+        : '<button class="pa-btn pa-btn--secondary" style="width:104px" data-a="afp-add" data-id="' + esc(p.id) + '">ADD</button>') + '</div>' +
+      '<div style="min-width:0">' +
+        '<div style="font-family:var(--pa-font-display);font-weight:600;font-size:13.5px;color:var(--pa-ink)">' + esc(p.name) + '</div>' +
+        '<div style="font-family:var(--pa-font-display);font-size:12.5px;color:var(--pa-ink-4);margin-top:6px;word-break:break-all">' + esc(p.email) + '</div>' +
+      '</div>' +
+      '<div style="font-family:var(--pa-font-display);font-size:12.5px;line-height:19px;color:var(--pa-ink-2);white-space:pre-line">' + esc(p.affiliation || "—") + '</div>' +
+      '<div style="font-family:var(--pa-font-display);font-size:12.5px;line-height:19px;color:var(--pa-ink-4);white-space:pre-line">' + esc(p.notes || "—") + '</div>' +
+    '</div>';
+  }).join("");
+
+  var pages = "";
+  for (var i = 1; i <= pageCount; i++) {
+    pages += '<button class="afp-page' + (i === page ? " afp-page--on" : "") + '" data-a="afp-page" data-n="' + i + '">' + i + '</button>';
+  }
+
+  return '' +
+  '<div style="position:fixed;inset:0;z-index:200;background:rgba(0,0,0,0.5);animation:scrimIn 200ms ease">' +
+    '<div class="afp-panel" style="position:fixed;top:0;right:0;bottom:0;width:calc(100vw - 230px);max-width:100vw;background:#fff;box-shadow:var(--pa-elev-modal);display:flex;flex-direction:column;color:var(--pa-ink)">' +
+      '<div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding:22px 32px 14px;flex:none">' +
+        '<div style="min-width:0">' +
+          '<div style="font-family:var(--pa-font-sans);font-size:26px;font-weight:400;letter-spacing:1.3px;text-transform:uppercase;line-height:34px;color:var(--pa-ink)">Add or Remove Faculty</div>' +
+          '<div style="margin-top:5px;display:flex;align-items:baseline;gap:8px">' +
+            '<span style="font-size:12px;font-weight:500;letter-spacing:0.05em;text-transform:uppercase;color:var(--pa-ink-5)">Project</span>' +
+            '<span style="font-size:13px;font-weight:500">' + esc(PROJECT_ID) + '</span>' +
+            '<span style="font-size:13px;color:var(--pa-ink-4)">·</span>' +
+            '<span style="font-size:13px;color:var(--pa-ink-4)">' + (onIds.length === 1 ? "1 faculty on project" : onIds.length + " faculty on project") + '</span>' +
+          '</div>' +
+        '</div>' +
+        '<button class="afp-iconbtn" title="Close" data-a="fac-panel-close"><i class="mdi mdi-close" style="font-size:24px"></i></button>' +
+      '</div>' +
+      '<div style="height:1px;background:var(--pa-divider);margin:0 32px;flex:none"></div>' +
+
+      '<div style="display:grid;grid-template-columns:minmax(0,340px);gap:16px;padding:18px 32px 14px;flex:none">' +
+        '<div class="afp-search"><input placeholder="Search for faculty" value="' + esc(state.afpQuery) + '" data-input="afpQuery" data-focus="afpQuery"><i class="mdi mdi-magnify"></i></div>' +
+      '</div>' +
+
+      '<div style="flex:1;min-height:0;overflow:auto;padding:0 32px">' +
+        '<div style="border:1px solid #EEEEEE;border-radius:var(--pa-radius-sm)">' +
+          '<div style="display:grid;grid-template-columns:' + cols + ';gap:20px;padding:12px 24px;background:#f0f0f0">' +
+            '<div style="' + headCell + '">Action</div><div style="' + headCell + '">Faculty</div>' +
+            '<div style="' + headCell + '">Affiliation</div><div style="' + headCell + '">Notes</div>' +
+          '</div>' + rows +
+          (all.length ? '' : '<div style="padding:48px 24px;text-align:center;color:var(--pa-ink-5);border-top:1px solid #EEEEEE">' +
+            '<i class="mdi mdi-account-search-outline" style="font-size:34px;color:var(--pa-ink-6)"></i>' +
+            '<div style="font-family:var(--pa-font-display);font-size:13.5px;margin-top:8px">No faculty match that search.</div></div>') +
+        '</div>' +
+      '</div>' +
+
+      '<div style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 32px 20px;border-top:1px solid var(--pa-divider);margin-top:14px;flex:none">' +
+        '<div style="display:flex;align-items:center;gap:2px">' +
+          '<button class="afp-iconbtn" title="Previous page" data-a="afp-prev"><i class="mdi mdi-chevron-left" style="font-size:22px"></i></button>' +
+          pages +
+          '<button class="afp-iconbtn" title="Next page" data-a="afp-next"><i class="mdi mdi-chevron-right" style="font-size:22px"></i></button>' +
+        '</div>' +
+        '<button class="pa-btn pa-btn--primary" data-a="fac-panel-close">DONE</button>' +
+      '</div>' +
+    '</div>' +
+  '</div>';
+}
+
+function supporterModalHTML() {
+  var m = state.modal;
+  if (!m) return "";
+  var filled = !!m.name;
+  return '' +
+  '<div data-a="modal-cancel" data-scrim="1" style="position:fixed;inset:0;z-index:60;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;padding:24px;animation:scrimIn 200ms ease">' +
+    '<div data-stop="1" style="width:100%;max-width:760px;background:#fff;border-radius:var(--pa-radius-lg);box-shadow:var(--pa-elev-modal);animation:modalIn 300ms cubic-bezier(.4,0,.2,1)">' +
+      '<div style="padding:26px 32px 6px">' +
+        '<h3 class="pa-modal-title" style="text-transform:uppercase;letter-spacing:0">' + (m.mode === "edit" ? "Edit Supporter" : "Add Supporter") + '</h3>' +
+      '</div>' +
+      '<div style="padding:18px 32px 30px;display:flex;flex-direction:column;gap:26px">' +
+        '<div style="position:relative">' +
+          (filled ? '<div style="font-family:var(--pa-font-sans);font-size:11.5px;line-height:16px;color:var(--pa-ink-3)">Supporter</div>' : '') +
+          '<div data-a="sup-combo" style="display:flex;align-items:center;gap:8px;min-height:34px;padding:3px 0;border-bottom:1px solid rgba(0,0,0,0.42);cursor:pointer">' +
+            (filled
+              ? '<span style="display:inline-flex;align-items:center;gap:6px;background:var(--pa-line-2);color:var(--pa-ink-2);border-radius:var(--pa-radius-pill);padding:4px 8px 4px 12px;font-family:var(--pa-font-display);font-size:12px;line-height:16px">' +
+                '<span>' + esc(m.name) + '</span><button class="cmb-x" title="Remove" data-a="sup-clear"><i class="mdi mdi-close-circle" style="font-size:15px"></i></button></span>'
+              : '<span style="font-family:var(--pa-font-sans);font-size:14px;line-height:20px;color:rgba(0,0,0,0.6)">Supporter</span>') +
+            '<span style="flex:1"></span>' +
+            '<i class="mdi ' + (m.comboOpen ? "mdi-menu-up" : "mdi-menu-down") + '" style="font-size:20px;color:var(--pa-ink-3)"></i>' +
+          '</div>' +
+          (m.comboOpen ? '<div style="position:absolute;z-index:10;top:100%;left:0;right:0;margin-top:2px;background:#fff;border-radius:var(--pa-radius-sm);box-shadow:var(--pa-elev-modal);max-height:232px;overflow:auto;padding:4px 0">' +
+            SUPPORTER_NAMES.map(function (n) { return '<button class="cmb-opt" data-a="sup-pick" data-name="' + esc(n) + '">' + esc(n) + '</button>'; }).join("") + '</div>' : '') +
+        '</div>' +
+        '<div class="vf" style="padding-top:6px">' +
+          '<input class="vf__input" placeholder=" " value="' + esc(m.grant) + '" data-input="modalGrant" data-focus="modalGrant">' +
+          '<span class="vf__label" style="top:6px">Grant</span>' +
+        '</div>' +
+      '</div>' +
+      '<div style="display:flex;justify-content:flex-end;align-items:center;gap:12px;padding:0 24px 22px">' +
+        '<button class="pa-btn pa-btn--tertiary" style="color:var(--pa-error)" data-a="modal-cancel"><span>CANCEL</span></button>' +
+        '<button class="pa-btn pa-btn--primary" data-a="modal-save"><span>SAVE</span></button>' +
+      '</div>' +
+    '</div>' +
+  '</div>';
+}
+
+function createModalHTML() {
+  if (!state.createOpen) return "";
+  return '' +
+  '<div data-a="create-close" data-scrim="1" style="position:fixed;inset:0;z-index:75;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;padding:24px;animation:scrimIn 200ms ease">' +
+    '<div data-stop="1" style="width:100%;max-width:620px;background:#fff;border-radius:var(--pa-radius-lg);box-shadow:var(--pa-elev-modal);animation:modalIn 300ms cubic-bezier(.4,0,.2,1)">' +
+      '<div style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:24px 28px 18px;border-bottom:1px solid var(--pa-line)">' +
+        '<h3 class="pa-modal-title" style="margin:0;text-transform:uppercase;letter-spacing:0">Create</h3>' +
+        '<button class="pa-icon-btn" title="Close" data-a="create-close"><i class="mdi mdi-close" style="font-size:20px;color:var(--pa-ink-2)"></i></button>' +
+      '</div>' +
+      '<div style="padding:24px 28px 28px;display:flex;flex-direction:column;gap:18px">' +
+        '<div style="font-family:var(--pa-font-sans);font-size:14px;color:var(--pa-ink-2)">What do you want to create?</div>' +
+        '<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">' +
+          '<button class="pa-btn pa-btn--primary" style="width:100%" data-a="create-user"><span>USER</span></button>' +
+          '<button class="pa-btn pa-btn--primary" style="width:100%" data-a="create-survey"><span>SURVEY</span></button>' +
+        '</div>' +
+      '</div>' +
+    '</div>' +
+  '</div>';
+}
+
+function guardModalHTML() {
+  if (!state.pendingTab) return "";
+  return '' +
+  '<div data-a="guard-stay" data-scrim="1" style="position:fixed;inset:0;z-index:70;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;padding:24px;animation:scrimIn 200ms ease">' +
+    '<div data-stop="1" style="width:100%;max-width:480px;background:#fff;border-radius:var(--pa-radius-lg);box-shadow:var(--pa-elev-modal);animation:modalIn 300ms cubic-bezier(.4,0,.2,1)">' +
+      '<div style="padding:28px 32px 0"><h3 class="pa-modal-title" style="margin:0;text-transform:uppercase;letter-spacing:0">Unsaved changes</h3></div>' +
+      '<div style="padding:14px 32px 4px;font-family:var(--pa-font-sans);font-size:14px;line-height:22px;color:var(--pa-ink-2)">' +
+        'You have unsaved changes on the <strong style="color:var(--pa-ink);font-weight:600">' + esc(state.tab) + '</strong> tab. Each tab saves separately, so leaving for <strong style="color:var(--pa-ink);font-weight:600">' + esc(state.pendingTab) + '</strong> will discard them unless you save first.' +
+      '</div>' +
+      '<div style="display:flex;justify-content:flex-end;align-items:center;gap:12px;padding:22px 24px">' +
+        '<button class="pa-btn pa-btn--tertiary-grey" data-a="guard-stay"><span>STAY HERE</span></button>' +
+        '<button class="pa-btn pa-btn--secondary-grey" data-a="guard-discard"><span>DISCARD</span></button>' +
+        saveMenuHTML("guard-menu", state.guardMenuOpen, "guard-save") +
+      '</div>' +
+    '</div>' +
+  '</div>';
+}
+
+function replaceModalHTML() {
+  if (!state.replaceFor) return "";
+  var f = state.files.filter(function (x) { return x.id === state.replaceFor; })[0];
+  if (!f) return "";
+  var w = state.replaceWith;
+  return '' +
+  '<div style="position:fixed;inset:0;z-index:250;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;padding:24px">' +
+    '<div style="width:560px;max-width:100%;background:#fff;border-radius:4px;box-shadow:var(--pa-elev-modal);overflow:hidden">' +
+      '<div style="display:flex;align-items:center;justify-content:space-between;padding:18px 24px;border-bottom:1px solid rgba(0,0,0,0.12)">' +
+        '<div style="font-family:var(--pa-font-modal);font-size:17px;color:var(--pa-ink)">Replace File</div>' +
+        '<button data-a="rep-close" style="border:none;background:transparent;cursor:pointer;line-height:0"><i class="mdi mdi-close" style="font-size:22px;color:var(--pa-ink-3)"></i></button>' +
+      '</div>' +
+      '<div style="padding:24px">' +
+        '<div style="font-family:var(--pa-font-sans);font-size:13px;color:var(--pa-ink-3);margin-bottom:14px">Replacing <span style="color:var(--pa-ink);font-weight:500;word-break:break-all">' + esc(f.name) + '</span></div>' +
+        '<div id="replaceZone" style="border:2px dashed var(--pa-primary);border-radius:4px;padding:40px 20px;text-align:center">' +
+          (w
+            ? '<div style="font-family:var(--pa-font-sans);font-size:13.5px;color:var(--pa-ink)">' + esc(w.name) + '<div style="font-size:12px;color:var(--pa-ink-4);margin-top:4px">' + esc(fmtSize(w.size)) + '</div></div>'
+            : '<div style="font-family:var(--pa-font-sans);font-size:14px;color:var(--pa-ink)">Drag &amp; drop a file here, or <a href="#" data-a="rep-browse" style="color:var(--pa-primary);font-weight:500">browse</a></div>') +
+        '</div>' +
+      '</div>' +
+      '<div style="display:flex;justify-content:flex-end;gap:12px;padding:0 24px 22px">' +
+        '<button class="pa-btn pa-btn--secondary-grey" data-a="rep-close"><span>CANCEL</span></button>' +
+        '<button class="pa-btn pa-btn--primary" style="opacity:' + (w ? 1 : 0.4) + '" data-a="rep-save"><span>REPLACE</span></button>' +
+      '</div>' +
+    '</div>' +
+  '</div>';
+}
+
+function toastHTML() {
+  if (!state.toast) return "";
+  return '<div style="position:fixed;right:24px;bottom:24px;z-index:80;display:flex;align-items:center;gap:10px;background:var(--pa-success-bg);border-left:4px solid var(--pa-success);border-radius:var(--pa-radius-sm);box-shadow:var(--pa-elev-raised);padding:12px 16px;font-family:var(--pa-font-sans);font-size:13px;color:var(--pa-success);animation:toastIn 220ms cubic-bezier(.4,0,.2,1)">' +
+    '<i class="mdi mdi-check-circle-outline" style="font-size:18px"></i><span>' + esc(state.toast) + '</span></div>';
+}
+
+/* ============================ Render ============================ */
+
+function tabBodyHTML() {
+  switch (state.tab) {
+    case "Details": return detailsHTML();
+    case "Planning": return planningHTML();
+    case "Faculty": return facultyHTML();
+    case "Files": return filesHTML();
+    case "Activities": return activitiesHTML();
+    default:
+      return '<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:90px 24px;text-align:center">' +
+        '<i class="mdi mdi-hammer-wrench" style="font-size:56px;color:var(--pa-ink-7)"></i>' +
+        '<div style="font-family:var(--pa-font-sans);font-size:20px;color:var(--pa-ink);margin-top:16px">' + esc(state.tab.toUpperCase()) + ' — coming soon</div>' +
+        '<div style="font-family:var(--pa-font-sans);font-size:14px;color:var(--pa-ink-3);margin-top:8px;max-width:440px;line-height:20px">This tab has not been migrated to Admin 3 yet. The Details tab is fully interactive.</div>' +
+      '</div>';
+  }
+}
+
+var OVERLAYS = [
+  ["replace", function () { return replaceModalHTML(); }],
+  ["faculty", function () { return facultyPanelHTML(); }],
+  ["supporter", function () { return supporterModalHTML(); }],
+  ["create", function () { return createModalHTML(); }],
+  ["guard", function () { return guardModalHTML(); }],
+  ["notify", function () { return notifyModalHTML(); }],
+  ["pres", function () { return presAlertHTML(); }],
+  ["editAlert", function () { return editAlertHTML(); }],
+  ["toast", function () { return toastHTML(); }]
+];
+var overlayOpen = {};
+/* Overlays that were already open last render must not replay their enter animation. */
+function overlaysHTML() {
+  return OVERLAYS.map(function (o) {
+    var html = o[1]() || "";
+    var was = overlayOpen[o[0]];
+    overlayOpen[o[0]] = !!html;
+    if (html && was) html = html.replace(/animation:[^;"']*/g, "animation:none").replace(/class="afp-panel" style="/g, 'class="afp-panel" style="animation:none;');
+    return html;
+  }).join("");
+}
+var SCROLL_SEL = '[data-stop], [role="dialog"], .afp-panel, .afp-panel *';
+function saveScroll() {
+  var out = [];
+  document.querySelectorAll(SCROLL_SEL).forEach(function (el, i) { if (el.scrollTop) out.push([i, el.scrollTop]); });
+  return out;
+}
+function restoreScroll(list) {
+  if (!list.length) return;
+  var els = document.querySelectorAll(SCROLL_SEL);
+  list.forEach(function (s) { if (els[s[0]]) els[s[0]].scrollTop = s[1]; });
+}
+
+function render() {
+  var active = document.activeElement;
+  var focusKey = active && active.getAttribute ? active.getAttribute("data-focus") : null;
+  var caret = focusKey && active.selectionStart != null ? active.selectionStart : null;
+  var scrolls = saveScroll();
+
+  document.getElementById("app").innerHTML =
+    '<div style="display:flex;min-height:100vh;background:#fff">' +
+      sidebarHTML() +
+      '<div style="flex:1;min-width:0;display:flex;flex-direction:column">' +
+        topbarHTML() + pageHeaderHTML() + tabsHTML() +
+        '<div style="flex:1;background:#fff;padding:24px 32px 34px">' + tabBodyHTML() + '</div>' +
+        '<footer style="text-align:center;padding:22px;font-family:var(--pa-font-sans);font-size:13px;font-weight:700;color:var(--pa-ink);border-top:1px solid var(--pa-divider);background:#fff">1997-2026 PRIME Education, LLC</footer>' +
+      '</div>' +
+    '</div>' +
+    overlaysHTML();
+  restoreScroll(scrolls);
+
+  if (focusKey) {
+    var el = document.querySelector('[data-focus="' + focusKey.replace(/"/g, '\\"') + '"]');
+    if (el) {
+      el.focus();
+      if (caret != null && el.setSelectionRange) { try { el.setSelectionRange(caret, caret); } catch (e) {} }
+    }
+  }
+  wireDropzones();
+}
+
+/* ============================ Behaviour ============================ */
+
+function addPending(list) {
+  var items = Array.prototype.slice.call(list || []).map(function (f) {
+    return { name: f.name, size: f.size, key: Math.random().toString(36).slice(2) };
+  });
+  if (!items.length) return;
+  state.pending = state.pending.concat(items);
+  render();
+}
+
+function doUpload() {
+  var now = new Date();
+  var stamp = String(now.getMonth() + 1).padStart(2, "0") + "/" + String(now.getDate()).padStart(2, "0") + "/" + now.getFullYear() + ", " +
+    (((now.getHours() + 11) % 12) + 1) + ":" + String(now.getMinutes()).padStart(2, "0") + " " + (now.getHours() < 12 ? "AM" : "PM");
+  state.files = state.files.concat(state.pending.map(function (p) {
+    return { id: p.key, name: p.name, size: p.size, date: stamp, uploader: "Douglas Benjamin",
+      display: p.name.replace(/\.[^.]+$/, ""), categories: [], status: "", archived: false };
+  }));
+  state.pending = [];
+  flash("Files added");
+}
+
+function removeFaculty(id) {
+  var f = state.faculty.filter(function (x) { return x.id === id; })[0];
+  state.faculty = state.faculty.filter(function (x) { return x.id !== id; });
+  flash((f ? f.name.replace(/,.*$/, "") : "Faculty") + " removed from project");
+}
+
+function addFaculty(id) {
+  if (state.faculty.some(function (x) { return x.id === id; })) return;
+  var p = DIRECTORY.filter(function (x) { return x.id === id; })[0];
+  if (!p) return;
+  state.faculty = state.faculty.concat({
+    id: p.id, name: p.name, affiliation: p.affiliation || "—",
+    roles: ["Speaker"], financial: "(Pending)", docs: docSet({})
+  });
+  flash(p.name.replace(/,.*$/, "") + " added to project");
+}
+
+function pickSelect(key, val) {
+  var parts = key.split(":");
+  var kind = parts[0], id = parts.slice(1).join(":");
+  if (kind === "fcat") { state.fileCat = val === "All categories" ? "" : val; state.openSelect = null; }
+  else if (kind === "fst") { state.fileStatus = val === "All statuses" ? "" : val; state.openSelect = null; }
+  else if (kind === "cat") {
+    state.files = state.files.map(function (f) {
+      if (f.id !== id) return f;
+      var has = f.categories.indexOf(val) > -1;
+      return Object.assign({}, f, { categories: has ? f.categories.filter(function (c) { return c !== val; }) : f.categories.concat(val) });
+    });
+    flash("Category updated");
+    return;
+  } else if (kind === "st") {
+    var v = val === "Unassigned" ? "" : val;
+    state.files = state.files.map(function (f) { return f.id === id ? Object.assign({}, f, { status: v }) : f; });
+    state.openSelect = null;
+    flash("Status updated");
+    return;
+  }
+  render();
+}
+
+var ACTIONS = {
+  "tab": function (el) { requestTab(el.getAttribute("data-tab")); },
+
+  "edit": function () { if (!state.editAlertOk && peopleOn(state.tab).some(function (p) { return p.mode === "edit"; })) { state.editAlert = true; render(); return; } state.editAlertOk = false; state.mode = "edit"; state.snapshot = JSON.parse(JSON.stringify({ f: state.f, leads: state.leads, checks: state.checks, supporters: state.supporters, content: state.content })); setBaseline(); render(); },
+  "cancel": function () {
+    var s = state.snapshot;
+    if (s) { state.f = s.f; state.leads = s.leads; state.checks = s.checks; state.supporters = s.supporters; state.content = s.content; }
+    state.mode = "read"; state.openCombo = ""; state.modal = null; render();
+  },
+  "save-menu": function () { state.saveMenuOpen = !state.saveMenuOpen; render(); },
+  "guard-menu": function () { state.guardMenuOpen = !state.guardMenuOpen; render(); },
+  "menus-close": function () { state.saveMenuOpen = false; state.guardMenuOpen = false; state.presenceOpen = false; render(); },
+  "save-quick": function () { commitSave(state.tab + " saved. No one was notified."); },
+  "notify-open": function () { state.saveMenuOpen = false; state.guardMenuOpen = false; state.notify = { notes: "", lists: [], leads: [] }; render(); },
+  "notify-close": function () { state.notify = null; render(); },
+  "n-list": function (el) { var v = el.getAttribute("data-v"); state.notify.lists = toggleIn(state.notify.lists, v); render(); },
+  "n-lead": function (el) { var v = el.getAttribute("data-v"); state.notify.leads = toggleIn(state.notify.leads, v); render(); },
+  "n-all-lists": function () { state.notify.lists = state.notify.lists.length === N_LISTS.length ? [] : N_LISTS.slice(); render(); },
+  "n-all-leads": function () { state.notify.leads = state.notify.leads.length === N_LEADS.length ? [] : N_LEADS.map(function (l) { return l[0]; }); render(); },
+  "notify-save": function () {
+    var n = state.notify, parts = recipParts(n), notes = !!n.notes.trim();
+    commitSave(state.tab + " saved" + (notes ? " with notes" : "") + ". " + (parts.length ? "Notified " + parts.join(" and ") + "." : "No one was notified."));
+  },
+  "presence": function () { state.presenceOpen = !state.presenceOpen; render(); },
+  "presence-go": function (el) { state.presenceOpen = false; render(); requestTab(el.getAttribute("data-tab")); },
+  "pres-alert-close": function () { state.presAlert = ""; render(); },
+  "edit-alert-cancel": function () { state.editAlert = false; render(); },
+  "edit-alert-ok": function (el) { state.editAlert = false; state.editAlertOk = true; ACTIONS["edit"](); },
+
+  "guard-stay": function () { state.pendingTab = ""; render(); },
+  "guard-discard": function () {
+    var s = state.snapshot;
+    if (s) { state.f = s.f; state.leads = s.leads; state.checks = s.checks; state.supporters = s.supporters; state.content = s.content; }
+    state.presAlert = alertFor(state.pendingTab);
+    state.tab = state.pendingTab; state.pendingTab = ""; state.mode = "read"; state.openCombo = ""; state.guardMenuOpen = false; render();
+  },
+  "guard-save": function () { commitSave(state.tab + " saved. No one was notified."); },
+
+  "create-open": function () { state.createOpen = true; render(); },
+  "create-close": function () { state.createOpen = false; render(); },
+  "create-user": function () { state.createOpen = false; flash("New user form is coming soon"); },
+  "create-survey": function () { state.createOpen = false; flash("New survey form is coming soon"); },
+
+  "lead-toggle": function (el) { var k = el.getAttribute("data-key"); state.openCombo = state.openCombo === k ? "" : k; render(); },
+  "lead-pick": function (el) { state.leads[el.getAttribute("data-key")] = el.getAttribute("data-name"); state.openCombo = ""; render(); },
+  "lead-clear": function (el) { state.leads[el.getAttribute("data-key")] = ""; render(); },
+
+  "chk": function (el) { var k = el.getAttribute("data-key"); state.checks[k] = !state.checks[k]; render(); },
+
+  "sup-add": function () { state.modal = { mode: "add", index: -1, name: "", grant: "", comboOpen: false }; render(); },
+  "sup-edit": function (el) {
+    var i = +el.getAttribute("data-i"), s = state.supporters[i];
+    state.modal = { mode: "edit", index: i, name: s.name, grant: s.grant, comboOpen: false }; render();
+  },
+  "sup-remove": function (el) { var i = +el.getAttribute("data-i"); state.supporters = state.supporters.filter(function (_, j) { return j !== i; }); render(); },
+  "sup-combo": function () { state.modal.comboOpen = !state.modal.comboOpen; render(); },
+  "sup-pick": function (el) { state.modal.name = el.getAttribute("data-name"); state.modal.comboOpen = false; render(); },
+  "sup-clear": function () { state.modal.name = ""; render(); },
+  "modal-cancel": function () { state.modal = null; render(); },
+  "modal-save": function () {
+    var m = state.modal;
+    if (!m) return;
+    var row = { name: m.name || "Unnamed supporter", grant: m.grant };
+    if (m.mode === "edit") state.supporters[m.index] = row; else state.supporters.push(row);
+    state.modal = null;
+    flash(m.mode === "edit" ? "Supporter updated." : "Supporter added.");
+  },
+
+  "fac-panel-open": function () { state.facultyPanelOpen = true; render(); },
+  "fac-panel-close": function () { state.facultyPanelOpen = false; render(); },
+  "afp-add": function (el) { addFaculty(el.getAttribute("data-id")); },
+  "afp-remove": function (el) { removeFaculty(el.getAttribute("data-id")); },
+  "afp-page": function (el) { state.afpPage = +el.getAttribute("data-n"); render(); },
+  "afp-prev": function () { state.afpPage = Math.max(1, state.afpPage - 1); render(); },
+  "afp-next": function () { state.afpPage = state.afpPage + 1; render(); },
+
+  "fac-roles": function () { flash("Role assignment is coming soon"); },
+  "fac-email": function () { flash("Form email drafting is coming soon"); },
+  "fac-remove": function (el) { removeFaculty(el.getAttribute("data-id")); },
+  "fac-sub": function (el) { flash("Opening " + el.getAttribute("data-label").toLowerCase()); },
+  "doc-form": function (el) { flash("Opening " + el.getAttribute("data-doc") + " form"); },
+  "doc-pdf": function (el) { flash("Opening " + el.getAttribute("data-doc") + " PDF"); },
+  "doc-reset": function (el) {
+    var id = el.getAttribute("data-id"), label = el.getAttribute("data-doc");
+    var changed = false;
+    state.faculty = state.faculty.map(function (f) {
+      if (f.id !== id) return f;
+      return Object.assign({}, f, { docs: f.docs.map(function (d) {
+        if (d.label !== label || d.status !== "Received") return d;
+        changed = true;
+        return { label: d.label, status: "Pending", received: "" };
+      }) });
+    });
+    if (changed) flash(label + " reset");
+  },
+
+  "act-open": function (el) { flash("Opening " + el.getAttribute("data-code")); },
+  "add-activity": function () { flash("Activity creation is coming soon"); },
+
+  "browse": function () { document.getElementById("filePicker").click(); },
+  "upload": doUpload,
+  "pending-remove": function (el) {
+    var k = el.getAttribute("data-key");
+    state.pending = state.pending.filter(function (p) { return p.key !== k; });
+    render();
+  },
+  "archived": function () { state.showArchived = !state.showArchived; render(); },
+  "sel-toggle": function (el) { var k = el.getAttribute("data-key"); state.openSelect = state.openSelect === k ? null : k; render(); },
+  "sel-pick": function (el) { pickSelect(el.getAttribute("data-key"), el.getAttribute("data-val")); },
+
+  "f-open": function (el) {
+    var f = state.files.filter(function (x) { return x.id === el.getAttribute("data-id"); })[0];
+    flash("Opening " + (f ? f.name : "file"));
+  },
+  "f-copy": function (el) {
+    var f = state.files.filter(function (x) { return x.id === el.getAttribute("data-id"); })[0];
+    try { navigator.clipboard.writeText("https://qa.primeinc.org/files/" + (f ? f.name : "")); } catch (e) {}
+    flash("File URL copied to clipboard");
+  },
+  "f-replace": function (el) { state.replaceFor = el.getAttribute("data-id"); state.replaceWith = null; render(); },
+  "f-delete": function (el) {
+    var id = el.getAttribute("data-id");
+    state.files = state.files.filter(function (x) { return x.id !== id; });
+    flash("File deleted");
+  },
+
+  "rep-close": function () { state.replaceFor = null; state.replaceWith = null; render(); },
+  "rep-browse": function () { document.getElementById("replacePicker").click(); },
+  "rep-save": function () {
+    if (!state.replaceWith) return;
+    var w = state.replaceWith, id = state.replaceFor;
+    state.files = state.files.map(function (x) { return x.id === id ? Object.assign({}, x, { name: w.name, size: w.size }) : x; });
+    state.replaceFor = null; state.replaceWith = null;
+    flash("File replaced");
+  }
+};
+
+document.addEventListener("click", function (e) {
+  var rtBtn = e.target.closest("[data-rt-cmd]");
+  if (rtBtn) return; /* handled on mousedown */
+
+  var el = e.target.closest("[data-a]");
+  if (!el) {
+    if (state.openSelect || state.openCombo) { state.openSelect = null; state.openCombo = ""; render(); }
+    return;
+  }
+  var act = el.getAttribute("data-a");
+
+  /* a scrim only closes on a click that did not come from inside its dialog */
+  if (el.hasAttribute("data-scrim") && e.target.closest("[data-stop]")) return;
+
+  if (el.tagName === "A") e.preventDefault();
+  e.stopPropagation();
+  var fn = ACTIONS[act];
+  if (fn) fn(el);
+});
+
+document.addEventListener("mousedown", function (e) {
+  var btn = e.target.closest("[data-rt-cmd]");
+  if (!btn) return;
+  e.preventDefault();
+  var key = btn.getAttribute("data-rt-key");
+  var cmd = btn.getAttribute("data-rt-cmd");
+  var arg = btn.getAttribute("data-rt-arg") || undefined;
+  var editor = document.querySelector('[data-rt="' + key + '"]');
+  if (editor) editor.focus();
+  if (cmd === "__link") {
+    var url = window.prompt("Enter URL");
+    if (url) document.execCommand("createLink", false, url);
+  } else {
+    document.execCommand(cmd, false, arg);
+  }
+  if (editor) state.content[key] = editor.innerHTML;
+});
+
+document.addEventListener("input", function (e) {
+  var t = e.target;
+
+  var field = t.getAttribute && t.getAttribute("data-field");
+  if (field) { state.f[field] = t.value; return; }
+
+  var rt = t.getAttribute && t.getAttribute("data-rt");
+  if (rt) { state.content[rt] = t.innerHTML; return; }
+
+  var disp = t.getAttribute && t.getAttribute("data-display");
+  if (disp) {
+    state.files = state.files.map(function (f) { return f.id === disp ? Object.assign({}, f, { display: t.value }) : f; });
+    return;
+  }
+
+  var key = t.getAttribute && t.getAttribute("data-input");
+  if (!key) return;
+  if (key === "fileQ") { state.fileQ = t.value; render(); }
+  else if (key === "afpQuery") { state.afpQuery = t.value; state.afpPage = 1; render(); }
+  else if (key === "modalGrant") { state.modal.grant = t.value; }
+  else if (key === "notifyNotes" && state.notify) { state.notify.notes = t.value; render(); }
+});
+
+document.addEventListener("blur", function (e) {
+  if (e.target.getAttribute && e.target.getAttribute("data-display")) flash("Display name updated");
+}, true);
+
+document.getElementById("filePicker").addEventListener("change", function (e) {
+  addPending(e.target.files);
+  e.target.value = "";
+});
+
+document.getElementById("replacePicker").addEventListener("change", function (e) {
+  var nf = e.target.files[0];
+  if (nf) { state.replaceWith = { name: nf.name, size: nf.size }; render(); }
+  e.target.value = "";
+});
+
+function wireDropzones() {
+  var dz = document.getElementById("dropzone");
+  if (dz) {
+    dz.addEventListener("dragover", function (e) { e.preventDefault(); if (!state.dragOver) { state.dragOver = true; render(); } });
+    dz.addEventListener("dragleave", function () { if (state.dragOver) { state.dragOver = false; render(); } });
+    dz.addEventListener("drop", function (e) { e.preventDefault(); state.dragOver = false; addPending(e.dataTransfer.files); });
+  }
+  var rz = document.getElementById("replaceZone");
+  if (rz) {
+    rz.addEventListener("dragover", function (e) { e.preventDefault(); });
+    rz.addEventListener("drop", function (e) {
+      e.preventDefault();
+      var nf = e.dataTransfer.files[0];
+      if (nf) { state.replaceWith = { name: nf.name, size: nf.size }; render(); }
+    });
+  }
+}
+
+/* ============================ Presence + save & notify ============================ */
+
+var PRESENCE = [
+  { name: "Maya Whitfield", initials: "MW", tab: "Details", mode: "edit", color: "var(--pa-primary)" },
+  { name: "Priya Raman", initials: "PR", tab: "Details", mode: "view", color: "#4FA3E8" },
+  { name: "Tomás Reyes", initials: "TR", tab: "Faculty", mode: "view", color: "var(--pa-primary-700)" },
+  { name: "Kevin Boateng", initials: "KB", tab: "Activities", mode: "view", color: "var(--pa-ink-2)" }
+];
+var N_LISTS = ["Product & Tech", "Marketing", "Design & Multimedia", "Program Management", "Research", "Scientific Affairs", "Accreditation"];
+var N_LEADS = [["Sara Atcheison", "Clinical Lead"], ["Danny Velasquez", "Creative Lead"], ["Christine Mangurio", "Operations Lead"], ["Megan McLafferty", "Strategy Lead"]];
+
+function peopleOn(t) { return PRESENCE.filter(function (p) { return p.tab === t; }); }
+function alertFor(t) { return ""; }
+function toggleIn(arr, v) { return arr.indexOf(v) > -1 ? arr.filter(function (x) { return x !== v; }) : arr.concat(v); }
+function firstName(p) { return p.name.split(" ")[0]; }
+function joinNames(a) { return a.length > 1 ? a.slice(0, -1).join(", ") + " and " + a[a.length - 1] : a[0]; }
+
+function avatar(p, size, i, bordered) {
+  return '<span title="' + esc(p.name) + '" style="display:inline-flex;align-items:center;justify-content:center;width:' + size + 'px;height:' + size + 'px;border-radius:50%;background:' + p.color +
+    ';color:#fff;' + (bordered === false ? '' : 'border:2px solid #fff;') + 'box-sizing:border-box;margin-left:' + (i ? -7 : 0) + 'px;font-family:var(--pa-font-display);font-size:' + (size > 30 ? 12 : 10) + 'px;font-weight:600;letter-spacing:0.2px;flex-shrink:0">' + esc(p.initials) + '</span>';
+}
+
+function statusLine(p) {
+  var edit = p.mode === "edit";
+  return '<span style="display:inline-flex;align-items:center;gap:5px;font-family:var(--pa-font-sans);font-size:12.5px;color:' + (edit ? "var(--pa-warning)" : "var(--pa-ink-3)") + '">' +
+    '<i class="mdi ' + (edit ? "mdi-pencil-outline" : "mdi-eye-outline") + '" style="font-size:14px"></i><span>' + (edit ? "Editing " : "Viewing ") + esc(p.tab) + '</span></span>';
+}
+
+function personRow(p, tag, attrs) {
+  return '<' + tag + ' ' + (attrs || '') + ' style="display:flex;align-items:center;gap:14px;width:100%;text-align:left;border:none;background:#fff;' + (tag === "button" ? "cursor:pointer;padding:9px 18px" : "padding:6px 0") + '">' +
+    avatar(p, 34, 0, false) +
+    '<span style="display:flex;flex-direction:column;gap:2px;min-width:0"><span style="font-family:var(--pa-font-sans);font-size:15px;color:var(--pa-ink)">' + esc(p.name) + '</span>' + statusLine(p) + '</span>' +
+  '</' + tag + '>';
+}
+
+function presenceHTML() {
+  var open = state.presenceOpen;
+  return '<div style="position:relative;margin-right:12px">' +
+    '<button class="pres-btn' + (open ? ' pres-btn--open' : '') + '" data-a="presence" aria-haspopup="dialog" aria-expanded="' + open + '">' +
+      '<span style="display:flex">' + PRESENCE.map(function (p, i) { return avatar(p, 26, i); }).join("") + '</span>' +
+      '<span style="font-family:var(--pa-font-sans);font-size:13px;color:var(--pa-ink-2);white-space:nowrap">' + PRESENCE.length + ' people here</span>' +
+      '<i class="mdi mdi-chevron-down" style="font-size:18px;color:var(--pa-ink-3)"></i>' +
+    '</button>' +
+    (open ?
+      '<div data-a="menus-close" style="position:fixed;inset:0;z-index:40"></div>' +
+      '<div role="dialog" aria-label="People in this project" style="position:absolute;right:0;top:calc(100% + 8px);z-index:41;width:330px;background:#fff;border-radius:var(--pa-radius-sm);box-shadow:var(--pa-elev-raised);overflow:hidden;animation:modalIn 150ms cubic-bezier(.4,0,.2,1)">' +
+        '<div class="pa-eyebrow" style="padding:16px 18px 6px">In this project now</div>' +
+        PRESENCE.map(function (p) { return personRow(p, "button", 'class="menu-row" data-a="presence-go" data-tab="' + esc(p.tab) + '"'); }).join("") +
+        '<div style="height:8px"></div>' +
+      '</div>' : '') +
+  '</div>';
+}
+
+function titleRow(text, mb) {
+  var here = peopleOn(state.tab), pill = "";
+  if (here.length) {
+    var label = here.length === 1 ? firstName(here[0]) + (here[0].mode === "edit" ? " is editing this tab" : " is viewing this tab") : here.length + " people on this tab";
+    pill = '<div title="' + esc(here.map(function (p) { return p.name + (p.mode === "edit" ? " — editing" : " — viewing"); }).join(", ")) + '" style="display:inline-flex;align-items:center;gap:10px;height:30px;padding:0 12px 0 4px;border-radius:15px;background:var(--pa-primary-050)">' +
+      '<div style="display:flex">' + here.map(function (p, i) { return avatar(p, 24, i); }).join("") + '</div>' +
+      '<span style="font-family:var(--pa-font-sans);font-size:13px;color:var(--pa-ink-2);white-space:nowrap">' + esc(label) + '</span></div>';
+  }
+  return '<div style="display:flex;align-items:center;flex-wrap:wrap;gap:12px 16px;margin-bottom:' + mb + '"><h2 class="pa-screen-title" style="margin:0">' + text + '</h2>' + pill + '</div>';
+}
+
+function saveMenuHTML(toggleAct, open, quickAct) {
+  function item(act, icon, iconColor, title, sub) {
+    return '<button role="menuitem" class="menu-row" data-a="' + act + '" style="display:grid;grid-template-columns:24px 1fr;gap:16px;align-items:start;width:100%;text-align:left;border:none;background:#fff;cursor:pointer;padding:16px 20px">' +
+      '<i class="mdi ' + icon + '" style="font-size:22px;line-height:22px;color:' + iconColor + '"></i>' +
+      '<span style="display:flex;flex-direction:column;gap:4px"><span style="font-family:var(--pa-font-sans);font-size:15px;color:var(--pa-ink)">' + title + '</span><span style="font-family:var(--pa-font-sans);font-size:13px;color:var(--pa-ink-3)">' + sub + '</span></span></button>';
+  }
+  return '<div style="position:relative">' +
+    '<div style="display:inline-flex;align-items:stretch;border-radius:var(--pa-radius-sm);box-shadow:var(--pa-elev-2)"><button class="pa-btn pa-btn--primary" data-a="' + quickAct + '" style="border-radius:var(--pa-radius-sm) 0 0 var(--pa-radius-sm);box-shadow:none"><span>' + (toggleAct === "save-menu" ? "QUICK SAVE" : "SAVE") + '</span></button><button class="pa-btn pa-btn--primary" data-a="' + toggleAct + '" aria-haspopup="menu" aria-label="More save options" title="More save options" style="border-radius:0 var(--pa-radius-sm) var(--pa-radius-sm) 0;box-shadow:none;background:var(--pa-primary-700);border-left:1px solid rgba(255,255,255,0.45);min-width:0;width:40px;padding:0;justify-content:center"><i class="mdi mdi-chevron-down" style="font-size:20px"></i></button></div>' +
+    (open ?
+      '<div data-a="menus-close" style="position:fixed;inset:0;z-index:40"></div>' +
+      '<div role="menu" style="position:absolute;right:0;top:calc(100% + 8px);z-index:41;width:320px;background:#fff;border-radius:var(--pa-radius-sm);box-shadow:var(--pa-elev-raised);overflow:hidden;animation:modalIn 150ms cubic-bezier(.4,0,.2,1)">' +
+        item("notify-open", "mdi-bell-outline", "var(--pa-primary)", "Save &amp; Notify…", "Add notes and optionally select team members to alert about this update.") +
+      '</div>' : '') +
+  '</div>';
+}
+
+function recipParts(n) {
+  var parts = [];
+  if (n.lists.length) parts.push(n.lists.length + (n.lists.length === 1 ? " list" : " lists"));
+  if (n.leads.length) parts.push(n.leads.length + (n.leads.length === 1 ? " lead" : " leads"));
+  return parts;
+}
+
+function commitSave(msg) {
+  setBaseline();
+  state.mode = "read"; state.openCombo = ""; state.snapshot = null;
+  state.saveMenuOpen = false; state.guardMenuOpen = false; state.notify = null;
+  if (state.pendingTab) { state.presAlert = alertFor(state.pendingTab); state.tab = state.pendingTab; state.pendingTab = ""; }
+  flash(msg);
+}
+
+function notifyModalHTML() {
+  var n = state.notify;
+  if (!n) return "";
+  var parts = recipParts(n), count = n.lists.length + n.leads.length, notes = !!n.notes.trim();
+  var allLists = n.lists.length === N_LISTS.length, allLeads = n.leads.length === N_LEADS.length;
+  return '' +
+  '<div data-a="notify-close" data-scrim="1" style="position:fixed;inset:0;z-index:72;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;padding:24px;animation:scrimIn 200ms ease">' +
+    '<div data-stop="1" role="dialog" aria-label="Save changes" style="width:100%;max-width:660px;max-height:calc(100vh - 48px);overflow-y:auto;background:#fff;border-radius:var(--pa-radius-lg);box-shadow:var(--pa-elev-modal);animation:modalIn 300ms cubic-bezier(.4,0,.2,1)">' +
+      '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:16px;padding:26px 28px 0">' +
+        '<div style="display:flex;flex-direction:column;gap:4px"><h3 class="pa-modal-title" style="margin:0;text-transform:uppercase">Save Changes</h3>' +
+          '<div style="font-family:var(--pa-font-sans);font-size:13px;color:var(--pa-ink-3)">' + esc(state.tab) + ' — ' + esc(PROJECT_ID) + '</div></div>' +
+        '<button class="afp-iconbtn" title="Close" data-a="notify-close"><i class="mdi mdi-close" style="font-size:22px"></i></button>' +
+      '</div>' +
+      '<div style="padding:18px 28px 0;display:flex;flex-direction:column;gap:24px">' +
+        '<div class="vf"><textarea class="vf__textarea" placeholder=" " rows="3" data-input="notifyNotes" data-focus="notifyNotes">' + esc(n.notes) + '</textarea><span class="vf__label">Update Notes</span>' +
+          '<div class="vf__messages">Optional. Saved to the change log and included in any notification.</div></div>' +
+        '<div style="display:flex;flex-direction:column;gap:12px">' +
+          '<div style="display:flex;justify-content:space-between;align-items:center;gap:12px"><span class="pa-eyebrow">Distribution Lists</span>' +
+            '<a href="#" data-a="n-all-lists" style="font-family:var(--pa-font-sans);font-size:13px;font-weight:500">' + (allLists ? "Clear lists" : "Select all lists") + '</a></div>' +
+          '<div style="display:flex;flex-wrap:wrap;gap:8px">' + N_LISTS.map(function (l) {
+            var on = n.lists.indexOf(l) > -1;
+            return '<button class="pa-chip' + (on ? ' pa-chip--selected' : '') + '" data-a="n-list" data-v="' + esc(l) + '" aria-pressed="' + on + '" style="display:inline-flex;align-items:center;gap:6px;line-height:1"><i class="mdi ' + (on ? "mdi-check" : "mdi-plus") + '" style="font-size:14px;line-height:1;display:inline-flex"></i><span style="line-height:1;display:inline-flex;align-items:center">' + esc(l) + '</span></button>';
+          }).join("") + '</div>' +
+        '</div>' +
+        '<div style="display:flex;flex-direction:column;gap:8px">' +
+          '<div style="display:flex;justify-content:space-between;align-items:center;gap:12px"><span class="pa-eyebrow">Project Leads</span>' +
+            '<a href="#" data-a="n-all-leads" style="font-family:var(--pa-font-sans);font-size:13px;font-weight:500">' + (allLeads ? "Clear leads" : "Select all leads") + '</a></div>' +
+          '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px 24px">' + N_LEADS.map(function (l) {
+            var on = n.leads.indexOf(l[0]) > -1;
+            return '<div class="vsel" role="checkbox" aria-checked="' + on + '" tabindex="0" data-a="n-lead" data-v="' + esc(l[0]) + '" style="align-items:flex-start;cursor:pointer">' +
+              '<span class="vsel__box" style="' + (on ? 'color:#000' : '') + '"><i class="mdi ' + (on ? "mdi-checkbox-marked" : "mdi-checkbox-blank-outline") + '"></i></span>' +
+              '<span class="vsel__label" style="display:flex;flex-direction:column"><span>' + esc(l[0]) + '</span><span class="pa-helper">' + esc(l[1]) + '</span></span></div>';
+          }).join("") + '</div>' +
+        '</div>' +
+        '<div class="pa-rules" style="display:flex;gap:10px;align-items:flex-start"><i class="mdi mdi-information-outline" style="font-size:18px;line-height:19px;color:var(--pa-primary)"></i>' +
+          '<span style="font-family:var(--pa-font-sans);font-size:12.5px;line-height:19px;color:var(--pa-ink-2);text-wrap:pretty">Notify only the people who need to act on this update. Every change is recorded in the change log whether or not you notify.</span></div>' +
+      '</div>' +
+      '<div style="display:flex;justify-content:space-between;align-items:center;gap:12px;padding:26px 28px 24px">' +
+        '<span class="pa-helper">' + (notes ? "Notes saved to change log" : "No notes") + ' · ' + (count ? parts.join(" and ") + " will be notified" : "no one will be notified") + '</span>' +
+        '<div style="display:flex;gap:12px"><button class="pa-btn pa-btn--secondary-grey" data-a="notify-close"><span>CANCEL</span></button>' +
+          '<button class="pa-btn pa-btn--primary" data-a="notify-save"><i class="mdi ' + (count ? "mdi-send-outline" : "mdi-content-save-outline") + '"></i><span>' + (count ? "SAVE &amp; NOTIFY" : "SAVE") + '</span></button></div>' +
+      '</div>' +
+    '</div>' +
+  '</div>';
+}
+
+function editAlertHTML() {
+  if (!state.editAlert) return "";
+  var eds = peopleOn(state.tab).filter(function (p) { return p.mode === "edit"; });
+  if (!eds.length) return "";
+  var names = eds.map(firstName);
+  var msg = "Just a reminder \u2014 " + joinNames(names) + (names.length > 1 ? " are" : " is") + " already editing " + state.tab + ". If you both save, the last save wins and may overwrite their changes.";
+  return '' +
+  '<div style="position:fixed;inset:0;z-index:76;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;padding:24px;animation:scrimIn 200ms ease">' +
+    '<div role="alertdialog" aria-modal="true" aria-labelledby="edit-alert-title" style="width:100%;max-width:480px;background:#fff;border-radius:var(--pa-radius-lg);box-shadow:var(--pa-elev-modal);animation:modalIn 300ms cubic-bezier(.4,0,.2,1)">' +
+      '<div style="padding:28px 32px 0;display:flex;align-items:center;gap:14px">' +
+        '<i class="mdi mdi-alert-outline" style="font-size:26px;line-height:26px;color:var(--pa-warning)"></i>' +
+        '<h3 id="edit-alert-title" class="pa-modal-title" style="margin:0;text-transform:uppercase;letter-spacing:0">Already being edited</h3>' +
+      '</div>' +
+      '<div style="padding:18px 32px 0;display:flex;flex-direction:column;gap:6px">' + eds.map(function (p) { return personRow(p, "div"); }).join("") + '</div>' +
+      '<div style="padding:14px 32px 4px;font-family:var(--pa-font-sans);font-size:14px;line-height:22px;color:var(--pa-ink-2);text-wrap:pretty">' + esc(msg) + '</div>' +
+      '<div style="display:flex;justify-content:flex-end;gap:12px;padding:22px 24px"><button class="pa-btn pa-btn--secondary-grey" data-a="edit-alert-cancel"><span>CANCEL</span></button><button class="pa-btn pa-btn--primary" data-a="edit-alert-ok"><i class="mdi mdi-pencil-outline"></i><span>EDIT ANYWAY</span></button></div>' +
+    '</div>' +
+  '</div>';
+}
+
+function presAlertHTML() {
+  if (!state.presAlert || state.presAlert !== state.tab || state.notify || state.pendingTab) return "";
+  var here = peopleOn(state.tab);
+  if (!here.length) return "";
+  var editors = here.filter(function (p) { return p.mode === "edit"; }).map(firstName);
+  var viewers = here.filter(function (p) { return p.mode !== "edit"; }).map(firstName);
+  var msg = editors.length
+    ? "You can still view and make changes on " + state.tab + ". Coordinate with " + joinNames(editors) + " before saving so you don't overwrite each other's work."
+    : joinNames(viewers) + (viewers.length > 1 ? " are" : " is") + " viewing " + state.tab + " right now. You can still make changes.";
+  return '' +
+  '<div style="position:fixed;inset:0;z-index:75;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;padding:24px;animation:scrimIn 200ms ease">' +
+    '<div role="alertdialog" aria-modal="true" aria-labelledby="pres-alert-title" style="width:100%;max-width:480px;background:#fff;border-radius:var(--pa-radius-lg);box-shadow:var(--pa-elev-modal);animation:modalIn 300ms cubic-bezier(.4,0,.2,1)">' +
+      '<div style="padding:28px 32px 0;display:flex;align-items:center;gap:14px">' +
+        '<i class="mdi ' + (editors.length ? "mdi-account-edit-outline" : "mdi-account-eye-outline") + '" style="font-size:26px;line-height:26px;color:' + (editors.length ? "var(--pa-warning)" : "var(--pa-primary)") + '"></i>' +
+        '<h3 id="pres-alert-title" class="pa-modal-title" style="margin:0;text-transform:uppercase;letter-spacing:0">' + (editors.length ? "Someone is editing this tab" : "Someone is on this tab") + '</h3>' +
+      '</div>' +
+      '<div style="padding:18px 32px 0;display:flex;flex-direction:column;gap:6px">' + here.map(function (p) { return personRow(p, "div"); }).join("") + '</div>' +
+      '<div style="padding:14px 32px 4px;font-family:var(--pa-font-sans);font-size:14px;line-height:22px;color:var(--pa-ink-2);text-wrap:pretty">' + esc(msg) + '</div>' +
+      '<div style="display:flex;justify-content:flex-end;padding:22px 24px"><button class="pa-btn pa-btn--primary" data-a="pres-alert-close"><span>GOT IT</span></button></div>' +
+    '</div>' +
+  '</div>';
+}
+
+setBaseline();
+state.presAlert = alertFor(state.tab);
+render();
+</script>
+</body>
+</html>
